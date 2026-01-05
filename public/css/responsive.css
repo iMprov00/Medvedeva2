@@ -1,0 +1,231 @@
+/* Адаптивные стили для мобильных устройств */
+
+@media (max-width: 1024px) {
+    .hero__title {
+        font-size: 2.2rem;
+    }
+    
+    .page-title {
+        font-size: 2.2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header__inner {
+        flex-wrap: wrap;
+    }
+    
+    .nav {
+        order: 3;
+        width: 100%;
+        margin-top: 20px;
+        display: none;
+    }
+    
+    .nav.active {
+        display: block;
+    }
+    
+    .nav__list {
+        flex-direction: column;
+        gap: 16px;
+        background: var(--white);
+        padding: 20px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+    }
+    
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+    
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+    
+    .mobile-menu-btn span {
+        transition: var(--transition);
+    }
+    
+    .header__actions {
+        margin-left: auto;
+    }
+    
+    .hero {
+        padding: 80px 0;
+    }
+    
+    .hero__title {
+        font-size: 2rem;
+    }
+    
+    .hero__subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .contacts-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .director-info {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .director-photo-placeholder {
+        height: 300px;
+    }
+    
+    .features__grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .doctors-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .doctor-card {
+        flex-direction: column;
+    }
+    
+    .doctor-photo {
+        height: 240px;
+    }
+    
+    .service-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .service-price {
+        margin-top: 8px;
+    }
+    
+    .service-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .service-category {
+        padding: 24px;
+    }
+    
+    .category-title {
+        font-size: 1.4rem;
+    }
+    
+    .doc-item {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+    }
+    
+    .footer__inner {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .footer__bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .footer__description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .hero__title {
+        font-size: 1.8rem;
+    }
+    
+    .page-title {
+        font-size: 1.8rem;
+    }
+    
+    .container {
+        padding: 0 16px;
+    }
+    
+    .logo__text {
+        display: none;
+    }
+    
+    .header__phone {
+        display: none;
+    }
+    
+    .search-box {
+        flex-direction: column;
+    }
+    
+    .filters {
+        flex-direction: column;
+    }
+    
+    .filter-select,
+    .search-input,
+    .search-btn,
+    .reset-btn {
+        width: 100%;
+    }
+    
+    .advantages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .privacy-content {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 360px) {
+    .hero__title {
+        font-size: 1.6rem;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

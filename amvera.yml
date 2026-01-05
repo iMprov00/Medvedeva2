@@ -1,0 +1,12 @@
+# amvera.yml
+meta:
+  environment: ruby
+  toolchain:
+    name: ruby
+    version: 3.2
+
+build:
+  args: "bundle install"
+
+run:
+  command: "bundle exec ruby app.rb -p $PORT"

@@ -1,0 +1,126 @@
+/* Карточки */
+.doctor-card {
+    border: none;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    height: 100%;
+    transition: var(--transition);
+}
+
+.doctor-card .card-img-top {
+    height: 280px;
+    object-fit: cover;
+}
+
+.doctor-card .card-body {
+    padding: 1.5rem;
+}
+
+.doctor-card .badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Карточки услуг */
+.service-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.service-card:hover {
+    border-color: var(--secondary-accent);
+}
+
+/* Иконки */
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.icon-wrapper-primary {
+    background-color: var(--primary-light);
+    color: var(--primary-accent);
+}
+
+.icon-wrapper-secondary {
+    background-color: var(--secondary-light);
+    color: var(--secondary-accent);
+}
+
+/* Формы */
+.form-control:focus {
+    border-color: var(--secondary-accent);
+    box-shadow: 0 0 0 0.25rem rgba(229, 167, 255, 0.25);
+}
+
+/* Списки */
+.list-styled {
+    list-style: none;
+    padding-left: 0;
+}
+
+.list-styled li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.list-styled li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-accent);
+    font-weight: bold;
+}
+
+/* Таблицы */
+.table-custom th {
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--primary-accent);
+}
+
+.table-custom td {
+    vertical-align: middle;
+}
+
+/* Аккордеоны */
+.accordion-custom .accordion-button {
+    font-weight: 600;
+    color: var(--text-dark);
+    background-color: transparent;
+}
+
+.accordion-custom .accordion-button:not(.collapsed) {
+    color: var(--secondary-accent);
+    background-color: var(--secondary-light);
+    box-shadow: none;
+}
+
+.accordion-custom .accordion-button:focus {
+    box-shadow: none;
+    border-color: var(--secondary-accent);
+}
+
+/* Секции */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Сетка врачей */
+.doctors-grid .col-md-6 {
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .doctors-grid .col-md-6 {
+        margin-bottom: 1.5rem;
+    }
+}

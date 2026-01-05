@@ -1,0 +1,188 @@
+<!-- Заголовок страницы -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Услуги и цены</h1>
+                <p class="lead text-muted mb-0">Прозрачное ценообразование и полный список медицинских услуг</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Поиск и фильтры -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-3 mb-5">
+            <div class="col-md-8">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" 
+                           id="service-search" 
+                           class="form-control border-start-0" 
+                           placeholder="Поиск услуг по названию, описанию...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex gap-2">
+                    <select id="category-filter" class="form-select form-select-lg">
+                        <option value="">Все категории</option>
+                        <% @service_categories.each do |category| %>
+                            <option value="<%= category.id %>"><%= category.name %></option>
+                        <% end %>
+                    </select>
+                    <button id="reset-service-filters" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Информация о ценах -->
+        <div class="alert alert-info mb-5">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-info-circle fs-4 me-3 text-primary"></i>
+                <div>
+                    <h5 class="mb-1">Важная информация</h5>
+                    <p class="mb-0">Цены указаны для ознакомления. Точную стоимость услуги определит врач на консультации.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Список услуг -->
+        <div id="services-list">
+            <% if @service_categories.empty? %>
+                <div class="text-center py-5">
+                    <i class="bi bi-clipboard-plus display-1 text-muted mb-3"></i>
+                    <h4 class="mb-3">Услуги не найдены</h4>
+                    <p class="text-muted">Информация об услугах скоро будет добавлена</p>
+                </div>
+            <% else %>
+                <% @service_categories.each do |category| %>
+                    <div class="mb-5 fade-in-up">
+                        <h2 class="h3 fw-bold mb-4 pb-2 border-bottom">
+                            <i class="bi bi-card-checklist text-primary me-2"></i>
+                            <%= category.name %>
+                        </h2>
+                        
+                        <div class="row g-3">
+
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+        
+        <!-- FAQ -->
+        <div class="mt-5 pt-5 border-top">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold mb-3">Частые вопросы</h2>
+                <p class="text-muted">Ответы на популярные вопросы о наших услугах</p>
+            </div>
+            
+            <div class="accordion accordion-custom" id="faqAccordion">
+                <div class="accordion-item border-0 shadow-sm mb-3">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">
+                            Как рассчитывается стоимость услуг?
+                        </button>
+                    </h3>
+                    <div id="faqOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Стоимость рассчитывается индивидуально для каждого пациента на основе сложности случая, 
+                            необходимых обследований и особенностей лечения. Точную цену врач сообщит после консультации.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item border-0 shadow-sm mb-3">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo">
+                            Можно ли оплатить услуги в рассрочку?
+                        </button>
+                    </h3>
+                    <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Да, мы предоставляем возможность оплаты в рассрочку. Подробности можно уточнить 
+                            у администратора или по телефону клиники.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item border-0 shadow-sm">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree">
+                            Нужна ли предварительная запись на прием?
+                        </button>
+                    </h3>
+                    <div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Да, мы работаем по предварительной записи. Это позволяет избежать очередей и 
+                            гарантировать, что врач уделит вам необходимое время. Записаться можно по телефону 
+                            или через форму на сайте.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('service-search');
+    const categoryFilter = document.getElementById('category-filter');
+    const resetBtn = document.getElementById('reset-service-filters');
+    const servicesList = document.getElementById('services-list');
+    
+    function filterServices() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const categoryId = categoryFilter.value;
+        
+        fetch('/services/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                query: searchTerm,
+                category_id: categoryId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            servicesList.innerHTML = data.html;
+            
+            // Активируем аккордеон для нового контента
+            const accordions = servicesList.querySelectorAll('.accordion-item');
+            accordions.forEach(item => {
+                new bootstrap.Collapse(item.querySelector('.accordion-collapse'));
+            });
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+    
+    searchInput.addEventListener('input', filterServices);
+    categoryFilter.addEventListener('change', filterServices);
+    resetBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        categoryFilter.value = '';
+        filterServices();
+    });
+    
+    // Инициализация аккордеона FAQ
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    accordionItems.forEach(item => {
+        item.querySelector('.accordion-button').addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('bi-chevron-down');
+                icon.classList.toggle('bi-chevron-up');
+            }
+        });
+    });
+});
+</script>

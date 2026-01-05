@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Клиника доказательной медицины доктора Медведевой</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Наши CSS файлы -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/components.css">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Кастомные стили Bootstrap -->
+    <style>
+        :root {
+            --bs-primary: #77e0b2;
+            --bs-secondary: #e5a7ff;
+            --bs-primary-rgb: 126, 255, 205;
+            --bs-secondary-rgb: 229, 167, 255;
+        }
+        
+        .btn-primary {
+            background-color: var(--bs-secondary);
+            border-color: var(--bs-secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #d18cff;
+            border-color: #d18cff;
+        }
+        
+        .btn-outline-primary {
+            color: var(--bs-secondary);
+            border-color: var(--bs-secondary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--bs-secondary);
+            border-color: var(--bs-secondary);
+        }
+        
+        .text-primary {
+            color: var(--bs-secondary) !important;
+        }
+        
+        .border-primary {
+            border-color: var(--bs-secondary) !important;
+        }
+        
+        .bg-primary {
+            background-color: var(--bs-primary) !important;
+        }
+        
+        .bg-secondary-light {
+            background-color: rgba(229, 167, 255, 0.08) !important;
+        }
+        
+        .text-accent {
+            color: var(--bs-primary) !important;
+        }
+        
+        .bg-accent-light {
+            background-color: rgba(126, 255, 205, 0.1) !important;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    
+    <!-- Мета-теги -->
+    <meta name="description" content="Клиника доказательной медицины доктора Медведевой. Современный подход к лечению, основанный на научных данных и индивидуальном подходе к каждому пациенту.">
+    <meta name="keywords" content="клиника, доказательная медицина, врач, лечение, здоровье">
+    <meta property="og:title" content="Клиника доказательной медицины доктора Медведевой">
+    <meta property="og:description" content="Современный подход к лечению, основанный на научных данных">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://medvedeva-clinic.ru">
+    
+    <!-- Фавиконки -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Канонический URL -->
+    <link rel="canonical" href="https://medvedeva-clinic.ru">
+    
+    <!-- Для мобильных устройств -->
+    <meta name="theme-color" content="#7effcd">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+        <% unless request.path.start_with?('/admin') %>
+    <!-- Шапка -->
+    <header class="header sticky-top bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <div class="me-2">
+                        <i class="bi bi-heart-pulse text-primary fs-2"></i>
+                    </div>
+                    <div>
+                        <span class="fw-bold fs-5 text-dark">Клиника доктора Медведевой</span><br>
+                        <small class="text-muted">Доказательная медицина</small>
+                    </div>
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link <%= 'active fw-bold' if request.path == '/' %>" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= 'active fw-bold' if request.path == '/about' %>" href="/about">О клинике</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= 'active fw-bold' if request.path == '/doctors' %>" href="/doctors">Врачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= 'active fw-bold' if request.path == '/prices' %>" href="/prices">Услуги и цены</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= 'active fw-bold' if request.path == '/contacts' %>" href="/contacts">Контакты</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="d-flex align-items-center ms-lg-4">
+                        <div class="d-none d-lg-block me-4">
+                            <a href="tel:+79991234567" class="text-decoration-none text-dark fw-semibold">
+                                <i class="bi bi-telephone me-2"></i>+7 (999) 123-45-67
+                            </a>
+                        </div>
+                        <a href="/doctors" class="btn btn-primary">
+                            <i class="bi bi-calendar-check me-2"></i>Записаться
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        <%= yield %>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <a href="/" class="text-decoration-none d-flex align-items-center mb-3">
+                        <i class="bi bi-heart-pulse text-primary fs-2 me-2"></i>
+                        <div>
+                            <span class="fw-bold fs-5 text-white">Клиника доктора Медведевой</span><br>
+                            <small class="text-light">Доказательная медицина</small>
+                        </div>
+                    </a>
+                    <p class="text-light opacity-75">Профессиональный подход к вашему здоровью, основанный на научных данных и современных протоколах лечения.</p>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="fw-bold mb-4">Навигация</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/" class="text-light text-decoration-none opacity-75 hover-opacity-100">Главная</a></li>
+                        <li class="mb-2"><a href="/about" class="text-light text-decoration-none opacity-75 hover-opacity-100">О клинике</a></li>
+                        <li class="mb-2"><a href="/doctors" class="text-light text-decoration-none opacity-75 hover-opacity-100">Врачи</a></li>
+                        <li class="mb-2"><a href="/prices" class="text-light text-decoration-none opacity-75 hover-opacity-100">Услуги и цены</a></li>
+                        <li class="mb-2"><a href="/contacts" class="text-light text-decoration-none opacity-75 hover-opacity-100">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4">Контакты</h5>
+                    <address class="text-light opacity-75">
+                        <p class="mb-2"><i class="bi bi-geo-alt me-2"></i>г. Москва, ул. Примерная, д. 10</p>
+                        <p class="mb-2"><i class="bi bi-telephone me-2"></i><a href="tel:+79991234567" class="text-light text-decoration-none">+7 (999) 123-45-67</a></p>
+                        <p class="mb-0"><i class="bi bi-envelope me-2"></i><a href="mailto:info@medvedeva-clinic.ru" class="text-light text-decoration-none">info@medvedeva-clinic.ru</a></p>
+                    </address>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4">Часы работы</h5>
+                    <div class="text-light opacity-75">
+                        <p class="mb-2">Пн-Пт: 8:00 - 20:00</p>
+                        <p class="mb-2">Сб: 9:00 - 18:00</p>
+                        <p class="mb-3">Вс: 10:00 - 16:00</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle p-2">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle p-2">
+                            <i class="bi bi-vimeo"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle p-2">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 opacity-25">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light opacity-75">
+                        © <%= Time.now.year %> Клиника доказательной медицины доктора Медведевой
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/docs" class="text-light text-decoration-none opacity-75 hover-opacity-100 me-3">Документы</a>
+                    <a href="/privacy" class="text-light text-decoration-none opacity-75 hover-opacity-100">Политика конфиденциальности</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+        <% else %>
+    <!-- Для админки - только контент -->
+    <%= yield %>
+    <% end %>
+    <!-- Модальное окно для записи -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="appointmentModalLabel">Запись на прием</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="appointmentForm">
+          <input type="hidden" id="appointmentDoctorId" name="doctor_id" value="">
+          
+          <div class="row g-3">
+            <div class="col-md-12">
+              <label for="patientName" class="form-label">ФИО *</label>
+              <input type="text" class="form-control" id="patientName" name="patient_name" required>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="birthDate" class="form-label">Дата рождения *</label>
+              <input type="date" class="form-control" id="birthDate" name="birth_date" required>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Телефон *</label>
+              <input type="tel" class="form-control" id="phone" name="phone" required>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email *</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="doctorName" class="form-label">Врач</label>
+              <input type="text" class="form-control" id="doctorName" readonly>
+            </div>
+            
+            <div class="col-12">
+              <label for="specialtiesSelect" class="form-label">Специальность врача *</label>
+              <select class="form-select" id="specialtiesSelect" name="specialty_id" required>
+                <option value="">Выберите специальность</option>
+                <!-- Опции будут загружаться динамически -->
+              </select>
+            </div>
+            
+            <div class="col-12">
+              <label for="message" class="form-label">Дополнительное сообщение (необязательно)</label>
+              <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+            </div>
+            
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="privacyAccepted" name="privacy_accepted" value="1" required>
+                <label class="form-check-label" for="privacyAccepted">
+                  Я соглашаюсь с <a href="/privacy" target="_blank">политикой конфиденциальности и обработкой персональных данных</a> *
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" id="submitAppointment">Отправить запись</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Наш JS -->
+    <script src="/js/app.js"></script>
+</body>
+</html>

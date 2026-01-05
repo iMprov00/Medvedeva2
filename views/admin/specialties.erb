@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Специальности - Админка - Клиника доктора Медведевой</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            width: 200px;
+        }
+        .main-content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .nav-link.active {
+            background-color: #e5a7ff;
+            color: white !important;
+        }
+        .btn-primary {
+            background-color: #e5a7ff;
+            border-color: #e5a7ff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #d18cff;
+            border-color: #d18cff;
+        }
+        .specialty-badge {
+            background-color: rgba(126, 255, 205, 0.2);
+            border: 1px solid #7effcd;
+            color: #333;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        .specialty-item {
+            transition: all 0.2s;
+        }
+        .specialty-item:hover {
+            background-color: rgba(229, 167, 255, 0.1);
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="sidebar d-md-block bg-dark text-white">
+        <div class="sidebar-sticky pt-3">
+            <h6 class="sidebar-heading px-3 mb-3">
+                <span>Админ-панель</span>
+            </h6>
+            
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/messages">
+                        <i class="bi bi-envelope me-2"></i>
+                        Сообщения
+                        <% if defined?(Message) && Message.where(read: false).count > 0 %>
+                            <span class="badge bg-danger float-end"><%= Message.where(read: false).count %></span>
+                        <% end %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/doctors">
+                        <i class="bi bi-people me-2"></i>
+                        Врачи
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/prices">
+                        <i class="bi bi-currency-dollar me-2"></i>
+                        Услуги и цены
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white active" href="/admin/specialties">
+                        <i class="bi bi-tags me-2"></i>
+                        Специальности
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a class="nav-link text-white" href="/">
+                        <i class="bi bi-house me-2"></i>
+                        На сайт
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/logout">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Выйти
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">Управление специальностями</h1>
+            </div>
+            
+            <!-- Форма добавления специальности -->
+            <div class="card mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-tag me-2"></i>Добавить новую специальность</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/specialties" method="post" class="row g-3">
+                        <div class="col-md-10">
+                            <label for="specialty_name" class="form-label">Название специальности *</label>
+                            <input type="text" class="form-control" id="specialty_name" name="name" 
+                                   placeholder="Терапевт, Кардиолог, Невролог и т.д." required>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-plus-circle me-2"></i>Добавить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Список специальностей -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-tags me-2"></i>Список специальностей (<%= @specialties.count %>)</h5>
+                </div>
+                <div class="card-body">
+                    <% if @specialties.empty? %>
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Специальности не добавлены. Добавьте первую специальность, чтобы начать.
+                        </div>
+                    <% else %>
+                        <div class="row">
+                            <% @specialties.each do |specialty| %>
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="card specialty-item">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-title mb-1"><%= specialty.name %></h6>
+                                            <p class="card-text small text-muted mb-0">
+                                                <i class="bi bi-people me-1"></i>
+                                                <% doctor_count = specialty.doctors.count %>
+                                                <%= doctor_count %> <%= russian_plural(doctor_count, 'врач', 'врача', 'врачей') %>
+                                            </p>
+                                            </div>
+                                            <div>
+                                                <form action="/admin/specialties/<%= specialty.id %>/delete" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                                            <%= 'disabled' if specialty.doctors.any? %>
+                                                            title="<%= specialty.doctors.any? ? 'Нельзя удалить: есть врачи с этой специальностью' : 'Удалить' %>">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Подтверждение удаления
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteForms = document.querySelectorAll('form[action*="/delete"]');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (!confirm('Вы уверены, что хотите удалить эту специальность?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Фокус на поле ввода при загрузке
+            const specialtyInput = document.getElementById('specialty_name');
+            if (specialtyInput) {
+                specialtyInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>

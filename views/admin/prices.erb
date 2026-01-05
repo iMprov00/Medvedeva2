@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги и цены - Админка - Клиника доктора Медведевой</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            width: 200px;
+        }
+        .main-content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .nav-link.active {
+            background-color: #e5a7ff;
+            color: white !important;
+        }
+        .btn-primary {
+            background-color: #e5a7ff;
+            border-color: #e5a7ff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #d18cff;
+            border-color: #d18cff;
+        }
+        .btn-success {
+            background-color: #7effcd;
+            border-color: #7effcd;
+            color: #333;
+        }
+        .btn-success:hover {
+            background-color: #6aeebc;
+            border-color: #6aeebc;
+            color: #333;
+        }
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(229, 167, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="sidebar d-md-block bg-dark text-white">
+        <div class="sidebar-sticky pt-3">
+            <h6 class="sidebar-heading px-3 mb-3">
+                <span>Админ-панель</span>
+            </h6>
+            
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/messages">
+                        <i class="bi bi-envelope me-2"></i>
+                        Сообщения
+                        <% if defined?(Message) && Message.where(read: false).count > 0 %>
+                            <span class="badge bg-danger float-end"><%= Message.where(read: false).count %></span>
+                        <% end %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/doctors">
+                        <i class="bi bi-people me-2"></i>
+                        Врачи
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white active" href="/admin/prices">
+                        <i class="bi bi-currency-dollar me-2"></i>
+                        Услуги и цены
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white <%= 'active' if request.path == '/admin/specialties' %>" href="/admin/specialties">
+                        <i class="bi bi-tags me-2"></i>
+                        Специальности
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a class="nav-link text-white" href="/">
+                        <i class="bi bi-house me-2"></i>
+                        На сайт
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/logout">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Выйти
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">Управление услугами и ценами</h1>
+            </div>
+            
+            <!-- Форма добавления категории -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-folder-plus me-2"></i>Добавить категорию</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/categories" method="post" class="row g-3">
+                        <div class="col-md-8">
+                            <label for="category_name" class="form-label">Название категории *</label>
+                            <input type="text" class="form-control" id="category_name" name="category[name]" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="category_position" class="form-label">Позиция</label>
+                            <input type="number" class="form-control" id="category_position" name="category[position]" value="0">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-plus-circle me-2"></i>Добавить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Форма добавления услуги -->
+            <div class="card mb-5">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Добавить услугу</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/services" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="service_category_id" class="form-label">Категория *</label>
+                                <select class="form-select" id="service_category_id" name="service[service_category_id]" required>
+                                    <option value="" selected disabled>Выберите категорию</option>
+                                    <% @service_categories.each do |category| %>
+                                        <option value="<%= category.id %>"><%= category.name %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="service_name" class="form-label">Название услуги *</label>
+                                <input type="text" class="form-control" id="service_name" name="service[name]" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="service_description" class="form-label">Описание</label>
+                                <textarea class="form-control" id="service_description" name="service[description]" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="service_price" class="form-label">Цена (руб.) *</label>
+                                <input type="number" class="form-control" id="service_price" name="service[price]" 
+                                       step="0.01" min="0" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="service_duration" class="form-label">Длительность (минут)</label>
+                                <input type="number" class="form-control" id="service_duration" 
+                                       name="service[duration_minutes]" min="0">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="bi bi-plus-circle me-2"></i>Добавить услугу
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Список категорий и услуг -->
+            <% if @service_categories.empty? %>
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Категории не добавлены
+                </div>
+            <% else %>
+                <% @service_categories.each do |category| %>
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-folder me-2"></i>
+                                <%= category.name %>
+                                <span class="badge bg-secondary ms-2"><%= category.services.count %></span>
+                            </h5>
+                            <form action="/admin/categories/<%= category.id %>/delete" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash me-1"></i>Удалить категорию
+                                </button>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <% if category.services.empty? %>
+                                <div class="alert alert-warning mb-0">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                    В этой категории нет услуг
+                                </div>
+                            <% else %>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Название</th>
+                                                <th>Описание</th>
+                                                <th>Цена</th>
+                                                <th>Длительность</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% category.services.each do |service| %>
+                                                <tr>
+                                                    <td><strong><%= service.name %></strong></td>
+                                                    <td><%= service.description %></td>
+                                                    <td>
+                                                        <%
+                                                        # Форматирование цены
+                                                        price = service.price.to_f
+                                                        formatted_price = sprintf('%.2f', price)
+                                                        formatted_price = formatted_price.gsub('.', ',')
+                                                        formatted_price = formatted_price.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1 ")
+                                                        %>
+                                                        <%= formatted_price %> ₽
+                                                    </td>
+                                                    <td>
+                                                        <% if service.duration_minutes %>
+                                                            <%= service.duration_minutes %> мин.
+                                                        <% else %>
+                                                            —
+                                                        <% end %>
+                                                    </td>
+                                                    <td>
+                                                        <form action="/admin/services/<%= service.id %>/delete" method="post" class="d-inline">
+                                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <% end %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+    </main>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Подтверждение удаления
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteForms = document.querySelectorAll('form[action*="/delete"]');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const isCategory = form.action.includes('/categories/');
+                    const message = isCategory 
+                        ? 'Вы уверены, что хотите удалить эту категорию? Все услуги в ней также будут удалены!'
+                        : 'Вы уверены, что хотите удалить эту услугу?';
+                    
+                    if (!confirm(message)) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Форматирование ввода цены
+            const priceInput = document.getElementById('service_price');
+            if (priceInput) {
+                priceInput.addEventListener('input', function(e) {
+                    let value = this.value.replace(/[^\d]/g, '');
+                    if (value.length > 2) {
+                        value = value.slice(0, -2) + '.' + value.slice(-2);
+                    }
+                    this.value = value;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

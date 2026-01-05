@@ -1,0 +1,143 @@
+<!-- Заголовок страницы -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Наши врачи</h1>
+                <p class="lead text-muted mb-0">Профессиональная команда специалистов, которые помогут вам сохранить здоровье</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Поиск и фильтры -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-3 mb-5">
+            <div class="col-md-8">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" 
+                           id="doctor-search" 
+                           class="form-control border-start-0" 
+                           placeholder="Поиск врачей по ФИО...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex gap-2">
+                    <select id="specialty-filter" class="form-select form-select-lg">
+                        <option value="">Все специальности</option>
+                        <% @specialties.each do |specialty| %>
+                            <option value="<%= specialty %>"><%= specialty %></option>
+                        <% end %>
+                    </select>
+                    <button id="reset-filters" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Список врачей -->
+        <div class="doctors-grid">
+            <div class="row g-4" id="doctors-list">
+                <% if @doctors.empty? %>
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="bi bi-people display-1 text-muted mb-3"></i>
+                            <h4 class="mb-3">Врачи не найдены</h4>
+                            <p class="text-muted">Попробуйте изменить условия поиска</p>
+                        </div>
+                    </div>
+                <% else %>
+                    <% @doctors.each do |doctor| %>
+                        <div class="col-md-6 col-lg-4 fade-in-up">
+                            <%= erb :'dynamic/_doctor_card', locals: { doctor: doctor } %>
+                        </div>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('doctor-search');
+    const specialtyFilter = document.getElementById('specialty-filter');
+    const resetBtn = document.getElementById('reset-filters');
+    const doctorsList = document.getElementById('doctors-list');
+    
+    function filterDoctors() {
+        const searchTerm = searchInput.value;
+        const specialty = specialtyFilter.value;
+        
+        fetch('/doctors/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams({
+                query: searchTerm,
+                specialty: specialty
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.html) {
+                // Обернем HTML в колонки, чтобы сохранить структуру сетки
+                let html = '';
+                if (data.count === 0) {
+                    html = '<div class="col-12"><div class="text-center py-5"><i class="bi bi-people display-1 text-muted mb-3"></i><h4 class="mb-3">Врачи не найдены</h4><p class="text-muted">Попробуйте изменить условия поиска</p></div></div>';
+                } else {
+                    // Разделим HTML на отдельные карточки и обернем каждую в колонку
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = data.html;
+                    
+                    // Если карточки уже обернуты в колонки, используем как есть
+                    if (tempDiv.querySelector('.col-md-6') || tempDiv.querySelector('.col-lg-4')) {
+                        html = data.html;
+                    } else {
+                        // Иначе обернем каждую карточку в колонку
+                        const cards = tempDiv.querySelectorAll('.doctor-card, .empty-state');
+                        cards.forEach(card => {
+                            html += '<div class="col-md-6 col-lg-4 fade-in-up">' + card.outerHTML + '</div>';
+                        });
+                    }
+                }
+                doctorsList.innerHTML = html;
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            doctorsList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Ошибка при загрузке данных</div></div>';
+        });
+    }
+    
+    // Дебаунс для поиска
+    let timeoutId;
+    function debouncedSearch() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(filterDoctors, 300);
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', debouncedSearch);
+    }
+    
+    if (specialtyFilter) {
+        specialtyFilter.addEventListener('change', filterDoctors);
+    }
+    
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            if (searchInput) searchInput.value = '';
+            if (specialtyFilter) specialtyFilter.value = '';
+            filterDoctors();
+        });
+    }
+});
+</script>

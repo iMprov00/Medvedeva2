@@ -1,0 +1,16 @@
+<!-- views/dynamic/_service_category.erb -->
+<div class="service-category" id="category-<%= category.id %>">
+    <h2 class="category-title">
+        <%= category.name %>
+    </h2>
+    
+    <div class="category-services">
+        <% if category.services.empty? %>
+            <p class="no-services">Услуги в этой категории пока не добавлены.</p>
+        <% else %>
+            <% category.services.each do |service| %>
+                <%= erb :'dynamic/_service', locals: { service: service } %>
+            <% end %>
+        <% end %>
+    </div>
+</div>

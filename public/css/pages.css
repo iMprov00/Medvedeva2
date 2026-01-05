@@ -1,0 +1,422 @@
+/* Главная страница */
+.hero {
+    background-color: var(--accent-light);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    line-height: 1.2;
+}
+
+.hero__subtitle {
+    font-size: 1.2rem;
+    color: var(--text-medium);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.features {
+    padding: 80px 0;
+}
+
+.features__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.feature-card {
+    background: var(--white);
+    padding: 32px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.feature-card__icon {
+    font-size: 2.5rem;
+    margin-bottom: 24px;
+    color: var(--secondary-accent);
+}
+
+.feature-card__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+}
+
+.feature-card__text {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.about-preview {
+    padding: 80px 0;
+    background-color: var(--accent-light);
+}
+
+.about-preview__content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-preview__content p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-medium);
+}
+
+.cta-section {
+    background-color: var(--accent-light-secondary);
+    padding: 80px 0;
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+}
+
+.cta-section p {
+    color: var(--text-medium);
+    margin-bottom: 32px;
+    font-size: 1.1rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Страница "О клинике" */
+.about-content {
+    padding: 60px 0;
+}
+
+.about-section {
+    margin-bottom: 60px;
+}
+
+.about-section h2 {
+    font-size: 1.8rem;
+    color: var(--secondary-accent);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-light);
+}
+
+.director-info {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.director-photo-placeholder {
+    height: 400px;
+    background-color: var(--accent-light);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    box-shadow: var(--box-shadow);
+}
+
+.director-details h3 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.director-title {
+    font-style: italic;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.director-details ul {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.director-details li {
+    margin-bottom: 10px;
+    color: var(--text-medium);
+    position: relative;
+}
+
+.director-details li::before {
+    content: "•";
+    color: var(--primary-accent);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.advantage {
+    background: var(--white);
+    padding: 28px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.advantage h4 {
+    color: var(--secondary-accent);
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.advantage p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Страница "Контакты" */
+.contacts-content {
+    padding: 60px 0;
+}
+
+.contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
+.contact-block {
+    margin-bottom: 32px;
+}
+
+.contact-block h3 {
+    color: var(--secondary-accent);
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.contact-block a {
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.contact-block a:hover {
+    color: var(--primary-accent);
+}
+
+.schedule-table td {
+    padding: 8px 0;
+}
+
+.schedule-table td:first-child {
+    color: var(--text-medium);
+    padding-right: 20px;
+}
+
+.schedule-table td:last-child {
+    font-weight: 500;
+}
+
+.contacts-form {
+    background: var(--white);
+    padding: 32px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.contacts-form h3 {
+    color: var(--secondary-accent);
+    margin-bottom: 24px;
+    font-size: 1.3rem;
+}
+
+.map-container {
+    margin-top: 60px;
+}
+
+.map-container h3 {
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+/* Страница "Политика конфиденциальности" */
+.privacy-section {
+    padding: 60px 0;
+}
+
+.privacy-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.privacy-content h2 {
+    color: var(--secondary-accent);
+    margin: 32px 0 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.privacy-content p {
+    margin-bottom: 20px;
+    line-height: 1.7;
+    color: var(--text-medium);
+}
+
+.privacy-content ul {
+    margin: 20px 0;
+    padding-left: 24px;
+}
+
+.privacy-content li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    color: var(--text-medium);
+    position: relative;
+}
+
+.last-updated {
+    color: var(--text-light);
+    font-style: italic;
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+}
+
+/* Страница "Документы" */
+.docs-section {
+    padding: 60px 0;
+}
+
+.docs-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Контролы для поиска */
+.doctors-controls,
+.prices-controls {
+    background: var(--accent-light);
+    padding: 24px;
+    border-radius: var(--border-radius);
+    margin-bottom: 40px;
+}
+
+.search-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 3px rgba(126, 255, 205, 0.1);
+}
+
+.search-btn {
+    padding: 14px 28px;
+    background: var(--secondary-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.search-btn:hover {
+    background: #d18cff;
+    transform: translateY(-2px);
+}
+
+.filters {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.filter-select {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--white);
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 3px rgba(126, 255, 205, 0.1);
+}
+
+.reset-btn {
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.reset-btn:hover {
+    border-color: var(--primary-accent);
+    color: var(--primary-accent);
+}
+
+/* Список врачей */
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}

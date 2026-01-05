@@ -1,0 +1,310 @@
+<!-- Заголовок страницы -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Контакты</h1>
+                <p class="lead text-muted mb-0">Мы всегда рады помочь вам и ответить на ваши вопросы</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Контактная информация -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Информация о клинике -->
+            <div class="col-lg-6">
+                <div class="mb-5">
+                    <h2 class="display-6 fw-bold mb-4">Клиника доказательной медицины<br>доктора Медведевой</h2>
+                    <p class="text-muted mb-4">
+                        Современная клиника, где ваше здоровье — наш главный приоритет. 
+                        Мы создаем комфортные условия для диагностики и лечения.
+                    </p>
+                </div>
+                
+                <!-- Контактные блоки -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start gap-3 mb-3">
+                                    <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                                        <i class="bi bi-geo-alt fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-2">Адрес</h5>
+                                        <p class="text-muted mb-0">
+                                            г. Москва, ул. Примерная, д. 10<br>
+                                            <small>Вход со стороны двора</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start gap-3 mb-3">
+                                    <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
+                                        <i class="bi bi-telephone fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-2">Телефоны</h5>
+                                        <p class="text-muted mb-0">
+                                            <a href="tel:+79991234567" class="text-decoration-none text-dark">+7 (999) 123-45-67</a><br>
+                                            <small>Основной</small><br>
+                                            <a href="tel:+79998765432" class="text-decoration-none text-dark">+7 (999) 876-54-32</a><br>
+                                            <small>Дополнительный</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start gap-3 mb-3">
+                                    <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                                        <i class="bi bi-envelope fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-2">Электронная почта</h5>
+                                        <p class="text-muted mb-0">
+                                            <a href="mailto:info@medvedeva-clinic.ru" class="text-decoration-none text-dark">info@medvedeva-clinic.ru</a><br>
+                                            <small>Общие вопросы</small><br>
+                                            <a href="mailto:appointment@medvedeva-clinic.ru" class="text-decoration-none text-dark">appointment@medvedeva-clinic.ru</a><br>
+                                            <small>Для записи</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start gap-3 mb-3">
+                                    <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
+                                        <i class="bi bi-clock fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-2">Часы работы</h5>
+                                        <div class="text-muted">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Пн-Пт</span>
+                                                <span class="fw-semibold">8:00 - 20:00</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Суббота</span>
+                                                <span class="fw-semibold">9:00 - 18:00</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Воскресенье</span>
+                                                <span class="fw-semibold">10:00 - 16:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+            
+            <!-- Форма обратной связи -->
+<!-- Форма обратной связи -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h4 mb-4">Оставить сообщение</h3>
+                        
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Ваше имя *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Телефон *</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="subject" class="form-label">Тема *</label>
+                                    <select class="form-select" id="subject" name="subject" required>
+                                        <option value="">Выберите тему</option>
+                                        <option value="Консультация">Консультация</option>
+                                        <option value="Запись на прием">Запись на прием</option>
+                                        <option value="Вопрос по услугам">Вопрос по услугам</option>
+                                        <option value="Отзыв">Отзыв</option>
+                                        <option value="Другое">Другое</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="message" class="form-label">Сообщение *</label>
+                                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="privacyContact" name="privacy_accepted" required>
+                                        <label class="form-check-label" for="privacyContact">
+                                            Я соглашаюсь с <a href="/privacy" target="_blank">политикой конфиденциальности</a> *
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-send me-2"></i>Отправить сообщение
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Карта -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-6 fw-bold mb-4 text-center">Как добраться</h2>
+                
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <!-- Карта -->
+                        <div class="position-relative">
+                            <div id="map" class="rounded-top" style="height: 400px; width: 100%;">
+                            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A3271854cc32f28ece92a708a0d6ed2a5aca19c4f85608b8da95dd56852b00d28&width=100%&height=400&lang=ru_RU&scroll=true"></script></div>
+                        </div>
+                        
+                        <!-- Инструкции -->
+                        <div class="p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold mb-3">Общественный транспорт</h5>
+                                    <div class="d-flex align-items-start gap-2 mb-2">
+                                        <i class="bi bi-subway text-primary mt-1"></i>
+                                        <div>
+                                            <div class="fw-semibold">Метро "Примерная"</div>
+                                            <small class="text-muted">5 минут пешком от выхода из метро</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="bi bi-bus-front text-primary mt-1"></i>
+                                        <div>
+                                            <div class="fw-semibold">Автобусы: 123, 456</div>
+                                            <small class="text-muted">Остановка "Клиническая"</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold mb-3">Парковка</h5>
+                                    <ul class="list-unstyled text-muted">
+                                        <li class="mb-1">✓ Бесплатная парковка во дворе</li>
+                                        <li class="mb-1">✓ 15 машиномест для пациентов</li>
+                                        <li>✓ Крытая охраняемая парковка</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Обработка формы контактов
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.textContent = 'Отправка...';
+        submitBtn.disabled = true;
+        
+        const formData = new FormData(this);
+        
+        fetch('/contacts', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                contactForm.reset();
+            } else {
+                alert('Ошибка: ' + (data.errors ? data.errors.join(', ') : data.error));
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке формы');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+}
+    
+    // Маска для телефона (оставляем как было)
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            
+            if (value.length > 0) {
+                value = '+7 ' + value;
+                
+                if (value.length > 6) {
+                    value = value.slice(0, 6) + ' (' + value.slice(6);
+                }
+                if (value.length > 11) {
+                    value = value.slice(0, 11) + ') ' + value.slice(11);
+                }
+                if (value.length > 16) {
+                    value = value.slice(0, 16) + '-' + value.slice(16);
+                }
+                if (value.length > 19) {
+                    value = value.slice(0, 19) + '-' + value.slice(19);
+                }
+            }
+            
+            this.value = value;
+        });
+    }
+});
+</script>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сообщения и записи - Админка - Клиника доктора Медведевой</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            width: 200px;
+        }
+        .main-content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .nav-link.active {
+            background-color: #e5a7ff;
+            color: white !important;
+        }
+        .status-new {
+            background-color: rgba(255, 87, 87, 0.1) !important;
+        }
+        .status-read {
+            background-color: rgba(87, 255, 87, 0.1) !important;
+        }
+        .btn-primary {
+            background-color: #e5a7ff;
+            border-color: #e5a7ff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #d18cff;
+            border-color: #d18cff;
+        }
+        .badge-new {
+            background-color: #ff5757;
+            color: white;
+        }
+        .badge-read {
+            background-color: #57ff57;
+            color: white;
+        }
+        .badge-replied {
+            background-color: #5787ff;
+            color: white;
+        }
+        .badge-confirmed {
+            background-color: #57ff57;
+            color: white;
+        }
+        .badge-cancelled {
+            background-color: #ff5757;
+            color: white;
+        }
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="sidebar d-md-block bg-dark text-white">
+        <div class="sidebar-sticky pt-3">
+            <h6 class="sidebar-heading px-3 mb-3">
+                <span>Админ-панель</span>
+            </h6>
+            
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link text-white active" href="/admin/messages">
+                        <i class="bi bi-chat-left-text me-2"></i>
+                        Сообщения и записи
+                        <% unread_count = (Message.where(status: 'new').count + Appointment.where(status: 'new').count) %>
+                        <% if unread_count > 0 %>
+                            <span class="badge bg-danger float-end"><%= unread_count %></span>
+                        <% end %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/doctors">
+                        <i class="bi bi-people me-2"></i>
+                        Врачи
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/prices">
+                        <i class="bi bi-currency-dollar me-2"></i>
+                        Услуги и цены
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/specialties">
+                        <i class="bi bi-tags me-2"></i>
+                        Специальности
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a class="nav-link text-white" href="/">
+                        <i class="bi bi-house me-2"></i>
+                        На сайт
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/logout">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Выйти
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <h1 class="h2 mb-4">Сообщения и записи</h1>
+            
+            <!-- Поиск и фильтры -->
+            <div class="search-container mb-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" 
+                                   id="searchInput" 
+                                   class="form-control" 
+                                   placeholder="Поиск по имени, телефону, email...">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="typeFilter" class="form-select">
+                            <option value="all">Все типы</option>
+                            <option value="messages">Сообщения</option>
+                            <option value="appointments">Записи</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="statusFilter" class="form-select">
+                            <option value="all">Все статусы</option>
+                            <option value="new">Новые</option>
+                            <option value="read">Просмотренные</option>
+                            <option value="confirmed">Подтвержденные</option>
+                            <option value="replied">Ответ отправлен</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Таблицы -->
+            <div id="messages-section">
+                <!-- Сообщения -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-envelope me-2"></i>Сообщения
+                            <span class="badge bg-primary ms-2"><%= @messages.count %></span>
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <% if @messages.empty? %>
+                            <div class="p-4 text-center text-muted">
+                                <i class="bi bi-envelope display-4 mb-3"></i>
+                                <p class="mb-0">Сообщений пока нет</p>
+                            </div>
+                        <% else %>
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="50">Статус</th>
+                                            <th width="150">Дата</th>
+                                            <th>Имя</th>
+                                            <th>Телефон</th>
+                                            <th>Email</th>
+                                            <th>Тема</th>
+                                            <th width="120">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="messagesTable">
+                                        <% @messages.each do |message| %>
+                                            <tr class="status-<%= message.status %>" data-type="message" data-search="<%= "#{message.name} #{message.phone} #{message.email} #{message.subject} #{message.message}" %>">
+                                                <td>
+                                                    <span class="badge badge-<%= message.status %>">
+                                                        <%= message.status_text %>
+                                                    </span>
+                                                </td>
+                                                <td><%= message.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+                                                <td><strong><%= message.name %></strong></td>
+                                                <td><%= message.phone %></td>
+                                                <td><%= message.email %></td>
+                                                <td><%= message.subject %></td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button type="button" 
+                                                                class="btn btn-outline-primary"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#messageModal<%= message.id %>">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                        <% if message.new? %>
+
+                                                        <% end %>
+                                                        <form action="/admin/messages/<%= message.id %>/delete" method="post" class="d-inline">
+                                                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Удалить это сообщение?')">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% end %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+                
+                <!-- Записи на прием -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-calendar-check me-2"></i>Записи на прием
+                            <span class="badge bg-primary ms-2"><%= @appointments.count %></span>
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <% if @appointments.empty? %>
+                            <div class="p-4 text-center text-muted">
+                                <i class="bi bi-calendar display-4 mb-3"></i>
+                                <p class="mb-0">Записей пока нет</p>
+                            </div>
+                        <% else %>
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="50">Статус</th>
+                                            <th width="150">Дата</th>
+                                            <th>Пациент</th>
+                                            <th>Телефон</th>
+                                            <th>Email</th>
+                                            <th>Врач</th>
+                                            <th>Специальность</th>
+                                            <th width="150">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointmentsTable">
+                                        <% @appointments.each do |appointment| %>
+<tr class="status-<%= appointment.status %>" data-type="appointment" data-search="<%= "#{appointment.patient_name} #{appointment.phone} #{appointment.email} #{appointment.doctor&.full_name} #{appointment.specialty&.name || ''} #{appointment.message}" %>">
+                                                <td>
+                                                    <span class="badge badge-<%= appointment.status %>">
+                                                        <%= appointment.status_text %>
+                                                    </span>
+                                                </td>
+                                                <td><%= appointment.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+                                                <td><strong><%= appointment.patient_name %></strong></td>
+                                                <td><%= appointment.phone %></td>
+                                                <td><%= appointment.email %></td>
+                                                <td>
+                                                    <% if appointment.doctor %>
+                                                        <%= appointment.doctor.full_name %>
+                                                    <% else %>
+                                                        <span class="text-muted">Любой врач</span>
+                                                    <% end %>
+                                                </td>
+                                                    <td>
+                                                        <% if appointment.specialty %>
+                                                            <%= appointment.specialty.name %>
+                                                        <% else %>
+                                                            <span class="text-muted">Не указана</span>
+                                                        <% end %>
+                                                    </td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button type="button" 
+                                                                class="btn btn-outline-primary"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#appointmentModal<%= appointment.id %>">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                        <% if appointment.new? %>
+
+                                                        <% end %>
+                                                        <form action="/admin/appointments/<%= appointment.id %>/delete" method="post" class="d-inline">
+                                                            <button type="submit" class="btn btn-outline-dark" onclick="return confirm('Удалить эту запись?')">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% end %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Модальные окна для сообщений -->
+    <% @messages.each do |message| %>
+        <div class="modal fade" id="messageModal<%= message.id %>" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Сообщение от <%= message.name %></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Дата:</dt>
+                            <dd class="col-sm-9"><%= message.created_at.strftime('%d.%m.%Y %H:%M') %></dd>
+                            
+                            <dt class="col-sm-3">Имя:</dt>
+                            <dd class="col-sm-9"><%= message.name %></dd>
+                            
+                            <dt class="col-sm-3">Телефон:</dt>
+                            <dd class="col-sm-9"><%= message.phone %></dd>
+                            
+                            <dt class="col-sm-3">Email:</dt>
+                            <dd class="col-sm-9"><%= message.email %></dd>
+                            
+                            <dt class="col-sm-3">Тема:</dt>
+                            <dd class="col-sm-9"><%= message.subject %></dd>
+                            
+                            <dt class="col-sm-3">Сообщение:</dt>
+                            <dd class="col-sm-9">
+                                <div class="border p-3 rounded bg-light">
+                                    <%= message.message.gsub("\n", '<br>') %>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="modal-footer">
+
+                        <% if message.new? %>
+                            <form action="/admin/messages/<%= message.id %>/mark-replied" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle me-2"></i>Отметить как "Ответ отправлен"
+                                </button>
+                            </form>
+                        <% end %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% end %>
+    
+    <!-- Модальные окна для записей -->
+    <% @appointments.each do |appointment| %>
+        <div class="modal fade" id="appointmentModal<%= appointment.id %>" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Запись на прием от <%= appointment.patient_name %></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Дата записи:</dt>
+                            <dd class="col-sm-9"><%= appointment.created_at.strftime('%d.%m.%Y %H:%M') %></dd>
+                            
+                            <dt class="col-sm-3">ФИО пациента:</dt>
+                            <dd class="col-sm-9"><strong><%= appointment.patient_name %></strong></dd>
+                            
+                            <dt class="col-sm-3">Дата рождения:</dt>
+                            <dd class="col-sm-9"><%= appointment.birth_date.strftime('%d.%m.%Y') %></dd>
+                            
+                            <dt class="col-sm-3">Телефон:</dt>
+                            <dd class="col-sm-9"><%= appointment.phone %></dd>
+                            
+                            <dt class="col-sm-3">Email:</dt>
+                            <dd class="col-sm-9"><%= appointment.email %></dd>
+                            
+                            <dt class="col-sm-3">Врач:</dt>
+                            <dd class="col-sm-9">
+                                <% if appointment.doctor %>
+                                    <strong><%= appointment.doctor.full_name %></strong>
+                                <% else %>
+                                    <span class="text-muted">Любой врач</span>
+                                <% end %>
+                            </dd>
+                            
+                            <dt class="col-sm-3">Специальности:</dt>
+                            <dd class="col-sm-9">
+                                <% if appointment.specialty %>
+                                    <%= appointment.specialty.name %>
+                                <% else %>
+                                    <span class="text-muted">Не указана</span>
+                                <% end %>
+                            </dd>
+                            
+                            <% if appointment.message.present? %>
+                                <dt class="col-sm-3">Доп. сообщение:</dt>
+                                <dd class="col-sm-9">
+                                    <div class="border p-3 rounded bg-light">
+                                        <%= appointment.message.gsub("\n", '<br>') %>
+                                    </div>
+                                </dd>
+                            <% end %>
+                        </dl>
+                    </div>
+                    <div class="modal-footer">
+
+                        <% if appointment.new? %>
+                            <form action="/admin/appointments/<%= appointment.id %>/confirm" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle me-2"></i>Подтвердить запись
+                                </button>
+                            </form>
+                        <% end %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% end %>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const typeFilter = document.getElementById('typeFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const messagesTable = document.getElementById('messagesTable');
+            const appointmentsTable = document.getElementById('appointmentsTable');
+            
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedType = typeFilter.value;
+                const selectedStatus = statusFilter.value;
+                
+                // Фильтрация сообщений
+                if (messagesTable) {
+                    const messageRows = messagesTable.querySelectorAll('tr');
+                    messageRows.forEach(row => {
+                        const typeMatch = selectedType === 'all' || selectedType === 'messages';
+                        const statusMatch = selectedStatus === 'all' || 
+                                           (selectedStatus === 'new' && row.classList.contains('status-new')) ||
+                                           (selectedStatus === 'read' && row.classList.contains('status-read')) ||
+                                           (selectedStatus === 'replied' && row.classList.contains('status-replied'));
+                        const searchMatch = row.dataset.search.toLowerCase().includes(searchTerm);
+                        
+                        row.style.display = (typeMatch && statusMatch && searchMatch) ? '' : 'none';
+                    });
+                }
+                
+                // Фильтрация записей
+                if (appointmentsTable) {
+                    const appointmentRows = appointmentsTable.querySelectorAll('tr');
+                    appointmentRows.forEach(row => {
+                        const typeMatch = selectedType === 'all' || selectedType === 'appointments';
+                        const statusMatch = selectedStatus === 'all' || 
+                                           (selectedStatus === 'new' && row.classList.contains('status-new')) ||
+                                           (selectedStatus === 'confirmed' && row.classList.contains('status-confirmed')) ||
+                                           (selectedStatus === 'cancelled' && row.classList.contains('status-cancelled'));
+                        const searchMatch = row.dataset.search.toLowerCase().includes(searchTerm);
+                        
+                        row.style.display = (typeMatch && statusMatch && searchMatch) ? '' : 'none';
+                    });
+                }
+            }
+            
+            // Дебаунс поиска
+            let timeoutId;
+            function debouncedSearch() {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(filterTable, 300);
+            }
+            
+            searchInput.addEventListener('input', debouncedSearch);
+            typeFilter.addEventListener('change', filterTable);
+            statusFilter.addEventListener('change', filterTable);
+            
+            // Подсветка новых записей
+            document.querySelectorAll('.status-new').forEach(row => {
+                row.style.backgroundColor = 'rgba(255, 87, 87, 0.05)';
+            });
+        });
+        
+        // Подтверждение действий
+        function confirmAction(message) {
+            return confirm(message || 'Вы уверены?');
+        }
+    </script>
+</body>
+</html>

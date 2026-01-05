@@ -1,0 +1,53 @@
+<div class="card doctor-card shadow-sm border-0 h-100">
+    <div class="position-relative">
+        <% if doctor.photo_path && !doctor.photo_path.empty? %>
+            <img src="<%= doctor.photo_path %>" 
+                 class="card-img-top" 
+                 alt="Доктор <%= doctor.full_name %>"
+                 style="height: 280px; object-fit: cover;">
+        <% else %>
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                 style="height: 280px;">
+                <i class="bi bi-person-circle display-1 text-muted"></i>
+            </div>
+        <% end %>
+        <% if doctor.experience_years && doctor.experience_years > 0 %>
+            <span class="position-absolute top-0 end-0 m-3 badge bg-primary rounded-pill">
+                Опыт <%= doctor.experience_text %>
+            </span>
+        <% end %>
+    </div>
+    
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title fw-bold mb-2"><%= doctor.full_name %></h5>
+        
+        <div class="mb-3">
+            <% if doctor.specialties.any? %>
+                <% doctor.specialties.each do |specialty| %>
+                    <span class="badge bg-secondary-light text-primary mb-2 me-1">
+                        <%= specialty.name %>
+                    </span>
+                <% end %>
+            <% else %>
+                <span class="badge bg-secondary-light text-primary mb-2">
+                    Специалист
+                </span>
+            <% end %>
+        </div>
+        
+        <p class="card-text text-muted flex-grow-1 mb-4">
+            <%= doctor.bio.to_s.truncate(120) %>
+        </p>
+        
+        <div class="mt-auto">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="#" 
+                   class="btn btn-primary btn-sm btn-appointment" 
+                   data-doctor-id="<%= doctor.id %>" 
+                   data-doctor-name="<%= doctor.full_name %>">
+                  <i class="bi bi-calendar-check me-1"></i>Запись
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

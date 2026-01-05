@@ -1,0 +1,18 @@
+<!-- views/dynamic/_service.erb -->
+<div class="service-item" data-category="<%= service.service_category.name.downcase %>">
+    <div class="service-header">
+        <h4 class="service-name"><%= service.name %></h4>
+        <div class="service-price"><%= number_to_currency(service.price, unit: '₽', format: '%n %u') %></div>
+    </div>
+    
+    <% if service.description.present? %>
+        <p class="service-description"><%= service.description %></p>
+    <% end %>
+    
+    <div class="service-footer">
+        <% if service.duration_minutes %>
+            <span class="service-duration">⏱️ <%= service.duration_minutes %> мин.</span>
+        <% end %>
+        <span class="service-category-tag"><%= service.service_category.name %></span>
+    </div>
+</div>
