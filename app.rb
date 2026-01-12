@@ -60,6 +60,11 @@ get '/doctors' do
   erb :'dynamic/doctors'
 end
 
+get '/prices' do
+  @service_categories = ServiceCategory.includes(:services).order(:position).all
+  erb :'pages/prices'
+end
+
 # AJAX поиск врачей
 post '/doctors/search' do
   content_type :json

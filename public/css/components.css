@@ -124,3 +124,56 @@
         margin-bottom: 1.5rem;
     }
 }
+
+
+/* Стили для страницы услуг */
+.category-section {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Анимация строк таблицы */
+.service-row {
+    transition: all 0.2s ease;
+}
+
+.service-row:hover {
+    background-color: rgba(229, 167, 255, 0.05) !important;
+    transform: translateX(5px);
+}
+
+/* Стили для иконок */
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+}
+
+.icon-wrapper-primary {
+    background-color: rgba(126, 255, 205, 0.15);
+    color: var(--bs-primary);
+}
+
+.icon-wrapper-secondary {
+    background-color: rgba(229, 167, 255, 0.15);
+    color: var(--bs-secondary);
+}
+
+/* Адаптивная таблица */
+@media (max-width: 768px) {
+    .table-responsive table {
+        font-size: 0.9rem;
+    }
+    
+    .table-responsive th,
+    .table-responsive td {
+        padding: 0.75rem 0.5rem;
+    }
+}

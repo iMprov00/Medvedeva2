@@ -1,0 +1,364 @@
+<!-- Заголовок страницы -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Услуги и цены</h1>
+                <p class="lead text-muted mb-0">Полный перечень медицинских услуг и их стоимость</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Поиск и фильтры -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-5">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4"><i class="bi bi-search me-2"></i>Поиск услуг</h5>
+                        <form id="serviceSearchForm">
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="bi bi-search text-muted"></i>
+                                        </span>
+                                        <input type="text" 
+                                               class="form-control border-start-0" 
+                                               id="serviceSearchInput" 
+                                               placeholder="Найти услугу по названию или описанию...">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" id="serviceCategorySelect">
+                                        <option value="">Все категории</option>
+                                        <% @service_categories.each do |category| %>
+                                            <option value="<%= category.id %>"><%= category.name %></option>
+                                        <% end %>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="mt-3 text-end">
+                            <small class="text-muted">
+                                <span id="servicesCount"><%= Service.count %></span> услуг
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Результаты поиска -->
+        <div id="searchResults" class="row">
+            <% if @service_categories.empty? %>
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="bi bi-clipboard-x display-1 text-muted mb-3"></i>
+                        <h4 class="fw-bold mb-3">Услуги временно недоступны</h4>
+                        <p class="text-muted">Мы обновляем прейскурант. Пожалуйста, проверьте позже или свяжитесь с нами.</p>
+                        <a href="/contacts" class="btn btn-primary mt-3">
+                            <i class="bi bi-telephone me-2"></i>Связаться с клиникой
+                        </a>
+                    </div>
+                </div>
+            <% else %>
+                <!-- Категории услуг -->
+                <% @service_categories.each do |category| %>
+                    <% unless category.services.empty? %>
+                        <div class="col-12 mb-5">
+                            <div class="category-section" data-category-id="<%= category.id %>">
+                                <div class="d-flex align-items-center mb-4">
+                                    <div class="icon-wrapper icon-wrapper-primary me-3">
+                                        <i class="bi bi-folder fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="fw-bold mb-1"><%= category.name %></h2>
+                                        <p class="text-muted mb-0">
+                                            <%= category.services.count %> 
+                                            <%= russian_plural(category.services.count, 'услуга', 'услуги', 'услуг') %>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="bg-secondary-light">
+                                            <tr>
+                                                <th width="40%">Услуга</th>
+                                                <th width="40%">Описание</th>
+                                                <th width="10%" class="text-center">Длительность</th>
+                                                <th width="10%" class="text-end">Цена</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% category.services.each do |service| %>
+                                                <tr class="service-row" 
+                                                    data-name="<%= service.name.downcase %>"
+                                                    data-description="<%= service.description.to_s.downcase %>"
+                                                    data-category="<%= category.id %>">
+                                                    <td>
+                                                        <div class="fw-bold text-primary">
+                                                            <%= service.name %>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <% if service.description.present? %>
+                                                            <div class="text-muted small">
+                                                                <%= service.description %>
+                                                            </div>
+                                                        <% else %>
+                                                            <span class="text-muted fst-italic">Описание отсутствует</span>
+                                                        <% end %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <% if service.duration_minutes.present? %>
+                                                            <span class="badge bg-accent-light text-dark">
+                                                                <%= service.duration_minutes %> мин.
+                                                            </span>
+                                                        <% else %>
+                                                            <span class="text-muted">—</span>
+                                                        <% end %>
+                                                    </td>
+                                                    <td class="text-end fw-bold">
+                                                        <%= number_to_currency(service.price) %>
+                                                    </td>
+                                                </tr>
+                                            <% end %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                <% end %>
+            <% end %>
+        </div>
+
+        <!-- Сообщение о пустом поиске -->
+        <div id="noResultsMessage" class="text-center py-5 d-none">
+            <i class="bi bi-search display-1 text-muted mb-3"></i>
+            <h4 class="fw-bold mb-3">Услуги не найдены</h4>
+            <p class="text-muted">Попробуйте изменить условия поиска</p>
+            <button id="clearSearchBtn" class="btn btn-outline-primary mt-3">
+                <i class="bi bi-arrow-clockwise me-2"></i>Сбросить поиск
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Прозрачность цен -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="display-6 fw-bold mb-4">Прозрачность цен</h2>
+                <p class="text-muted mb-4">
+                    Мы придерживаемся принципа честного ценообразования. В стоимость услуг уже включены все необходимые манипуляции и расходные материалы.
+                </p>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                                <i class="bi bi-receipt"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Честные цены</h5>
+                                <p class="text-muted small mb-0">Никаких скрытых платежей и дополнительных сборов</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Рассрочка</h5>
+                                <p class="text-muted small mb-0">Возможность оплаты услуг в рассрочку</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Гарантия качества</h5>
+                                <p class="text-muted small mb-0">Все услуги соответствуют международным стандартам</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Любой способ оплаты</h5>
+                                <p class="text-muted small mb-0">Наличные, карты, банковский перевод</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-5">
+                        <h4 class="fw-bold mb-4">Важная информация</h4>
+                        <div class="alert alert-info border-0 bg-accent-light">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Окончательная стоимость может незначительно отличаться в зависимости от индивидуальных особенностей пациента и сложности случая.
+                        </div>
+                        <ul class="list-unstyled text-muted mb-4">
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Первичная консультация врача может быть бесплатной при дальнейшем лечении
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Возможны скидки при комплексном лечении
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Для льготных категорий граждан предоставляются специальные условия
+                            </li>
+                        </ul>
+                        <div class="d-grid">
+                            <a href="/contacts" class="btn btn-primary">
+                                <i class="bi bi-calendar-check me-2"></i>Записаться на консультацию
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Дополнительная информация -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="p-5 bg-secondary-light rounded-4">
+                    <h3 class="fw-bold mb-4">Остались вопросы по услугам?</h3>
+                    <p class="text-muted mb-4">
+                        Наши администраторы помогут вам подобрать подходящую услугу, 
+                        рассчитать точную стоимость и записаться на прием к специалисту.
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="/contacts" class="btn btn-primary btn-lg px-4">
+                            <i class="bi bi-envelope me-2"></i>Написать нам
+                        </a>
+                        <a href="tel:+79991234567" class="btn btn-outline-primary btn-lg px-4">
+                            <i class="bi bi-telephone me-2"></i>+7 (999) 123-45-67
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('serviceSearchInput');
+    const categorySelect = document.getElementById('serviceCategorySelect');
+    const serviceRows = document.querySelectorAll('.service-row');
+    const categorySections = document.querySelectorAll('.category-section');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const servicesCount = document.getElementById('servicesCount');
+
+    // Функция поиска
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const selectedCategory = categorySelect.value;
+        let visibleCount = 0;
+        let visibleCategories = 0;
+
+        // Сначала скрываем все строки
+        serviceRows.forEach(row => {
+            row.style.display = 'none';
+        });
+
+        // Сначала скрываем все категории
+        categorySections.forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Фильтрация
+        serviceRows.forEach(row => {
+            const name = row.getAttribute('data-name');
+            const description = row.getAttribute('data-description');
+            const category = row.getAttribute('data-category');
+            
+            const matchesSearch = !searchTerm || 
+                                 name.includes(searchTerm) || 
+                                 description.includes(searchTerm);
+            const matchesCategory = !selectedCategory || category === selectedCategory;
+
+            if (matchesSearch && matchesCategory) {
+                row.style.display = '';
+                visibleCount++;
+                
+                // Показываем родительскую категорию
+                const categorySection = row.closest('.category-section');
+                if (categorySection) {
+                    categorySection.style.display = 'block';
+                }
+            }
+        });
+
+        // Обновляем счетчик
+        servicesCount.textContent = visibleCount;
+
+        // Показываем/скрываем сообщение об отсутствии результатов
+        if (visibleCount === 0) {
+            noResultsMessage.classList.remove('d-none');
+        } else {
+            noResultsMessage.classList.add('d-none');
+        }
+
+        // Подсчитываем видимые категории
+        categorySections.forEach(section => {
+            const visibleRows = section.querySelectorAll('.service-row[style=""]');
+            if (visibleRows.length > 0) {
+                visibleCategories++;
+            }
+        });
+
+        // Если выбрана категория, показываем только её
+        if (selectedCategory) {
+            categorySections.forEach(section => {
+                const sectionId = section.getAttribute('data-category-id');
+                const visibleRows = section.querySelectorAll('.service-row[style=""]');
+                
+                if (sectionId === selectedCategory && visibleRows.length > 0) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    // События
+    searchInput.addEventListener('input', performSearch);
+    categorySelect.addEventListener('change', performSearch);
+
+    // Кнопка сброса поиска
+    clearSearchBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        categorySelect.value = '';
+        performSearch();
+    });
+
+    // Сохраняем оригинальный счетчик
+    const originalCount = servicesCount.textContent;
+});
+</script>
