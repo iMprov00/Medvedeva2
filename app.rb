@@ -6,11 +6,15 @@ require 'sqlite3'
 configure :production do
   set :port, 4567
   set :bind, '0.0.0.0'
+  # ВАЖНО: Добавляем эту строку для разрешения запросов от Nginx
+  set :protection, :except => [:remote_token, :frame_options, :json_csrf]
 end
 
 configure :development do
   set :port, 4567
   set :bind, '0.0.0.0'
+  # Можно добавить и сюда для тестов
+  set :protection, :except => [:remote_token, :frame_options, :json_csrf]
 end
 
 # Загружаем модели
