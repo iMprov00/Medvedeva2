@@ -3,10 +3,10 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sqlite3'
 
-configure do
-  set :port, ENV['PORT'] || 9292 # Использует порт от Amvera или 9292 для локальной разработки
-  set :bind, '0.0.0.0'
-end
+# configure do
+#   set :port, ENV['PORT'] || 9292 # Использует порт от Amvera или 9292 для локальной разработки
+#   set :bind, '0.0.0.0'
+# end
 
 # Загружаем модели
 Dir[File.join(__dir__, 'models', '*.rb')].each { |file| require file }
