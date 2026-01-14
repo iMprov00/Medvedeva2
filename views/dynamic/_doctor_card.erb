@@ -1,18 +1,39 @@
+<!-- views/dynamic/_doctor_card.erb -->
+<% 
+  # Получаем индекс врача из локальной переменной или генерируем
+  doctor_index = defined?(index) ? index : 0
+  bg_color = doctor_bg_color(doctor_index)
+  bg_class = doctor_bg_class(doctor_index)
+%>
+
 <div class="card doctor-card shadow-sm border-0 h-100">
-    <div class="position-relative">
-        <% if doctor.photo_path && !doctor.photo_path.empty? %>
-            <img src="<%= doctor.photo_path %>" 
-                 class="card-img-top" 
-                 alt="Доктор <%= doctor.full_name %>"
-                 style="height: 280px; object-fit: cover;">
+    <div class="position-relative doctor-photo-container <%= bg_class %>">
+        <% if doctor.photo_present? && doctor.png_photo? %>
+            <!-- Для PNG с прозрачным фоном -->
+            <div class="doctor-photo-wrapper" style="height: 280px; background-color: <%= bg_color %>;">
+                <img src="<%= doctor.photo_url %>" 
+                     class="doctor-photo" 
+                     alt="Доктор <%= doctor.full_name %>"
+                     style="max-height: 100%; max-width: 100%; object-fit: contain;">
+            </div>
+        <% elsif doctor.photo_present? %>
+            <!-- Для других форматов изображений -->
+            <div class="doctor-photo-wrapper" style="height: 280px; background-color: <%= bg_color %>;">
+                <img src="<%= doctor.photo_url %>" 
+                     class="doctor-photo" 
+                     alt="Доктор <%= doctor.full_name %>"
+                     style="height: 100%; width: 100%; object-fit: cover;">
+            </div>
         <% else %>
-            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+            <!-- Заглушка если фото нет -->
+            <div class="card-img-top d-flex align-items-center justify-content-center <%= bg_class %>" 
                  style="height: 280px;">
-                <i class="bi bi-person-circle display-1 text-muted"></i>
+                <i class="bi bi-person-circle display-1 text-white"></i>
             </div>
         <% end %>
+        
         <% if doctor.experience_years && doctor.experience_years > 0 %>
-            <span class="position-absolute top-0 end-0 m-3 badge bg-primary rounded-pill">
+            <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary rounded-pill shadow-sm">
                 Опыт <%= doctor.experience_text %>
             </span>
         <% end %>

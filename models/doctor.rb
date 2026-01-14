@@ -56,4 +56,27 @@ class Doctor < ActiveRecord::Base
   def specialties_text
     specialties.pluck(:name).join(', ')
   end
+
+  def photo_present?
+    photo_path.present? && File.exist?("public#{photo_path}")
+  end
+  
+  def photo_url
+    if photo_present?
+      photo_path
+    else
+      # Заглушка или дефолтное фото
+      "/images/doctors/default.png"
+    end
+  end
+  
+  def photo_extension
+    return unless photo_path
+    File.extname(photo_path).downcase
+  end
+  
+  def png_photo?
+    photo_extension == '.png'
+  end
+  
 end

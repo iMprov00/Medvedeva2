@@ -177,3 +177,37 @@
         padding: 0.75rem 0.5rem;
     }
 }
+
+
+
+/* Фоны для фото врачей */
+.bg-doctor-0 {
+    background-color: #77e0b2;
+}
+
+.bg-doctor-1 {
+    background-color: #e5a7ff;
+}
+
+/* Стили для контейнера с фото врача */
+.doctor-photo-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.doctor-photo-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px;
+}
+
+.doctor-photo {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.doctor-photo:hover {
+    transform: translateY(-5px);
+}
