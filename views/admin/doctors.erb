@@ -67,6 +67,40 @@
         .card:hover {
             transform: translateY(-2px);
         }
+        /* Стили для превью фото с фоном */
+        .photo-preview-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .photo-preview {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .photo-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #77e0b2 50%, #e5a7ff 50%);
+            opacity: 0.7;
+        }
+        .bg-preview-0 {
+            background-color: #77e0b2 !important;
+        }
+        .bg-preview-1 {
+            background-color: #e5a7ff !important;
+        }
     </style>
 </head>
 <body>
@@ -187,15 +221,20 @@
                                 </div>
                                 
                                 <div class="col-12 mt-3">
-                                    <label for="photo" class="form-label">Фотография врача</label>
+                                    <label for="photo" class="form-label">Фотография врача (PNG)</label>
                                     <div class="file-upload-container">
                                         <div class="file-upload-preview mb-3 text-center">
-                                            <img id="photo-preview" src="https://via.placeholder.com/300x300?text=Выберите+фото" 
-                                                 alt="Предпросмотр фото" 
-                                                 class="img-thumbnail" 
-                                                 style="max-width: 300px; max-height: 300px; cursor: pointer;">
+                                            <div class="photo-preview-container" onclick="document.getElementById('photo').click()" id="preview-container">
+                                                <div class="photo-background" id="preview-bg"></div>
+                                                <img id="photo-preview" 
+                                                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' font-family='Arial' font-size='14' fill='%236c757d'%3EВыберите фото (PNG)%3C/text%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='Arial' font-size='12' fill='%23999'%3EС прозрачным фоном%3C/text%3E%3C/svg%3E" 
+                                                     alt="Предпросмотр фото" 
+                                                     class="photo-preview">
+                                            </div>
                                             <div class="mt-2">
-                                                <small class="text-muted">Рекомендуемый размер: 300x300 px</small>
+                                                <small class="text-muted">Рекомендуется PNG с прозрачным фоном (300x300 пикселей)</small>
+                                                <br>
+                                                <small class="text-muted">На сайте будет применен цветной фон</small>
                                             </div>
                                         </div>
                                         <div class="input-group">
@@ -203,11 +242,11 @@
                                                    class="form-control" 
                                                    id="photo" 
                                                    name="photo" 
-                                                   accept="image/jpeg,image/jpg" 
+                                                   accept="image/png" 
                                                    style="display: none;"
                                                    onchange="previewPhoto(this)">
                                             <button type="button" class="btn btn-outline-secondary w-100" onclick="document.getElementById('photo').click()">
-                                                <i class="bi bi-camera me-2"></i>Выбрать фотографию (JPG)
+                                                <i class="bi bi-camera me-2"></i>Выбрать фотографию (PNG)
                                             </button>
                                         </div>
                                         <input type="hidden" id="photo_path" name="doctor[photo_path]">
@@ -226,6 +265,9 @@
                                 <div class="form-text">
                                     <i class="bi bi-info-circle me-1"></i>
                                     Поля отмеченные * обязательны для заполнения
+                                    <br>
+                                    <i class="bi bi-lightbulb me-1"></i>
+                                    Используйте PNG с прозрачным фоном для лучшего отображения
                                 </div>
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-plus-circle me-2"></i>Добавить врача
@@ -250,22 +292,22 @@
                     </div>
                 <% else %>
                     <div class="row">
-                        <% @doctors.each do |doctor| %>
+                        <% @doctors.each_with_index do |doctor, index| %>
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card h-100">
                                     <div class="card-body">
+                                        <!-- Превью фото с чередующимся фоном -->
                                         <div class="text-center mb-3">
-                                            <% if doctor.photo_path %>
-                                                <img src="<%= doctor.photo_path %>" 
-                                                     alt="<%= doctor.full_name %>" 
-                                                     class="img-fluid rounded-circle" 
-                                                     style="width: 150px; height: 150px; object-fit: cover;">
-                                            <% else %>
-                                                <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center" 
-                                                     style="width: 150px; height: 150px;">
+                                            <div class="photo-preview-container mx-auto" style="width: 200px; height: 200px;">
+                                                <div class="photo-background <%= "bg-preview-#{index % 2}" %>"></div>
+                                                <% if doctor.photo_path %>
+                                                    <img src="<%= doctor.photo_path %>" 
+                                                         alt="<%= doctor.full_name %>" 
+                                                         class="photo-preview">
+                                                <% else %>
                                                     <i class="bi bi-person display-4 text-muted"></i>
-                                                </div>
-                                            <% end %>
+                                                <% end %>
+                                            </div>
                                         </div>
                                         <h5 class="card-title text-center"><%= doctor.full_name %></h5>
                                         <h6 class="card-subtitle mb-3 text-center text-muted">
@@ -278,6 +320,14 @@
                                             </small>
                                         </p>
                                         <p class="card-text text-truncate"><%= doctor.bio.truncate(100) %></p>
+                                        <% if doctor.photo_path %>
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    <i class="bi bi-image me-1"></i>
+                                                    <%= File.extname(doctor.photo_path).upcase %>
+                                                </small>
+                                            </p>
+                                        <% end %>
                                     </div>
                                     <div class="card-footer bg-transparent">
                                         <form action="/admin/doctors/<%= doctor.id %>/delete" method="post" class="d-inline">
@@ -330,8 +380,46 @@
                     alert('Биография должна содержать не менее 10 символов.');
                     return false;
                 }
+                
+                // Проверка файла (необязательная)
+                const photoInput = document.getElementById('photo');
+                if (photoInput.files.length > 0) {
+                    const file = photoInput.files[0];
+                    // Проверка формата
+                    if (!file.type.match('image/png')) {
+                        e.preventDefault();
+                        alert('Пожалуйста, выберите файл в формате PNG.');
+                        return false;
+                    }
+                    // Проверка размера
+                    if (file.size > 5 * 1024 * 1024) {
+                        e.preventDefault();
+                        alert('Файл слишком большой. Максимальный размер - 5MB.');
+                        return false;
+                    }
+                }
+                
+                // Генерация пути для фото, если файл выбран
+                const photoPathInput = document.getElementById('photo_path');
+                if (photoInput.files.length > 0 && !photoPathInput.value) {
+                    const lastName = document.getElementById('last_name').value.trim().toLowerCase().replace(/\s+/g, '_');
+                    const firstName = document.getElementById('first_name').value.trim().toLowerCase().replace(/\s+/g, '_');
+                    const timestamp = new Date().getTime();
+                    
+                    let fileName;
+                    if (lastName && firstName) {
+                        fileName = `doctor_${lastName}_${firstName}_${timestamp}.png`;
+                    } else {
+                        fileName = `doctor_${timestamp}.png`;
+                    }
+                    
+                    photoPathInput.value = `/images/doctors/${fileName}`;
+                }
             });
         }
+        
+        // Инициализация чередующегося фона для превью
+        updatePreviewBackground();
     });
     
     // Предпросмотр фотографии
@@ -341,8 +429,8 @@
             const file = input.files[0];
             
             // Проверка формата файла
-            if (!file.type.match('image/jpeg') && !file.type.match('image/jpg')) {
-                alert('Пожалуйста, выберите файл в формате JPG.');
+            if (!file.type.match('image/png')) {
+                alert('Пожалуйста, выберите файл в формате PNG. PNG обеспечивает прозрачный фон.');
                 input.value = '';
                 return;
             }
@@ -355,30 +443,111 @@
             }
             
             reader.onload = function(e) {
-                document.getElementById('photo-preview').src = e.target.result;
+                const preview = document.getElementById('photo-preview');
+                preview.src = e.target.result;
                 
                 // Генерация имени файла
-                const lastName = document.getElementById('last_name').value.trim().toLowerCase();
-                const firstName = document.getElementById('first_name').value.trim().toLowerCase();
+                const lastName = document.getElementById('last_name').value.trim().toLowerCase().replace(/\s+/g, '_');
+                const firstName = document.getElementById('first_name').value.trim().toLowerCase().replace(/\s+/g, '_');
                 const timestamp = new Date().getTime();
                 
+                let fileName;
                 if (lastName && firstName) {
-                    const fileName = `${lastName}_${firstName}_${timestamp}.jpg`;
-                    document.getElementById('photo_path').value = `/images/doctors/${fileName}`;
+                    fileName = `doctor_${lastName}_${firstName}_${timestamp}.png`;
                 } else {
-                    const fileName = `doctor_${timestamp}.jpg`;
-                    document.getElementById('photo_path').value = `/images/doctors/${fileName}`;
+                    fileName = `doctor_${timestamp}.png`;
                 }
-            }
+                
+                document.getElementById('photo_path').value = `/images/doctors/${fileName}`;
+                
+                // Обновляем фон превью
+                updatePreviewBackground();
+            };
             
             reader.readAsDataURL(input.files[0]);
         }
     }
     
+    // Обновление фона превью
+    function updatePreviewBackground() {
+        const lastNameInput = document.getElementById('last_name');
+        const previewBg = document.getElementById('preview-bg');
+        
+        if (previewBg && lastNameInput) {
+            // Простой способ чередования: по первой букве фамилии
+            const lastName = lastNameInput.value.trim();
+            let bgClass;
+            
+            if (lastName.length > 0) {
+                // Определяем цвет по первой букве фамилии
+                const firstLetter = lastName.toLowerCase().charCodeAt(0);
+                bgClass = (firstLetter % 2 === 0) ? 'bg-preview-0' : 'bg-preview-1';
+            } else {
+                // Случайный цвет если фамилия не введена
+                bgClass = 'bg-preview-0';
+            }
+            
+            // Убираем предыдущие классы и добавляем новый
+            previewBg.className = 'photo-background ' + bgClass;
+        }
+    }
+    
+    // Обновление фона при вводе фамилии
+    const lastNameInput = document.getElementById('last_name');
+    if (lastNameInput) {
+        lastNameInput.addEventListener('input', updatePreviewBackground);
+    }
+    
     // Клик на превью для выбора файла
-    document.getElementById('photo-preview').addEventListener('click', function() {
-        document.getElementById('photo').click();
-    });
+    const previewContainer = document.getElementById('preview-container');
+    if (previewContainer) {
+        previewContainer.addEventListener('click', function() {
+            document.getElementById('photo').click();
+        });
+    }
+    
+    // Drag and Drop для фото
+    if (previewContainer) {
+        previewContainer.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = '#e5a7ff';
+            this.style.boxShadow = '0 0 0 3px rgba(229, 167, 255, 0.3)';
+        });
+        
+        previewContainer.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+        });
+        
+        previewContainer.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                
+                // Проверяем что это PNG
+                if (!file.type.match('image/png')) {
+                    alert('Пожалуйста, используйте файл в формате PNG.');
+                    return;
+                }
+                
+                // Устанавливаем файл в input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                document.getElementById('photo').files = dataTransfer.files;
+                
+                // Запускаем предпросмотр
+                previewPhoto(document.getElementById('photo'));
+            }
+        });
+    }
 </script>
 </body>
 </html>

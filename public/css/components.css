@@ -178,36 +178,39 @@
     }
 }
 
-
-
 /* Фоны для фото врачей */
 .bg-doctor-0 {
-    background-color: #77e0b2;
+    background-color: #77e0b2 !important;
 }
 
 .bg-doctor-1 {
-    background-color: #e5a7ff;
+    background-color: #e5a7ff !important;
 }
 
-/* Стили для контейнера с фото врача */
+/* Контейнер для фото врача */
 .doctor-photo-container {
     position: relative;
     overflow: hidden;
+    min-height: 280px;
 }
 
 .doctor-photo-wrapper {
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
+    height: 280px;
     padding: 20px;
 }
 
 .doctor-photo {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
     transition: transform 0.3s ease;
 }
 
 .doctor-photo:hover {
-    transform: translateY(-5px);
+    transform: scale(1.05);
 }

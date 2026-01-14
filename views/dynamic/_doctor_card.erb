@@ -1,36 +1,45 @@
 <!-- views/dynamic/_doctor_card.erb -->
 <% 
-  # Получаем индекс врача из локальной переменной или генерируем
+  # Получаем индекс врача
   doctor_index = defined?(index) ? index : 0
-  bg_color = doctor_bg_color(doctor_index)
-  bg_class = doctor_bg_class(doctor_index)
+  bg_class = "bg-doctor-#{doctor_index % 2}"
 %>
 
-<div class="card doctor-card shadow-sm border-0 h-100">
-    <div class="position-relative doctor-photo-container <%= bg_class %>">
-        <% if doctor.photo_present? && doctor.png_photo? %>
-            <!-- Для PNG с прозрачным фоном -->
-            <div class="doctor-photo-wrapper" style="height: 280px; background-color: <%= bg_color %>;">
-                <img src="<%= doctor.photo_url %>" 
-                     class="doctor-photo" 
-                     alt="Доктор <%= doctor.full_name %>"
-                     style="max-height: 100%; max-width: 100%; object-fit: contain;">
-            </div>
-        <% elsif doctor.photo_present? %>
-            <!-- Для других форматов изображений -->
-            <div class="doctor-photo-wrapper" style="height: 280px; background-color: <%= bg_color %>;">
-                <img src="<%= doctor.photo_url %>" 
-                     class="doctor-photo" 
-                     alt="Доктор <%= doctor.full_name %>"
-                     style="height: 100%; width: 100%; object-fit: cover;">
-            </div>
-        <% else %>
-            <!-- Заглушка если фото нет -->
-            <div class="card-img-top d-flex align-items-center justify-content-center <%= bg_class %>" 
-                 style="height: 280px;">
-                <i class="bi bi-person-circle display-1 text-white"></i>
-            </div>
-        <% end %>
+<div class="card doctor-card shadow-sm border-0 h-100" data-doctor-index="<%= doctor_index %>">
+    <div class="position-relative doctor-photo-container <%= bg_class %> overflow-hidden">
+        <div class="doctor-photo-wrapper" style="
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+        ">
+            <% if doctor.photo_path && !doctor.photo_path.empty? %>
+                <!-- Фоновый цвет -->
+                <div class="position-absolute top-0 left-0 w-100 h-100 <%= bg_class %>"></div>
+                
+                <!-- Маска для скругления краев фото -->
+                <div style="
+                    position: relative;
+                    width: 280px;
+                    height: 280px;
+                    margin-bottom: -20px;
+                    overflow: hidden;
+                    border-radius: 20px 20px 0 0;
+                ">
+                    <img src="<%= doctor.photo_path %>" 
+                         class="position-absolute top-0 left-0 w-100 h-100" 
+                         alt="Доктор <%= doctor.full_name %>"
+                         style="
+                             object-fit: cover;
+                             object-position: center top;
+                         ">
+                </div>
+            <% else %>
+                <i class="bi bi-person-circle display-1 text-white position-absolute"
+                   style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+            <% end %>
+        </div>
         
         <% if doctor.experience_years && doctor.experience_years > 0 %>
             <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary rounded-pill shadow-sm">
