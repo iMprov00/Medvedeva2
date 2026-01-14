@@ -79,4 +79,38 @@ class Doctor < ActiveRecord::Base
     photo_extension == '.png'
   end
   
+  def specialties_text
+    specialties.map(&:name).join(', ')
+  end
+  
+  def full_name
+    [last_name, first_name, middle_name].compact.join(' ')
+  end
+  
+  def experience_text
+    if experience_years && experience_years > 0
+      "#{experience_years} #{russian_plural(experience_years, 'год', 'года', 'лет')}"
+    else
+      "Опыт не указан"
+    end
+  end
+  
+  private
+  
+  def russian_plural(number, one, few, many)
+    abs_number = number.to_i.abs
+    mod10 = abs_number % 10
+    mod100 = abs_number % 100
+    
+    if mod100.between?(11, 14)
+      return many
+    elsif mod10 == 1
+      return one
+    elsif mod10.between?(2, 4)
+      return few
+    else
+      return many
+    end
+  end
+  
 end

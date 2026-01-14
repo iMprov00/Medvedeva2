@@ -435,3 +435,72 @@ get '/specialties' do
   content_type :json
   Specialty.all.to_json(only: [:id, :name])
 end
+
+
+# Маршрут для получения данных врача для редактирования
+get '/admin/doctors/:id/edit' do
+  content_type :json
+  doctor = Doctor.find(params[:id])
+  
+  doctor.to_json(
+    only: [:id, :last_name, :first_name, :middle_name, :experience_years, :bio, :photo_path],
+    include: { specialties: { only: [:id, :name] } }
+  )
+end
+
+# Маршрут для обновления врача
+post '/admin/doctors/:id/update' do
+  begin
+    doctor = Doctor.find(params[:id])
+    
+    # Обновляем основные данные
+    doctor.update(
+      last_name: params[:doctor][:last_name],
+      first_name: params[:doctor][:first_name],
+      middle_name: params[:doctor][:middle_name],
+      experience_years: params[:doctor][:experience_years],
+      bio: params[:doctor][:bio]
+    )
+    
+    # Обновляем специальности
+    if params[:doctor][:specialty_ids]
+      doctor.specialties = Specialty.where(id: params[:doctor][:specialty_ids])
+    else
+      doctor.specialties = []
+    end
+    
+    # Обработка новой фотографии
+    if params[:photo] && params[:photo][:tempfile]
+      photo = params[:photo]
+      
+      # Используем предоставленный путь или генерируем новый
+      photo_path = params[:doctor][:photo_path] || "/images/doctors/doctor_#{doctor.id}_#{Time.now.to_i}.png"
+      
+      FileUtils.mkdir_p('public/images/doctors')
+      
+      # Сохраняем файл
+      File.open("public#{photo_path}", 'wb') do |f|
+        f.write(photo[:tempfile].read)
+      end
+      
+      doctor.photo_path = photo_path
+    elsif params[:doctor][:photo_path] && params[:doctor][:photo_path].present?
+      # Если путь указан вручную
+      doctor.photo_path = params[:doctor][:photo_path]
+    end
+    
+    doctor.save!
+    
+    redirect '/admin/doctors'
+    
+  rescue => e
+    puts "Ошибка при обновлении врача: #{e.message}"
+    redirect '/admin/doctors'
+  end
+end
+
+# Маршрут для получения списка специальностей (JSON)
+get '/admin/specialties/list' do
+  content_type :json
+  Specialty.all.to_json(only: [:id, :name])
+end

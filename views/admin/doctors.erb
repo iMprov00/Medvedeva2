@@ -61,6 +61,16 @@
             border-color: #6aeebc;
             color: #333;
         }
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #333;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            color: #333;
+        }
         .card {
             transition: transform 0.2s;
         }
@@ -100,6 +110,47 @@
         }
         .bg-preview-1 {
             background-color: #e5a7ff !important;
+        }
+        /* Модальное окно для редактирования */
+        .modal-lg-custom {
+            max-width: 900px;
+        }
+        .doctor-actions {
+            display: flex;
+            gap: 8px;
+        }
+        /* Хлебные крошки */
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+        /* Иконки действий */
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .action-icon:hover {
+            transform: scale(1.1);
+        }
+        .edit-icon {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+        .edit-icon:hover {
+            background-color: rgba(255, 193, 7, 0.2);
+        }
+        .delete-icon {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        .delete-icon:hover {
+            background-color: rgba(220, 53, 69, 0.2);
         }
     </style>
 </head>
@@ -158,6 +209,14 @@
     <!-- Основное содержимое -->
 <main class="main-content">
     <div class="container-fluid">
+        <!-- Хлебные крошки -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin">Админка</a></li>
+                <li class="breadcrumb-item active">Врачи</li>
+            </ol>
+        </nav>
+        
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h2">Управление врачами</h1>
             <a href="/admin/specialties" class="btn btn-outline-primary">
@@ -167,10 +226,13 @@
         
         <!-- Форма добавления врача -->
         <div class="card mb-5">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Добавить нового врача</h5>
+                <button type="button" class="btn btn-sm btn-light" onclick="toggleForm()" id="toggleFormBtn">
+                    <i class="bi bi-chevron-up"></i> Скрыть
+                </button>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="addDoctorForm">
                 <form action="/admin/doctors" method="post" enctype="multipart/form-data" id="doctor-form">
                     <div class="row g-3">
                         <div class="col-md-4">
@@ -188,7 +250,7 @@
                         
                         <div class="col-md-6">
                             <label class="form-label">Специальности *</label>
-                            <div class="specialties-container border rounded p-3">
+                            <div class="specialties-container border rounded p-3" style="max-height: 200px; overflow-y: auto;">
                                 <% if defined?(Specialty) && Specialty.any? %>
                                     <% Specialty.all.each do |specialty| %>
                                         <div class="form-check mb-2">
@@ -281,19 +343,28 @@
         
         <!-- Список врачей -->
         <div class="card">
-            <div class="card-header bg-light">
-                <h5 class="mb-0"><i class="bi bi-people me-2"></i>Список врачей (<%= @doctors.count %>)</h5>
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-people me-2"></i>Список врачей (<span id="doctors-count"><%= @doctors.count %></span>)</h5>
+                <div class="d-flex gap-2">
+                    <input type="text" class="form-control form-control-sm" style="width: 200px;" 
+                           placeholder="Поиск врачей..." id="search-doctors">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="refreshList()">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
             </div>
             <div class="card-body">
                 <% if @doctors.empty? %>
                     <div class="alert alert-info">
                         <i class="bi bi-info-circle me-2"></i>
-                        Врачи не добавлены
+                        Врачи не добавлены. Добавьте первого врача, используя форму выше.
                     </div>
                 <% else %>
-                    <div class="row">
+                    <div class="row" id="doctors-list">
                         <% @doctors.each_with_index do |doctor, index| %>
-                            <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="col-md-6 col-lg-4 mb-4 doctor-item" data-id="<%= doctor.id %>" 
+                                 data-name="<%= doctor.full_name.downcase %>"
+                                 data-specialties="<%= doctor.specialties.map(&:name).join(' ').downcase %>">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <!-- Превью фото с чередующимся фоном -->
@@ -319,7 +390,9 @@
                                                 <%= doctor.experience_text %>
                                             </small>
                                         </p>
-                                        <p class="card-text text-truncate"><%= doctor.bio.truncate(100) %></p>
+                                        <p class="card-text" style="height: 60px; overflow: hidden;">
+                                            <%= doctor.bio.truncate(100) %>
+                                        </p>
                                         <% if doctor.photo_path %>
                                             <p class="card-text">
                                                 <small class="text-muted">
@@ -330,11 +403,17 @@
                                         <% end %>
                                     </div>
                                     <div class="card-footer bg-transparent">
-                                        <form action="/admin/doctors/<%= doctor.id %>/delete" method="post" class="d-inline">
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="bi bi-trash me-1"></i>Удалить
+                                        <div class="doctor-actions">
+                                            <button type="button" class="btn btn-warning btn-sm" 
+                                                    onclick="editDoctor(<%= doctor.id %>)">
+                                                <i class="bi bi-pencil me-1"></i>Редактировать
                                             </button>
-                                        </form>
+                                            <form action="/admin/doctors/<%= doctor.id %>/delete" method="post" class="d-inline ms-auto">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash me-1"></i>Удалить
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -345,12 +424,334 @@
         </div>
     </div>
 </main>
+
+<!-- Модальное окно для редактирования врача -->
+<div class="modal fade" id="editDoctorModal" tabindex="-1" aria-labelledby="editDoctorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-lg-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDoctorModalLabel">Редактировать врача</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-doctor-form" method="post" enctype="multipart/form-data">
+          <input type="hidden" id="edit_doctor_id" name="doctor[id]">
+          
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="edit_last_name" class="form-label">Фамилия *</label>
+              <input type="text" class="form-control" id="edit_last_name" name="doctor[last_name]" required>
+            </div>
+            <div class="col-md-4">
+              <label for="edit_first_name" class="form-label">Имя *</label>
+              <input type="text" class="form-control" id="edit_first_name" name="doctor[first_name]" required>
+            </div>
+            <div class="col-md-4">
+              <label for="edit_middle_name" class="form-label">Отчество</label>
+              <input type="text" class="form-control" id="edit_middle_name" name="doctor[middle_name]">
+            </div>
+            
+            <div class="col-md-6">
+              <label class="form-label">Специальности *</label>
+              <div class="specialties-container border rounded p-3" style="max-height: 200px; overflow-y: auto;" id="edit-specialties-container">
+                <!-- Специальности будут загружены динамически -->
+              </div>
+              <small class="text-muted">Выберите одну или несколько специальностей</small>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-12">
+                  <label for="edit_experience_years" class="form-label">Опыт работы (лет)</label>
+                  <input type="number" class="form-control" id="edit_experience_years" 
+                         name="doctor[experience_years]" min="0" max="60">
+                </div>
+                
+                <div class="col-12 mt-3">
+                  <label for="edit_photo" class="form-label">Фотография врача</label>
+                  <div class="file-upload-container">
+                    <div class="file-upload-preview mb-3 text-center">
+                      <div class="photo-preview-container" onclick="document.getElementById('edit_photo').click()" id="edit-preview-container">
+                        <div class="photo-background" id="edit-preview-bg"></div>
+                        <img id="edit_photo_preview" 
+                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' font-family='Arial' font-size='14' fill='%236c757d'%3EЗагрузка...%3C/text%3E%3C/svg%3E" 
+                             alt="Предпросмотр фото" 
+                             class="photo-preview">
+                      </div>
+                      <div class="mt-2">
+                        <small class="text-muted">Текущее фото</small>
+                        <br>
+                        <small class="text-muted">Оставьте пустым, чтобы не менять фотографию</small>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <input type="file" 
+                             class="form-control" 
+                             id="edit_photo" 
+                             name="photo" 
+                             accept="image/png" 
+                             style="display: none;"
+                             onchange="previewEditPhoto(this)">
+                      <button type="button" class="btn btn-outline-secondary w-100" onclick="document.getElementById('edit_photo').click()">
+                        <i class="bi bi-camera me-2"></i>Изменить фотографию (PNG)
+                      </button>
+                    </div>
+                    <input type="hidden" id="edit_photo_path" name="doctor[photo_path]">
+                    <input type="hidden" id="current_photo_path" name="doctor[current_photo_path]">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <label for="edit_bio" class="form-label">Биография *</label>
+              <textarea class="form-control" id="edit_bio" name="doctor[bio]" rows="6" required></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" id="save-changes-btn">
+          <i class="bi bi-save me-2"></i>Сохранить изменения
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 <script>
-    // Подтверждение удаления
+    // Модальное окно для редактирования
+    const editDoctorModal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
+    const editDoctorForm = document.getElementById('edit-doctor-form');
+    
+    // Скрытие/показа формы добавления
+    function toggleForm() {
+        const form = document.getElementById('addDoctorForm');
+        const btn = document.getElementById('toggleFormBtn');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+            btn.innerHTML = '<i class="bi bi-chevron-up"></i> Скрыть';
+        } else {
+            form.style.display = 'none';
+            btn.innerHTML = '<i class="bi bi-chevron-down"></i> Показать';
+        }
+    }
+    
+    // Поиск врачей
+    const searchInput = document.getElementById('search-doctors');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const doctorItems = document.querySelectorAll('.doctor-item');
+            let visibleCount = 0;
+            
+            doctorItems.forEach(item => {
+                const name = item.getAttribute('data-name');
+                const specialties = item.getAttribute('data-specialties');
+                
+                if (name.includes(searchTerm) || specialties.includes(searchTerm) || searchTerm === '') {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Обновляем счетчик
+            document.getElementById('doctors-count').textContent = visibleCount;
+        });
+    }
+    
+    // Обновление списка
+    function refreshList() {
+        window.location.reload();
+    }
+    
+    // Редактирование врача
+    async function editDoctor(doctorId) {
+        try {
+            // Показываем загрузку
+            document.getElementById('save-changes-btn').disabled = true;
+            document.getElementById('save-changes-btn').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка...';
+            
+            // Загружаем данные врача
+            const response = await fetch(`/admin/doctors/${doctorId}/edit`);
+            if (!response.ok) throw new Error('Ошибка загрузки данных');
+            
+            const doctor = await response.json();
+            
+            // Заполняем форму
+            document.getElementById('edit_doctor_id').value = doctor.id;
+            document.getElementById('edit_last_name').value = doctor.last_name;
+            document.getElementById('edit_first_name').value = doctor.first_name;
+            document.getElementById('edit_middle_name').value = doctor.middle_name || '';
+            document.getElementById('edit_experience_years').value = doctor.experience_years || '';
+            document.getElementById('edit_bio').value = doctor.bio;
+            document.getElementById('edit_photo_path').value = doctor.photo_path || '';
+            document.getElementById('current_photo_path').value = doctor.photo_path || '';
+            
+            // Загружаем специальности
+            await loadSpecialtiesForEdit(doctor.specialties || []);
+            
+            // Загружаем текущее фото
+            if (doctor.photo_path) {
+                document.getElementById('edit_photo_preview').src = doctor.photo_path;
+            }
+            
+            // Настраиваем форму для отправки
+            editDoctorForm.action = `/admin/doctors/${doctorId}/update`;
+            
+            // Сбрасываем состояние кнопки
+            document.getElementById('save-changes-btn').disabled = false;
+            document.getElementById('save-changes-btn').innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
+            
+            // Показываем модальное окно
+            editDoctorModal.show();
+            
+        } catch (error) {
+            console.error('Ошибка загрузки данных врача:', error);
+            alert('Ошибка загрузки данных врача. Пожалуйста, попробуйте еще раз.');
+            document.getElementById('save-changes-btn').disabled = false;
+            document.getElementById('save-changes-btn').innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
+        }
+    }
+    
+    // Загрузка специальностей для редактирования
+    async function loadSpecialtiesForEdit(doctorSpecialties) {
+        try {
+            const response = await fetch('/admin/specialties/list');
+            const specialties = await response.json();
+            
+            const container = document.getElementById('edit-specialties-container');
+            container.innerHTML = '';
+            
+            const doctorSpecialtyIds = doctorSpecialties.map(s => s.id);
+            
+            specialties.forEach(specialty => {
+                const div = document.createElement('div');
+                div.className = 'form-check mb-2';
+                
+                const isChecked = doctorSpecialtyIds.includes(specialty.id);
+                
+                div.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="doctor[specialty_ids][]" 
+                           value="${specialty.id}" 
+                           id="edit_specialty_${specialty.id}"
+                           ${isChecked ? 'checked' : ''}>
+                    <label class="form-check-label" for="edit_specialty_${specialty.id}">
+                        ${specialty.name}
+                    </label>
+                `;
+                
+                container.appendChild(div);
+            });
+            
+        } catch (error) {
+            console.error('Ошибка загрузки специальностей:', error);
+            container.innerHTML = '<div class="alert alert-danger">Ошибка загрузки специальностей</div>';
+        }
+    }
+    
+    // Предпросмотр фото при редактировании
+    function previewEditPhoto(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            const file = input.files[0];
+            
+            // Проверка формата файла
+            if (!file.type.match('image/png')) {
+                alert('Пожалуйста, выберите файл в формате PNG.');
+                input.value = '';
+                return;
+            }
+            
+            // Проверка размера файла
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Файл слишком большой. Максимальный размер - 5MB.');
+                input.value = '';
+                return;
+            }
+            
+            reader.onload = function(e) {
+                document.getElementById('edit_photo_preview').src = e.target.result;
+                
+                // Генерация нового имени файла
+                const lastName = document.getElementById('edit_last_name').value.trim().toLowerCase().replace(/\s+/g, '_');
+                const firstName = document.getElementById('edit_first_name').value.trim().toLowerCase().replace(/\s+/g, '_');
+                const timestamp = new Date().getTime();
+                
+                let fileName;
+                if (lastName && firstName) {
+                    fileName = `doctor_${lastName}_${firstName}_${timestamp}.png`;
+                } else {
+                    fileName = `doctor_${timestamp}.png`;
+                }
+                
+                document.getElementById('edit_photo_path').value = `/images/doctors/${fileName}`;
+            };
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    // Сохранение изменений
+    document.getElementById('save-changes-btn').addEventListener('click', async function() {
+        const form = editDoctorForm;
+        const doctorId = document.getElementById('edit_doctor_id').value;
+        
+        // Валидация
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+        
+        // Проверка специальностей
+        const specialtyCheckboxes = document.querySelectorAll('#edit-specialties-container input[type="checkbox"]:checked');
+        if (specialtyCheckboxes.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одну специальность для врача.');
+            return;
+        }
+        
+        try {
+            // Показываем индикатор загрузки
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Сохранение...';
+            
+            // Отправляем форму
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                // Успешно сохранено
+                editDoctorModal.hide();
+                alert('Изменения успешно сохранены!');
+                refreshList();
+            } else {
+                throw new Error('Ошибка сохранения');
+            }
+            
+        } catch (error) {
+            console.error('Ошибка сохранения:', error);
+            alert('Ошибка при сохранении изменений. Пожалуйста, попробуйте еще раз.');
+        } finally {
+            // Восстанавливаем кнопку
+            const btn = document.getElementById('save-changes-btn');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
+        }
+    });
+    
+    // Предыдущий код для добавления врача
     document.addEventListener('DOMContentLoaded', function() {
         const deleteForms = document.querySelectorAll('form[action*="/delete"]');
         deleteForms.forEach(form => {
@@ -361,11 +762,9 @@
             });
         });
         
-        // Валидация формы
         const doctorForm = document.getElementById('doctor-form');
         if (doctorForm) {
             doctorForm.addEventListener('submit', function(e) {
-                // Проверка выбора хотя бы одной специальности
                 const specialtyCheckboxes = document.querySelectorAll('input[name="doctor[specialty_ids][]"]:checked');
                 if (specialtyCheckboxes.length === 0) {
                     e.preventDefault();
@@ -373,7 +772,6 @@
                     return false;
                 }
                 
-                // Проверка биографии
                 const bio = document.getElementById('bio').value.trim();
                 if (bio.length < 10) {
                     e.preventDefault();
@@ -381,17 +779,14 @@
                     return false;
                 }
                 
-                // Проверка файла (необязательная)
                 const photoInput = document.getElementById('photo');
                 if (photoInput.files.length > 0) {
                     const file = photoInput.files[0];
-                    // Проверка формата
                     if (!file.type.match('image/png')) {
                         e.preventDefault();
                         alert('Пожалуйста, выберите файл в формате PNG.');
                         return false;
                     }
-                    // Проверка размера
                     if (file.size > 5 * 1024 * 1024) {
                         e.preventDefault();
                         alert('Файл слишком большой. Максимальный размер - 5MB.');
@@ -399,7 +794,6 @@
                     }
                 }
                 
-                // Генерация пути для фото, если файл выбран
                 const photoPathInput = document.getElementById('photo_path');
                 if (photoInput.files.length > 0 && !photoPathInput.value) {
                     const lastName = document.getElementById('last_name').value.trim().toLowerCase().replace(/\s+/g, '_');
@@ -418,24 +812,20 @@
             });
         }
         
-        // Инициализация чередующегося фона для превью
         updatePreviewBackground();
     });
     
-    // Предпросмотр фотографии
     function previewPhoto(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             const file = input.files[0];
             
-            // Проверка формата файла
             if (!file.type.match('image/png')) {
                 alert('Пожалуйста, выберите файл в формате PNG. PNG обеспечивает прозрачный фон.');
                 input.value = '';
                 return;
             }
             
-            // Проверка размера файла (максимум 5MB)
             if (file.size > 5 * 1024 * 1024) {
                 alert('Файл слишком большой. Максимальный размер - 5MB.');
                 input.value = '';
@@ -446,7 +836,6 @@
                 const preview = document.getElementById('photo-preview');
                 preview.src = e.target.result;
                 
-                // Генерация имени файла
                 const lastName = document.getElementById('last_name').value.trim().toLowerCase().replace(/\s+/g, '_');
                 const firstName = document.getElementById('first_name').value.trim().toLowerCase().replace(/\s+/g, '_');
                 const timestamp = new Date().getTime();
@@ -459,8 +848,6 @@
                 }
                 
                 document.getElementById('photo_path').value = `/images/doctors/${fileName}`;
-                
-                // Обновляем фон превью
                 updatePreviewBackground();
             };
             
@@ -468,46 +855,36 @@
         }
     }
     
-    // Обновление фона превью
     function updatePreviewBackground() {
         const lastNameInput = document.getElementById('last_name');
         const previewBg = document.getElementById('preview-bg');
         
         if (previewBg && lastNameInput) {
-            // Простой способ чередования: по первой букве фамилии
             const lastName = lastNameInput.value.trim();
             let bgClass;
             
             if (lastName.length > 0) {
-                // Определяем цвет по первой букве фамилии
                 const firstLetter = lastName.toLowerCase().charCodeAt(0);
                 bgClass = (firstLetter % 2 === 0) ? 'bg-preview-0' : 'bg-preview-1';
             } else {
-                // Случайный цвет если фамилия не введена
                 bgClass = 'bg-preview-0';
             }
             
-            // Убираем предыдущие классы и добавляем новый
             previewBg.className = 'photo-background ' + bgClass;
         }
     }
     
-    // Обновление фона при вводе фамилии
     const lastNameInput = document.getElementById('last_name');
     if (lastNameInput) {
         lastNameInput.addEventListener('input', updatePreviewBackground);
     }
     
-    // Клик на превью для выбора файла
     const previewContainer = document.getElementById('preview-container');
     if (previewContainer) {
         previewContainer.addEventListener('click', function() {
             document.getElementById('photo').click();
         });
-    }
-    
-    // Drag and Drop для фото
-    if (previewContainer) {
+        
         previewContainer.addEventListener('dragover', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -531,19 +908,13 @@
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 const file = files[0];
-                
-                // Проверяем что это PNG
                 if (!file.type.match('image/png')) {
                     alert('Пожалуйста, используйте файл в формате PNG.');
                     return;
                 }
-                
-                // Устанавливаем файл в input
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);
                 document.getElementById('photo').files = dataTransfer.files;
-                
-                // Запускаем предпросмотр
                 previewPhoto(document.getElementById('photo'));
             }
         });
