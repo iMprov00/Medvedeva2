@@ -67,6 +67,17 @@
         .table-hover tbody tr:hover {
             background-color: rgba(229, 167, 255, 0.1);
         }
+        .service-code {
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+        .form-control-code {
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -126,6 +137,10 @@
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h2">Управление услугами и ценами</h1>
+                <div class="form-text">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Формат кода услуги: <code>A00.000.000</code>
+                </div>
             </div>
             
             <!-- Форма добавления категории -->
@@ -135,11 +150,14 @@
                 </div>
                 <div class="card-body">
                     <form action="/admin/categories" method="post" class="row g-3">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <label for="category_name" class="form-label">Название категории *</label>
                             <input type="text" class="form-control" id="category_name" name="category[name]" required>
                         </div>
-
+                        <div class="col-md-4">
+                            <label for="category_position" class="form-label">Позиция</label>
+                            <input type="number" class="form-control" id="category_position" name="category[position]" min="0" value="0">
+                        </div>
                         <div class="col-md-2 d-flex align-items-end">
                             <button type="submit" class="btn btn-primary w-100">
                                 <i class="bi bi-plus-circle me-2"></i>Добавить
@@ -155,9 +173,9 @@
                     <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Добавить услугу</h5>
                 </div>
                 <div class="card-body">
-                    <form action="/admin/services" method="post">
+                    <form action="/admin/services" method="post" id="service-form">
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="service_category_id" class="form-label">Категория *</label>
                                 <select class="form-select" id="service_category_id" name="service[service_category_id]" required>
                                     <option value="" selected disabled>Выберите категорию</option>
@@ -166,9 +184,25 @@
                                     <% end %>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="service_name" class="form-label">Название услуги *</label>
                                 <input type="text" class="form-control" id="service_name" name="service[name]" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="service_code" class="form-label">Код услуги</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-code" 
+                                           id="service_code" 
+                                           name="service[service_code]" 
+                                           pattern="[A-Z][A-Z0-9]*\.[A-Z0-9]{3}\.[A-Z0-9]{3}"
+                                           placeholder="A00.000.000">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="generateServiceCode()">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">
+                                    Формат: буква, две цифры, точка, три цифры, точка, три цифры
+                                </div>
                             </div>
                             
                             <div class="col-12">
@@ -176,23 +210,66 @@
                                 <textarea class="form-control" id="service_description" name="service[description]" rows="3"></textarea>
                             </div>
                             
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="service_price" class="form-label">Цена (руб.) *</label>
-                                <input type="number" class="form-control" id="service_price" name="service[price]" 
-                                       step="0.01" min="0" required>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="service_price" name="service[price]" 
+                                           step="0.01" min="0" required>
+                                    <span class="input-group-text">₽</span>
+                                </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="service_duration" class="form-label">Длительность (минут)</label>
-                                <input type="number" class="form-control" id="service_duration" 
-                                       name="service[duration_minutes]" min="0">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="service_duration" 
+                                           name="service[duration_minutes]" min="0">
+                                    <span class="input-group-text">мин.</span>
+                                </div>
                             </div>
-                            <div class="col-md-4 d-flex align-items-end">
+                            <div class="col-md-3 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="service_active" name="service[active]" value="1" checked>
+                                    <label class="form-check-label" for="service_active">
+                                        Активная услуга
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
                                 <button type="submit" class="btn btn-success w-100">
                                     <i class="bi bi-plus-circle me-2"></i>Добавить услугу
                                 </button>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            
+            <!-- Поиск и фильтры -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" class="form-control" id="search-services" placeholder="Поиск по названию, описанию или коду...">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="filter-category">
+                                <option value="">Все категории</option>
+                                <% @service_categories.each do |category| %>
+                                    <option value="<%= category.id %>"><%= category.name %></option>
+                                <% end %>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                                <i class="bi bi-arrow-clockwise"></i> Сбросить
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -203,86 +280,427 @@
                     Категории не добавлены
                 </div>
             <% else %>
-                <% @service_categories.each do |category| %>
-                    <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <i class="bi bi-folder me-2"></i>
-                                <%= category.name %>
-                                <span class="badge bg-secondary ms-2"><%= category.services.count %></span>
-                            </h5>
-                            <form action="/admin/categories/<%= category.id %>/delete" method="post">
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash me-1"></i>Удалить категорию
-                                </button>
-                            </form>
-                        </div>
-                        <div class="card-body">
-                            <% if category.services.empty? %>
-                                <div class="alert alert-warning mb-0">
-                                    <i class="bi bi-exclamation-triangle me-2"></i>
-                                    В этой категории нет услуг
+                <div id="services-container">
+                    <% @service_categories.each do |category| %>
+                        <div class="card mb-4 service-category" data-category-id="<%= category.id %>">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-folder me-2"></i>
+                                    <%= category.name %>
+                                    <span class="badge bg-secondary ms-2"><%= category.services.count %></span>
+                                </h5>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editCategory(<%= category.id %>, '<%= category.name %>', <%= category.position || 0 %>)">
+                                        <i class="bi bi-pencil me-1"></i>Изменить
+                                    </button>
+                                    <form action="/admin/categories/<%= category.id %>/delete" method="post">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Удалить
+                                        </button>
+                                    </form>
                                 </div>
-                            <% else %>
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Название</th>
-                                                <th>Описание</th>
-                                                <th>Цена</th>
-                                                <th>Длительность</th>
-                                                <th>Действия</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% category.services.each do |service| %>
+                            </div>
+                            <div class="card-body">
+                                <% if category.services.empty? %>
+                                    <div class="alert alert-warning mb-0">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        В этой категории нет услуг
+                                    </div>
+                                <% else %>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
                                                 <tr>
-                                                    <td><strong><%= service.name %></strong></td>
-                                                    <td><%= service.description %></td>
-                                                    <td>
-                                                        <%
-                                                        # Форматирование цены
-                                                        price = service.price.to_f
-                                                        formatted_price = sprintf('%.2f', price)
-                                                        formatted_price = formatted_price.gsub('.', ',')
-                                                        formatted_price = formatted_price.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1 ")
-                                                        %>
-                                                        <%= formatted_price %> ₽
-                                                    </td>
-                                                    <td>
-                                                        <% if service.duration_minutes %>
-                                                            <%= service.duration_minutes %> мин.
-                                                        <% else %>
-                                                            —
-                                                        <% end %>
-                                                    </td>
-                                                    <td>
-                                                        <form action="/admin/services/<%= service.id %>/delete" method="post" class="d-inline">
-                                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
+                                                    <th width="120px">Код</th>
+                                                    <th>Название</th>
+                                                    <th>Описание</th>
+                                                    <th width="100px">Цена</th>
+                                                    <th width="100px">Длит.</th>
+                                                    <th width="100px">Статус</th>
+                                                    <th width="120px">Действия</th>
                                                 </tr>
-                                            <% end %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            <% end %>
+                                            </thead>
+                                            <tbody>
+                                                <% category.services.each do |service| %>
+                                                    <tr class="service-item" 
+                                                        data-id="<%= service.id %>"
+                                                        data-name="<%= service.name.downcase %>"
+                                                        data-code="<%= service.service_code.to_s.downcase %>"
+                                                        data-description="<%= service.description.to_s.downcase %>">
+                                                        <td>
+                                                            <% if service.service_code %>
+                                                                <span class="service-code"><%= service.service_code %></span>
+                                                            <% else %>
+                                                                <span class="text-muted">—</span>
+                                                            <% end %>
+                                                        </td>
+                                                        <td><strong><%= service.name %></strong></td>
+                                                        <td><%= service.description %></td>
+                                                        <td>
+                                                            <%
+                                                            price = service.price.to_f
+                                                            formatted_price = sprintf('%.2f', price)
+                                                            formatted_price = formatted_price.gsub('.', ',')
+                                                            formatted_price = formatted_price.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1 ")
+                                                            %>
+                                                            <strong><%= formatted_price %> ₽</strong>
+                                                        </td>
+                                                        <td>
+                                                            <% if service.duration_minutes %>
+                                                                <%= service.duration_minutes %> мин.
+                                                            <% else %>
+                                                                —
+                                                            <% end %>
+                                                        </td>
+                                                        <td>
+                                                            <% if service.active == false %>
+                                                                <span class="badge bg-secondary">Неактивна</span>
+                                                            <% else %>
+                                                                <span class="badge bg-success">Активна</span>
+                                                            <% end %>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group btn-group-sm">
+                                                                <button type="button" class="btn btn-outline-warning" 
+                                                                        onclick="editService(<%= service.id %>)">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <form action="/admin/services/<%= service.id %>/delete" method="post" class="d-inline">
+                                                                    <button type="submit" class="btn btn-outline-danger">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <% end %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <% end %>
+                            </div>
                         </div>
-                    </div>
-                <% end %>
+                    <% end %>
+                </div>
             <% end %>
         </div>
     </main>
+    
+    <!-- Модальное окно для редактирования категории -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать категорию</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-category-form" method="post">
+                        <input type="hidden" name="_method" value="patch">
+                        <div class="mb-3">
+                            <label for="edit_category_name" class="form-label">Название категории *</label>
+                            <input type="text" class="form-control" id="edit_category_name" name="category[name]" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_category_position" class="form-label">Позиция</label>
+                            <input type="number" class="form-control" id="edit_category_position" name="category[position]" min="0">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCategoryChanges()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для редактирования услуги -->
+    <div class="modal fade" id="editServiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать услугу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-service-form" method="post">
+                        <input type="hidden" name="_method" value="patch">
+                        <input type="hidden" id="edit_service_id" name="service[id]">
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="edit_service_category_id" class="form-label">Категория *</label>
+                                <select class="form-select" id="edit_service_category_id" name="service[service_category_id]" required>
+                                    <% @service_categories.each do |category| %>
+                                        <option value="<%= category.id %>"><%= category.name %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_service_name" class="form-label">Название услуги *</label>
+                                <input type="text" class="form-control" id="edit_service_name" name="service[name]" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="edit_service_code" class="form-label">Код услуги</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-code" 
+                                           id="edit_service_code" 
+                                           name="service[service_code]" 
+                                           pattern="[A-Z][A-Z0-9]*\.[A-Z0-9]{3}\.[A-Z0-9]{3}">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="generateEditServiceCode()">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">
+                                    Формат: A00.000.000
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_service_duration" class="form-label">Длительность (минут)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="edit_service_duration" 
+                                           name="service[duration_minutes]" min="0">
+                                    <span class="input-group-text">мин.</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="edit_service_description" class="form-label">Описание</label>
+                                <textarea class="form-control" id="edit_service_description" name="service[description]" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="edit_service_price" class="form-label">Цена (руб.) *</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="edit_service_price" name="service[price]" 
+                                           step="0.01" min="0" required>
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="edit_service_active" name="service[active]" value="1">
+                                    <label class="form-check-label" for="edit_service_active">
+                                        Активная услуга
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" onclick="saveServiceChanges()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Подтверждение удаления
+        // Модальные окна
+        const editCategoryModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+        const editServiceModal = new bootstrap.Modal(document.getElementById('editServiceModal'));
+        
+        // Генерация кода услуги
+        function generateServiceCode() {
+            const categorySelect = document.getElementById('service_category_id');
+            const nameInput = document.getElementById('service_name');
+            const codeInput = document.getElementById('service_code');
+            
+            if (!categorySelect.value || !nameInput.value) {
+                alert('Сначала выберите категорию и введите название услуги');
+                return;
+            }
+            
+            const categoryText = categorySelect.options[categorySelect.selectedIndex].text;
+            const nameText = nameInput.value;
+            
+            // Генерация префикса из категории (первые 3 буквы)
+            let categoryPrefix = categoryText.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'A');
+            if (categoryPrefix.length < 3) {
+                categoryPrefix = categoryPrefix.padEnd(3, 'A');
+            }
+            
+            // Генерация префикса из названия (первые 3 буквы)
+            let namePrefix = nameText.substring(0, 3).toUpperCase().replace(/[^A-Z0-9]/g, 'X');
+            if (namePrefix.length < 3) {
+                namePrefix = namePrefix.padEnd(3, 'X');
+            }
+            
+            // Генерация случайных чисел
+            const random1 = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            const random2 = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            const newCode = `${categoryPrefix}${namePrefix}.${random1}.${random2}`;
+            codeInput.value = newCode;
+        }
+        
+        function generateEditServiceCode() {
+            const categorySelect = document.getElementById('edit_service_category_id');
+            const nameInput = document.getElementById('edit_service_name');
+            const codeInput = document.getElementById('edit_service_code');
+            
+            if (!categorySelect.value || !nameInput.value) {
+                alert('Сначала выберите категорию и введите название услуги');
+                return;
+            }
+            
+            const categoryText = categorySelect.options[categorySelect.selectedIndex].text;
+            const nameText = nameInput.value;
+            
+            let categoryPrefix = categoryText.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'A');
+            if (categoryPrefix.length < 3) {
+                categoryPrefix = categoryPrefix.padEnd(3, 'A');
+            }
+            
+            let namePrefix = nameText.substring(0, 3).toUpperCase().replace(/[^A-Z0-9]/g, 'X');
+            if (namePrefix.length < 3) {
+                namePrefix = namePrefix.padEnd(3, 'X');
+            }
+            
+            const random1 = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            const random2 = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            const newCode = `${categoryPrefix}${namePrefix}.${random1}.${random2}`;
+            codeInput.value = newCode;
+        }
+        
+        // Редактирование категории
+        function editCategory(categoryId, categoryName, position) {
+            document.getElementById('edit_category_name').value = categoryName;
+            document.getElementById('edit_category_position').value = position || 0;
+            
+            // Настраиваем форму
+            const form = document.getElementById('edit-category-form');
+            form.action = `/admin/categories/${categoryId}`;
+            
+            editCategoryModal.show();
+        }
+        
+        function saveCategoryChanges() {
+            const form = document.getElementById('edit-category-form');
+            form.submit();
+        }
+        
+        // Редактирование услуги
+        async function editService(serviceId) {
+            try {
+                // Загружаем данные услуги
+                const response = await fetch(`/admin/services/${serviceId}/edit`);
+                if (!response.ok) throw new Error('Ошибка загрузки данных');
+                
+                const service = await response.json();
+                
+                // Заполняем форму
+                document.getElementById('edit_service_id').value = service.id;
+                document.getElementById('edit_service_category_id').value = service.service_category_id;
+                document.getElementById('edit_service_name').value = service.name;
+                document.getElementById('edit_service_code').value = service.service_code || '';
+                document.getElementById('edit_service_description').value = service.description || '';
+                document.getElementById('edit_service_price').value = parseFloat(service.price).toFixed(2);
+                document.getElementById('edit_service_duration').value = service.duration_minutes || '';
+                document.getElementById('edit_service_active').checked = service.active !== false;
+                
+                // Настраиваем форму
+                const form = document.getElementById('edit-service-form');
+                form.action = `/admin/services/${serviceId}`;
+                
+                editServiceModal.show();
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных услуги:', error);
+                alert('Ошибка загрузки данных услуги. Пожалуйста, попробуйте еще раз.');
+            }
+        }
+        
+        function saveServiceChanges() {
+            const form = document.getElementById('edit-service-form');
+            form.submit();
+        }
+        
+        // Поиск и фильтрация услуг
         document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-services');
+            const filterCategory = document.getElementById('filter-category');
+            
+            function filterServices() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const categoryId = filterCategory.value;
+                
+                const serviceItems = document.querySelectorAll('.service-item');
+                const categories = document.querySelectorAll('.service-category');
+                
+                let visibleCategories = 0;
+                
+                categories.forEach(category => {
+                    const currentCategoryId = category.getAttribute('data-category-id');
+                    let hasVisibleServices = false;
+                    
+                    // Проверяем соответствие фильтру категории
+                    if (categoryId && categoryId !== currentCategoryId) {
+                        category.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Фильтруем услуги внутри категории
+                    const services = category.querySelectorAll('.service-item');
+                    services.forEach(service => {
+                        const name = service.getAttribute('data-name');
+                        const code = service.getAttribute('data-code');
+                        const description = service.getAttribute('data-description');
+                        
+                        const matchesSearch = searchTerm === '' || 
+                                             name.includes(searchTerm) || 
+                                             code.includes(searchTerm) || 
+                                             description.includes(searchTerm);
+                        
+                        if (matchesSearch) {
+                            service.style.display = '';
+                            hasVisibleServices = true;
+                        } else {
+                            service.style.display = 'none';
+                        }
+                    });
+                    
+                    // Показываем/скрываем категорию
+                    if (hasVisibleServices) {
+                        category.style.display = 'block';
+                        visibleCategories++;
+                    } else {
+                        category.style.display = 'none';
+                    }
+                });
+                
+                // Показываем сообщение если ничего не найдено
+                const container = document.getElementById('services-container');
+                let message = container.querySelector('.no-results');
+                
+                if (visibleCategories === 0) {
+                    if (!message) {
+                        message = document.createElement('div');
+                        message.className = 'alert alert-info no-results';
+                        message.innerHTML = '<i class="bi bi-info-circle me-2"></i>Услуги не найдены. Попробуйте изменить условия поиска.';
+                        container.appendChild(message);
+                    }
+                } else if (message) {
+                    message.remove();
+                }
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', filterServices);
+            }
+            
+            if (filterCategory) {
+                filterCategory.addEventListener('change', filterServices);
+            }
+            
+            // Подтверждение удаления
             const deleteForms = document.querySelectorAll('form[action*="/delete"]');
             deleteForms.forEach(form => {
                 form.addEventListener('submit', function(e) {
@@ -297,18 +715,34 @@
                 });
             });
             
-            // Форматирование ввода цены
-            const priceInput = document.getElementById('service_price');
-            if (priceInput) {
-                priceInput.addEventListener('input', function(e) {
-                    let value = this.value.replace(/[^\d]/g, '');
-                    if (value.length > 2) {
-                        value = value.slice(0, -2) + '.' + value.slice(-2);
+            // Валидация формы добавления услуги
+            const serviceForm = document.getElementById('service-form');
+            if (serviceForm) {
+                serviceForm.addEventListener('submit', function(e) {
+                    const codeInput = document.getElementById('service_code');
+                    
+                    if (codeInput.value && !codeInput.value.match(/^[A-Z][A-Z0-9]*\.[A-Z0-9]{3}\.[A-Z0-9]{3}$/)) {
+                        e.preventDefault();
+                        alert('Код услуги должен быть в формате A00.000.000');
+                        codeInput.focus();
+                        return false;
                     }
-                    this.value = value;
                 });
             }
         });
+        
+        function resetFilters() {
+            document.getElementById('search-services').value = '';
+            document.getElementById('filter-category').value = '';
+            
+            // Показываем все элементы
+            document.querySelectorAll('.service-category').forEach(cat => cat.style.display = 'block');
+            document.querySelectorAll('.service-item').forEach(service => service.style.display = '');
+            
+            // Убираем сообщение "не найдено"
+            const message = document.querySelector('.no-results');
+            if (message) message.remove();
+        }
     </script>
 </body>
 </html>

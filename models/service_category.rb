@@ -5,5 +5,5 @@ class ServiceCategory < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   
   # Упорядочиваем по позиции
-  default_scope { order(position: :asc) }
+  default_scope { order(position: :asc, name: :asc) }
 end

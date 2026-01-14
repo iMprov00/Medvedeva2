@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_05_051921) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_14_074052) do
   create_table "appointments", force: :cascade do |t|
     t.date "birth_date", null: false
     t.datetime "created_at", null: false
@@ -80,16 +80,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_05_051921) do
   end
 
   create_table "services", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.integer "duration_minutes"
     t.string "name", null: false
     t.decimal "price", precision: 10, scale: 2, null: false
     t.integer "service_category_id", null: false
+    t.string "service_code"
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_services_on_name"
     t.index ["price"], name: "index_services_on_price"
     t.index ["service_category_id"], name: "index_services_on_service_category_id"
+    t.index ["service_code"], name: "index_services_on_service_code"
   end
 
   create_table "specialties", force: :cascade do |t|

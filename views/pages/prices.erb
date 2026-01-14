@@ -28,7 +28,7 @@
                                         <input type="text" 
                                                class="form-control border-start-0" 
                                                id="serviceSearchInput" 
-                                               placeholder="Найти услугу по названию или описанию...">
+                                               placeholder="Найти услугу по названию, описанию или коду...">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -87,45 +87,63 @@
                                     <table class="table table-hover align-middle">
                                         <thead class="bg-secondary-light">
                                             <tr>
-                                                <th width="40%">Услуга</th>
-                                                <th width="40%">Описание</th>
+                                                <th width="10%" class="text-center">Код</th>
+                                                <th width="35%">Услуга</th>
+                                                <th width="35%">Описание</th>
                                                 <th width="10%" class="text-center">Длительность</th>
                                                 <th width="10%" class="text-end">Цена</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <% category.services.each do |service| %>
-                                                <tr class="service-row" 
-                                                    data-name="<%= service.name.downcase %>"
-                                                    data-description="<%= service.description.to_s.downcase %>"
-                                                    data-category="<%= category.id %>">
-                                                    <td>
-                                                        <div class="fw-bold text-primary">
-                                                            <%= service.name %>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <% if service.description.present? %>
-                                                            <div class="text-muted small">
-                                                                <%= service.description %>
+                                                <% if service.active != false %> <!-- Показываем только активные услуги -->
+                                                    <tr class="service-row" 
+                                                        data-name="<%= service.name.downcase %>"
+                                                        data-description="<%= service.description.to_s.downcase %>"
+                                                        data-code="<%= service.service_code.to_s.downcase %>"
+                                                        data-category="<%= category.id %>">
+                                                        <td class="text-center">
+                                                            <% if service.service_code.present? %>
+                                                                <div class="service-code-container">
+                                                                    <span class="service-code" 
+                                                                          title="Код услуги: <%= service.service_code %>"
+                                                                          data-bs-toggle="tooltip" 
+                                                                          data-bs-placement="top">
+                                                                        <%= service.service_code %>
+                                                                    </span>
+                                                                </div>
+                                                            <% else %>
+                                                                <span class="text-muted fst-italic" title="Код не указан">—</span>
+                                                            <% end %>
+                                                        </td>
+                                                        <td>
+                                                            <div class="fw-bold text-primary">
+                                                                <%= service.name %>
                                                             </div>
-                                                        <% else %>
-                                                            <span class="text-muted fst-italic">Описание отсутствует</span>
-                                                        <% end %>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <% if service.duration_minutes.present? %>
-                                                            <span class="badge bg-accent-light text-dark">
-                                                                <%= service.duration_minutes %> мин.
-                                                            </span>
-                                                        <% else %>
-                                                            <span class="text-muted">—</span>
-                                                        <% end %>
-                                                    </td>
-                                                    <td class="text-end fw-bold">
-                                                        <%= number_to_currency(service.price) %>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td>
+                                                            <% if service.description.present? %>
+                                                                <div class="text-muted small">
+                                                                    <%= service.description %>
+                                                                </div>
+                                                            <% else %>
+                                                                <span class="text-muted fst-italic">Описание отсутствует</span>
+                                                            <% end %>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <% if service.duration_minutes.present? %>
+                                                                <span class="badge bg-accent-light text-dark">
+                                                                    <%= service.duration_minutes %> мин.
+                                                                </span>
+                                                            <% else %>
+                                                                <span class="text-muted">—</span>
+                                                            <% end %>
+                                                        </td>
+                                                        <td class="text-end fw-bold">
+                                                            <%= number_to_currency(service.price) %>
+                                                        </td>
+                                                    </tr>
+                                                <% end %>
                                             <% end %>
                                         </tbody>
                                     </table>
@@ -264,6 +282,40 @@
     </div>
 </section>
 
+<style>
+/* Стили для кода услуги */
+.service-code-container {
+    font-family: 'Courier New', monospace;
+}
+
+.service-code {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 0.85em;
+    color: #495057;
+    cursor: help;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.service-code:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Адаптивность для кода услуги */
+@media (max-width: 768px) {
+    .service-code {
+        font-size: 0.75em;
+        padding: 2px 4px;
+    }
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('serviceSearchInput');
@@ -273,6 +325,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const noResultsMessage = document.getElementById('noResultsMessage');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     const servicesCount = document.getElementById('servicesCount');
+
+    // Инициализация тултипов для кодов услуг
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
     // Функция поиска
     function performSearch() {
@@ -295,11 +353,14 @@ document.addEventListener('DOMContentLoaded', function() {
         serviceRows.forEach(row => {
             const name = row.getAttribute('data-name');
             const description = row.getAttribute('data-description');
+            const code = row.getAttribute('data-code');
             const category = row.getAttribute('data-category');
             
+            // Проверяем совпадение по разным полям
             const matchesSearch = !searchTerm || 
                                  name.includes(searchTerm) || 
-                                 description.includes(searchTerm);
+                                 description.includes(searchTerm) ||
+                                 code.includes(searchTerm);
             const matchesCategory = !selectedCategory || category === selectedCategory;
 
             if (matchesSearch && matchesCategory) {
@@ -345,6 +406,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+        
+        // Обновляем тултипы после фильтрации
+        updateTooltips();
+    }
+
+    // Функция обновления тултипов
+    function updateTooltips() {
+        // Уничтожаем старые тултипы
+        tooltipList.forEach(tooltip => {
+            tooltip.dispose();
+        });
+        
+        // Инициализируем новые тултипы только для видимых элементов
+        const visibleTooltips = [].slice.call(document.querySelectorAll('.service-row[style=""] [data-bs-toggle="tooltip"]'));
+        visibleTooltips.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     }
 
     // События
@@ -360,5 +438,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Сохраняем оригинальный счетчик
     const originalCount = servicesCount.textContent;
+    
+    // Копирование кода услуги при клике
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('service-code')) {
+            const code = e.target.textContent.trim();
+            
+            // Используем современный Clipboard API
+            navigator.clipboard.writeText(code).then(() => {
+                // Показываем временное сообщение об успехе
+                const originalTitle = e.target.getAttribute('title');
+                e.target.setAttribute('title', 'Скопировано!');
+                
+                // Обновляем тултип
+                const tooltipInstance = bootstrap.Tooltip.getInstance(e.target);
+                if (tooltipInstance) {
+                    tooltipInstance.setContent({'.tooltip-inner': 'Скопировано!'});
+                }
+                
+                // Возвращаем оригинальный текст через 2 секунды
+                setTimeout(() => {
+                    e.target.setAttribute('title', originalTitle || `Код услуги: ${code}`);
+                    if (tooltipInstance) {
+                        tooltipInstance.setContent({'.tooltip-inner': originalTitle || `Код услуги: ${code}`});
+                    }
+                }, 2000);
+            }).catch(err => {
+                console.error('Ошибка копирования: ', err);
+                
+                // Альтернативный способ для старых браузеров
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    
+                    const originalTitle = e.target.getAttribute('title');
+                    e.target.setAttribute('title', 'Скопировано!');
+                    
+                    setTimeout(() => {
+                        e.target.setAttribute('title', originalTitle || `Код услуги: ${code}`);
+                    }, 2000);
+                } catch (err) {
+                    console.error('Не удалось скопировать текст: ', err);
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+    });
 });
 </script>

@@ -55,7 +55,21 @@ get '/' do
 end
 
 # О клинике
+# Маршрут для страницы "О клинике"
 get '/about' do
+  # Путь к папке с фотографиями (относительно public)
+  gallery_path = File.join(settings.public_folder, 'images', 'about')
+  
+  # Получаем список файлов, проверяем существование папки
+  if Dir.exist?(gallery_path)
+    # Фильтруем только изображения (jpg, jpeg, png, gif, webp)
+    @gallery_images = Dir.children(gallery_path)
+                         .select { |f| f.downcase.end_with?('.jpg', '.jpeg', '.png', '.gif', '.webp') }
+                         .sort
+  else
+    @gallery_images = []
+  end
+  
   erb :'pages/about'
 end
 
@@ -503,4 +517,49 @@ end
 get '/admin/specialties/list' do
   content_type :json
   Specialty.all.to_json(only: [:id, :name])
+end
+
+# Маршруты для категорий услуг
+post '/admin/categories' do
+  ServiceCategory.create(params[:category])
+  redirect '/admin/prices'
+end
+
+# Обновление категории
+patch '/admin/categories/:id' do
+  category = ServiceCategory.find(params[:id])
+  category.update(params[:category])
+  redirect '/admin/prices'
+end
+
+post '/admin/categories/:id/delete' do
+  ServiceCategory.find(params[:id]).destroy
+  redirect '/admin/prices'
+end
+
+# Маршруты для услуг
+post '/admin/services' do
+  Service.create(params[:service])
+  redirect '/admin/prices'
+end
+
+# Получение данных услуги для редактирования
+get '/admin/services/:id/edit' do
+  content_type :json
+  service = Service.find(params[:id])
+  service.to_json(
+    only: [:id, :name, :description, :price, :duration_minutes, :service_code, :service_category_id, :active]
+  )
+end
+
+# Обновление услуги
+patch '/admin/services/:id' do
+  service = Service.find(params[:id])
+  service.update(params[:service])
+  redirect '/admin/prices'
+end
+
+post '/admin/services/:id/delete' do
+  Service.find(params[:id]).destroy
+  redirect '/admin/prices'
 end
