@@ -199,8 +199,18 @@
                         <li class="nav-item">
                             <a class="nav-link <%= 'active fw-bold' if request.path == '/doctors' %>" href="/doctors">Врачи</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link <%= 'active fw-bold' if request.path == '/prices' %>" href="/prices">Услуги и цены</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle <%= 'active fw-bold' if request.path == '/prices' %>" 
+                               href="#" 
+                               role="button" 
+                               data-bs-toggle="dropdown" 
+                               aria-expanded="false">
+                                Услуги и цены
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item <%= 'active' if request.path == '/prices' %>" href="/prices">Прайс-лист</a></li>
+                                <li><a class="dropdown-item" href="/prices#promotions">Акции</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <%= 'active fw-bold' if request.path == '/contacts' %>" href="/contacts">Контакты</a>
