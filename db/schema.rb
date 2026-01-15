@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_14_074052) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_15_023027) do
   create_table "appointments", force: :cascade do |t|
     t.date "birth_date", null: false
     t.datetime "created_at", null: false
@@ -69,6 +69,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_074052) do
     t.string "subject", null: false
     t.datetime "updated_at", null: false
     t.index ["status"], name: "index_messages_on_status"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.boolean "approved", default: false
+    t.string "author_name", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.boolean "featured", default: false
+    t.integer "rating", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approved"], name: "index_reviews_on_approved"
+    t.index ["featured"], name: "index_reviews_on_featured"
+    t.index ["rating"], name: "index_reviews_on_rating"
   end
 
   create_table "service_categories", force: :cascade do |t|

@@ -293,3 +293,48 @@
   width: auto;
   object-fit: contain; /* Важно! Сохраняет пропорции и вмещает картинку */
 }
+
+/* Стили для отзывов */
+.reviews-container {
+    scrollbar-width: thin;
+    scrollbar-color: #e5a7ff #f8f9fa;
+}
+
+.reviews-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reviews-container::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.reviews-container::-webkit-scrollbar-thumb {
+    background: #e5a7ff;
+    border-radius: 10px;
+}
+
+/* Звездный рейтинг */
+.rating-input .stars {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.rating-input .stars i {
+    margin-right: 2px;
+    transition: color 0.2s;
+}
+
+.rating-input .stars i:hover {
+    color: #ffc107 !important;
+}
+
+/* Анимация для отзывов */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}

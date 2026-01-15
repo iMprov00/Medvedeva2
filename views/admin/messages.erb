@@ -123,6 +123,16 @@
                         Специальности
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/reviews">
+                        <i class="bi bi-star me-2"></i>
+                        Отзывы
+                        <% pending_reviews = Review.where(approved: false).count %>
+                        <% if pending_reviews > 0 %>
+                            <span class="badge bg-danger float-end"><%= pending_reviews %></span>
+                        <% end %>
+                    </a>
+                </li>
                 <li class="nav-item mt-4">
                     <a class="nav-link text-white" href="/">
                         <i class="bi bi-house me-2"></i>

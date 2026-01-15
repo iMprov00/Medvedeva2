@@ -59,7 +59,7 @@
 </section>
 
 <!-- Доктор Медведева -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light" id="founder">>
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
@@ -116,7 +116,7 @@
 
 
 <!-- Фотогалерея клиники -->
-<section class="py-5">
+<section class="py-5" id="gallery">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="display-6 fw-bold mb-3">Наша клиника изнутри</h2>
@@ -148,126 +148,68 @@
     </div>
 </section>
 
-<!-- Преимущества -->
-<section class="py-5 bg-light">
+<!-- Отзывы -->
+<section class="py-5" id="reviews">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-6 fw-bold mb-3">Наши преимущества</h2>
-            <p class="text-muted lead">Почему пациенты выбирают нашу клинику</p>
+            <h2 class="display-6 fw-bold mb-3">Отзывы пациентов</h2>
+            <p class="text-muted lead">Что говорят наши пациенты</p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
-                                <i class="bi bi-cpu fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-2">Современное оборудование</h5>
-                                <p class="text-muted mb-0">
-                                    Диагностика на аппаратах экспертного класса от ведущих мировых производителей.
-                                </p>
-                            </div>
-                        </div>
+        <!-- Контейнер для отзывов с прокруткой -->
+        <div class="reviews-container mb-5" style="max-height: 500px; overflow-y: auto; padding-right: 15px;">
+            <div class="row g-4" id="reviewsList">
+                <!-- Отзывы будут загружены здесь динамически -->
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Загрузка отзывов...</span>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
-                                <i class="bi bi-people fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-2">Междисциплинарный подход</h5>
-                                <p class="text-muted mb-0">
-                                    Сложные случаи разбираются консилиумом специалистов разных профилей.
-                                </p>
+        </div>
+        
+        <!-- Форма для нового отзыва -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-4">Оставьте свой отзыв</h4>
+                <form id="newReviewForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="authorName" class="form-label">Ваше имя *</label>
+                            <input type="text" class="form-control" id="authorName" name="author_name" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Оценка *</label>
+                            <div class="rating-input">
+                                <div class="stars">
+                                    <i class="bi bi-star" data-rating="1"></i>
+                                    <i class="bi bi-star" data-rating="2"></i>
+                                    <i class="bi bi-star" data-rating="3"></i>
+                                    <i class="bi bi-star" data-rating="4"></i>
+                                    <i class="bi bi-star" data-rating="5"></i>
+                                </div>
+                                <input type="hidden" id="rating" name="rating" required>
+                                <div class="rating-text mt-1 small text-muted">
+                                    <span id="ratingText">Выберите оценку</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
-                                <i class="bi bi-eye fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-2">Прозрачность</h5>
-                                <p class="text-muted mb-0">
-                                    Честные цены, подробные планы лечения, отсутствие скрытых платежей.
-                                </p>
-                            </div>
+                        
+                        <div class="col-12">
+                            <label for="content" class="form-label">Текст отзыва *</label>
+                            <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Отправить отзыв</button>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
-                                <i class="bi bi-clock-history fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-2">Экономия времени</h5>
-                                <p class="text-muted mb-0">
-                                    Минимальное ожидание приема, удобная онлайн-запись, быстрое получение результатов.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
-                                <i class="bi bi-shield-check fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-2">Безопасность</h5>
-                                <p class="text-muted mb-0">
-                                    Строгое соблюдение санитарных норм, стерилизация инструментов, безопасные процедуры.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
-                                <i class="bi bi-chat-square-heart fs-4"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-2">Поддержка</h5>
-                                <p class="text-muted mb-0">
-                                    Консультации после лечения, сопровождение пациентов, ответы на вопросы.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </section>
-
 
 
 

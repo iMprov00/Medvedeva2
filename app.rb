@@ -2,6 +2,8 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sqlite3'
+require 'sinatra/json'
+require 'json'
 
 
 configure :production do
@@ -555,4 +557,144 @@ end
 post '/admin/services/:id/delete' do
   Service.find(params[:id]).destroy
   redirect '/admin/prices'
+end
+
+
+# Маршруты для отзывов
+
+# Получение одобренных отзывов (для страницы)
+get '/reviews' do
+  content_type :json
+  Review.approved.recent.to_json(
+    only: [:id, :author_name, :content, :rating, :created_at],
+    methods: [:star_rating, :formatted_date]
+  )
+end
+
+# Создание нового отзыва (исправленная версия)
+# Создание нового отзыва (исправленная версия с обработкой кодировки)
+post '/reviews' do
+  content_type :json
+  
+  puts "DEBUG: Получен запрос на /reviews"
+  
+  begin
+    # Читаем тело запроса как бинарные данные
+    request_body = request.body.read.force_encoding('UTF-8')
+    puts "DEBUG: Тело запроса (UTF-8): #{request_body}"
+    
+    # Парсим JSON если это JSON запрос
+    if request.content_type && request.content_type.include?('application/json')
+      begin
+        json_params = JSON.parse(request_body)
+        puts "DEBUG: JSON параметры: #{json_params.inspect}"
+        
+        author_name = json_params['author_name'].to_s.force_encoding('UTF-8') if json_params['author_name']
+        content = json_params['content'].to_s.force_encoding('UTF-8') if json_params['content']
+        rating = json_params['rating'].to_i
+      rescue JSON::ParserError => e
+        puts "DEBUG: Ошибка парсинга JSON: #{e.message}"
+        return { success: false, error: 'Неверный формат данных' }.to_json
+      end
+    else
+      # Используем обычные параметры формы
+      puts "DEBUG: Используем params: #{params.inspect}"
+      author_name = params[:author_name].to_s.force_encoding('UTF-8') if params[:author_name]
+      content = params[:content].to_s.force_encoding('UTF-8') if params[:content]
+      rating = params[:rating].to_i
+    end
+    
+    puts "DEBUG: Данные отзыва - имя: #{author_name.inspect}, контент: #{content.inspect}, рейтинг: #{rating.inspect}"
+    
+    # Проверяем обязательные поля
+    if author_name.nil? || author_name.strip.empty?
+      return { success: false, errors: ["Имя не может быть пустым"] }.to_json
+    end
+    
+    if content.nil? || content.strip.empty?
+      return { success: false, errors: ["Текст отзыва не может быть пустым"] }.to_json
+    end
+    
+    if rating < 1 || rating > 5
+      return { success: false, errors: ["Оценка должна быть от 1 до 5"] }.to_json
+    end
+    
+    review = Review.new(
+      author_name: author_name.strip,
+      content: content.strip,
+      rating: rating
+    )
+
+    puts "DEBUG: Создан отзыв: #{review.inspect}"
+    puts "DEBUG: Валидность: #{review.valid?}"
+    
+    unless review.valid?
+      puts "DEBUG: Ошибки: #{review.errors.full_messages}"
+    end
+
+    if review.save
+      puts "DEBUG: Отзыв успешно сохранен, ID: #{review.id}"
+      { 
+        success: true, 
+        message: 'Спасибо за ваш отзыв! Он будет опубликован после проверки администратором.' 
+      }.to_json
+    else
+      puts "DEBUG: Ошибки валидации: #{review.errors.full_messages}"
+      { 
+        success: false, 
+        errors: review.errors.full_messages 
+      }.to_json
+    end
+    
+  rescue => e
+    puts "DEBUG: Исключение при сохранении отзыва: #{e.message}"
+    puts "DEBUG: Класс исключения: #{e.class}"
+    puts "DEBUG: Backtrace: #{e.backtrace.first(10)}"
+    
+    # Возвращаем простой JSON без русских символов в сообщении об ошибке
+    { 
+      success: false, 
+      error: 'Internal server error' 
+    }.to_json
+  end
+end
+
+# Админские маршруты для отзывов
+get '/admin/reviews' do
+  @reviews = Review.order(created_at: :desc)
+  erb :'admin/reviews', layout: false
+end
+
+# Одобрить отзыв
+post '/admin/reviews/:id/approve' do
+  review = Review.find(params[:id])
+  review.update(approved: true)
+  redirect '/admin/reviews'
+end
+
+# Сделать отзыв рекомендованным (featured)
+post '/admin/reviews/:id/feature' do
+  review = Review.find(params[:id])
+  review.update(featured: true)
+  redirect '/admin/reviews'
+end
+
+# Убрать из рекомендованных
+post '/admin/reviews/:id/unfeature' do
+  review = Review.find(params[:id])
+  review.update(featured: false)
+  redirect '/admin/reviews'
+end
+
+# Отказать в публикации
+post '/admin/reviews/:id/reject' do
+  review = Review.find(params[:id])
+  review.update(approved: false)
+  redirect '/admin/reviews'
+end
+
+# Удалить отзыв
+post '/admin/reviews/:id/delete' do
+  Review.find(params[:id]).destroy
+  redirect '/admin/reviews'
 end
