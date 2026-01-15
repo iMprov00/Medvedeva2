@@ -514,17 +514,59 @@ get '/admin/specialties/list' do
   Specialty.all.to_json(only: [:id, :name])
 end
 
-# Маршруты для категорий услуг
 post '/admin/categories' do
-  ServiceCategory.create(params[:category])
-  redirect '/admin/prices'
+  begin
+    puts "DEBUG: Создание категории с параметрами: #{params[:category].inspect}"
+    
+    # Обрабатываем позицию - преобразуем в целое число
+    category_params = params[:category].dup
+    if category_params[:position].present?
+      category_params[:position] = category_params[:position].to_i
+    end
+    
+    # Если позиция 0, установим nil чтобы вызвать before_validation callback
+    if category_params[:position].to_i.zero?
+      category_params[:position] = nil
+    end
+    
+    category = ServiceCategory.new(category_params)
+    
+    if category.save
+      puts "DEBUG: Категория создана: #{category.inspect}"
+      redirect '/admin/prices'
+    else
+      puts "DEBUG: Ошибки при создании категории: #{category.errors.full_messages}"
+      redirect '/admin/prices'
+    end
+  rescue => e
+    puts "DEBUG: Ошибка при создании категории: #{e.message}"
+    redirect '/admin/prices'
+  end
 end
 
-# Обновление категории
 patch '/admin/categories/:id' do
-  category = ServiceCategory.find(params[:id])
-  category.update(params[:category])
-  redirect '/admin/prices'
+  begin
+    puts "DEBUG: Обновление категории #{params[:id]} с параметрами: #{params[:category].inspect}"
+    
+    category = ServiceCategory.find(params[:id])
+    
+    # Обрабатываем позицию - преобразуем в целое число
+    category_params = params[:category].dup
+    if category_params[:position].present?
+      category_params[:position] = category_params[:position].to_i
+    end
+    
+    if category.update(category_params)
+      puts "DEBUG: Категория обновлена: #{category.inspect}"
+      redirect '/admin/prices'
+    else
+      puts "DEBUG: Ошибки при обновлении категории: #{category.errors.full_messages}"
+      redirect '/admin/prices'
+    end
+  rescue => e
+    puts "DEBUG: Ошибка при обновлении категории: #{e.message}"
+    redirect '/admin/prices'
+  end
 end
 
 post '/admin/categories/:id/delete' do

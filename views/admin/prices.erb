@@ -397,6 +397,10 @@
                 <div class="modal-body">
                     <form id="edit-category-form" method="post">
                         <input type="hidden" name="_method" value="patch">
+                        <div class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Текущая позиция: <span id="current-position">0</span>
+                        </div>
                         <div class="mb-3">
                             <label for="edit_category_name" class="form-label">Название категории *</label>
                             <input type="text" class="form-control" id="edit_category_name" name="category[name]" required>
@@ -574,6 +578,7 @@
         function editCategory(categoryId, categoryName, position) {
             document.getElementById('edit_category_name').value = categoryName;
             document.getElementById('edit_category_position').value = position || 0;
+            document.getElementById('current-position').textContent = position || 0;
             
             // Настраиваем форму
             const form = document.getElementById('edit-category-form');
