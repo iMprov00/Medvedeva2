@@ -1,4 +1,4 @@
-class CreateReviews < ActiveRecord::Migration[8.1]
+class CreateReviews < ActiveRecord::Migration[6.1]
   def change
     create_table :reviews do |t|
       t.string :author_name, null: false
