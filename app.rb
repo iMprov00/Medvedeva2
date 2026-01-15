@@ -698,3 +698,34 @@ post '/admin/reviews/:id/delete' do
   Review.find(params[:id]).destroy
   redirect '/admin/reviews'
 end
+
+
+# Маршрут для скачивания лицензии
+get '/download/license' do
+  file_path = File.join(settings.public_folder, 'images', 'docs', 'lic.pdf')
+  
+  if File.exist?(file_path)
+    send_file file_path, 
+              filename: 'Лицензия_клиники_Медведевой.pdf',
+              type: 'application/pdf',
+              disposition: 'attachment'
+  else
+    status 404
+    "Файл лицензии не найден"
+  end
+end
+
+# Маршрут для скачивания свидетельства
+get '/download/registration' do
+  file_path = File.join(settings.public_folder, 'images', 'docs', 'reg.webp')
+  
+  if File.exist?(file_path)
+    send_file file_path, 
+              filename: 'Свидетельство_клиники_Медведевой.webp',
+              type: 'image/webp',
+              disposition: 'attachment'
+  else
+    status 404
+    "Файл свидетельства не найден"
+  end
+end
