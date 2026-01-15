@@ -265,3 +265,31 @@
 .carousel-control-next:hover {
     background-color: rgba(229, 167, 255, 0.3);
 }
+
+/* Стили для миниатюр галереи */
+.gallery-thumbnail {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    object-fit: cover; /* Важно! Обрезает фото, сохраняя пропорции */
+    height: 200px;      /* Фиксированная высота для всех превью */
+    width: 100%;
+}
+
+.gallery-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Стили для модального окна с изображением */
+#imageModal .modal-body {
+  padding: 0;
+}
+
+#imageModal .modal-dialog {
+  max-width: 90vw; /* Максимальная ширина окна 90% от ширины экрана */
+}
+
+#imageModal #modalImage {
+  max-height: 90vh; /* Максимальная высота картинки 90% от высоты экрана */
+  width: auto;
+  object-fit: contain; /* Важно! Сохраняет пропорции и вмещает картинку */
+}
