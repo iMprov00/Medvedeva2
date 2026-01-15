@@ -1,139 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Услуги и цены - Админка - Клиника доктора Медведевой</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Inter', sans-serif;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 100;
-            padding: 48px 0 0;
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-            width: 200px;
-        }
-        .main-content {
-            margin-left: 200px;
-            padding: 20px;
-        }
-        .sidebar-sticky {
-            position: relative;
-            top: 0;
-            height: calc(100vh - 48px);
-            padding-top: .5rem;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-        .nav-link.active {
-            background-color: #e5a7ff;
-            color: white !important;
-        }
-        .btn-primary {
-            background-color: #e5a7ff;
-            border-color: #e5a7ff;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #d18cff;
-            border-color: #d18cff;
-        }
-        .btn-success {
-            background-color: #7effcd;
-            border-color: #7effcd;
-            color: #333;
-        }
-        .btn-success:hover {
-            background-color: #6aeebc;
-            border-color: #6aeebc;
-            color: #333;
-        }
-        .badge-secondary {
-            background-color: #6c757d;
-        }
-        .table-hover tbody tr:hover {
-            background-color: rgba(229, 167, 255, 0.1);
-        }
-        .service-code {
-            font-family: 'Courier New', monospace;
-            background-color: #f8f9fa;
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid #dee2e6;
-        }
-        .form-control-code {
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-        }
-    </style>
-</head>
-<body>
-    <!-- Навигация -->
-    <nav class="sidebar d-md-block bg-dark text-white">
-        <div class="sidebar-sticky pt-3">
-            <h6 class="sidebar-heading px-3 mb-3">
-                <span>Админ-панель</span>
-            </h6>
-            
-            <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/admin/messages">
-                        <i class="bi bi-envelope me-2"></i>
-                        Сообщения
-                        <% if defined?(Message) && Message.where(read: false).count > 0 %>
-                            <span class="badge bg-danger float-end"><%= Message.where(read: false).count %></span>
-                        <% end %>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/admin/doctors">
-                        <i class="bi bi-people me-2"></i>
-                        Врачи
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white active" href="/admin/prices">
-                        <i class="bi bi-currency-dollar me-2"></i>
-                        Услуги и цены
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white <%= 'active' if request.path == '/admin/specialties' %>" href="/admin/specialties">
-                        <i class="bi bi-tags me-2"></i>
-                        Специальности
-                    </a>
-                </li>
-                <li class="nav-item mt-4">
-                    <a class="nav-link text-white" href="/">
-                        <i class="bi bi-house me-2"></i>
-                        На сайт
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/admin/logout">
-                        <i class="bi bi-box-arrow-right me-2"></i>
-                        Выйти
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    
-    <!-- Основное содержимое -->
-    <main class="main-content">
+
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h2">Управление услугами и ценами</h1>
@@ -384,7 +249,7 @@
                 </div>
             <% end %>
         </div>
-    </main>
+
     
     <!-- Модальное окно для редактирования категории -->
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
@@ -749,5 +614,3 @@
             if (message) message.remove();
         }
     </script>
-</body>
-</html>

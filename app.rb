@@ -5,33 +5,47 @@ require 'sqlite3'
 require 'sinatra/json'
 require 'json'
 
+# =============================================
+# НАСТРОЙКИ ПРИЛОЖЕНИЯ
+# =============================================
+
+configure do
+  # Общие настройки
+  enable :sessions if development?
+  
+  # Настройки базы данных
+  set :database_file, 'config/database.yml'
+  
+  # Пути к статическим файлам
+  set :public_folder, File.dirname(__FILE__) + '/public'
+  set :views, File.dirname(__FILE__) + '/views'
+  
+  # Настройки защиты
+  set :protection, except: [:remote_token, :frame_options, :json_csrf]
+end
 
 configure :production do
   set :port, 4567
   set :bind, '0.0.0.0'
-  # ВАЖНО: Добавляем эту строку для разрешения запросов от Nginx
-  set :protection, :except => [:remote_token, :frame_options, :json_csrf]
+  set :environment, :production
 end
 
 configure :development do
   set :port, 4567
   set :bind, '0.0.0.0'
-  # Можно добавить и сюда для тестов
-  set :protection, :except => [:remote_token, :frame_options, :json_csrf]
+  set :environment, :development
+  set :show_exceptions, true
 end
 
-# Загружаем модели
+# Загрузка моделей
 Dir[File.join(__dir__, 'models', '*.rb')].each { |file| require file }
 
-set :database_file, 'config/database.yml'
-# Включаем поддержку статических файлов
-set :public_folder, File.dirname(__FILE__) + '/public'
+# =============================================
+# ПОМОЩНИКИ (HELPERS)
+# =============================================
 
-# Включаем поддержку шаблонов
-set :views, File.dirname(__FILE__) + '/views'
-
-# Хелпер для форматирования денег
 helpers do
+  # Форматирование денег в рубли
   def number_to_currency(number, options = {})
     defaults = { unit: '₽', format: '%n %u' }
     opts = defaults.merge(options)
@@ -42,7 +56,67 @@ helpers do
     
     opts[:format].gsub('%n', formatted_number).gsub('%u', opts[:unit])
   end
+  
+  # Склонение русских слов
+  def russian_plural(number, one, few, many)
+    abs_number = number.to_i.abs
+    mod10 = abs_number % 10
+    mod100 = abs_number % 100
+    
+    if mod100.between?(11, 14)
+      return many
+    elsif mod10 == 1
+      return one
+    elsif mod10.between?(2, 4)
+      return few
+    else
+      return many
+    end
+  end
+  
+  # Проверка, является ли запрос админским
+  def admin_request?
+    request.path.start_with?('/admin')
+  end
+  
+  # Определение лейаута в зависимости от пути
+  def layout_for_request
+    @layout || :layout
+  end
+
+  # Методы для работы с content_for (добавьте после других helpers)
+  def content_for(key, content = nil, &block)
+    @content_for ||= {}
+    if block_given?
+      @content_for[key] = capture(&block)
+    else
+      @content_for[key] = content
+    end
+    nil
+  end
+  
+  def yield_content(key)
+    @content_for[key] if @content_for && @content_for[key]
+  end
+  
+  def content_for?(key)
+    @content_for && @content_for.key?(key)
+  end
+  
+  def capture(&block)
+    old_buffer = @_out_buf
+    @_out_buf = ""
+    yield
+    result = @_out_buf
+    @_out_buf = old_buffer
+    result
+  end
+
 end
+
+# =============================================
+# МАРШРУТЫ ГЛАВНОГО САЙТА
+# =============================================
 
 # Главная страница
 get '/' do
@@ -50,14 +124,10 @@ get '/' do
 end
 
 # О клинике
-# Маршрут для страницы "О клинике"
 get '/about' do
-  # Путь к папке с фотографиями (относительно public)
   gallery_path = File.join(settings.public_folder, 'images', 'about')
   
-  # Получаем список файлов, проверяем существование папки
   if Dir.exist?(gallery_path)
-    # Фильтруем только изображения (jpg, jpeg, png, gif, webp)
     @gallery_images = Dir.children(gallery_path)
                          .select { |f| f.downcase.end_with?('.jpg', '.jpeg', '.png', '.gif', '.webp') }
                          .sort
@@ -73,18 +143,34 @@ get '/contacts' do
   erb :'pages/contacts'
 end
 
+# Врачи
 get '/doctors' do
   @doctors = Doctor.all.order(:last_name, :first_name)
   @specialties = Doctor.unique_specialties
   erb :'dynamic/doctors'
 end
 
+# Услуги и цены
 get '/prices' do
   @service_categories = ServiceCategory.includes(:services).order(:position).all
   erb :'pages/prices'
 end
 
-# AJAX поиск врачей
+# Документы
+get '/docs' do
+  erb :'pages/docs'
+end
+
+# Политика конфиденциальности
+get '/privacy' do
+  erb :'pages/privacy'
+end
+
+# =============================================
+# API ЭНДПОИНТЫ ДЛЯ АЯКС-ЗАПРОСОВ
+# =============================================
+
+# Поиск врачей
 post '/doctors/search' do
   content_type :json
   
@@ -93,7 +179,6 @@ post '/doctors/search' do
   
   @doctors = Doctor.search(query, specialty)
   
-  # Генерируем HTML для списка врачей, обернутый в колонки
   html = if @doctors.empty?
     '<div class="empty-state"><p>Врачи не найдены. Попробуйте изменить условия поиска.</p></div>'
   else
@@ -105,7 +190,7 @@ post '/doctors/search' do
   { html: html, count: @doctors.count }.to_json
 end
 
-# AJAX поиск услуг
+# Поиск услуг
 post '/services/search' do
   content_type :json
   
@@ -115,7 +200,6 @@ post '/services/search' do
   services = Service.search(query, category_id.presence)
   grouped_services = services.group_by(&:service_category)
   
-  # Генерируем HTML для списка услуг
   html = if grouped_services.empty?
     '<div class="empty-state"><p>Услуги не найдены. Попробуйте изменить условия поиска.</p></div>'
   else
@@ -129,7 +213,33 @@ post '/services/search' do
   { html: html, count: services.count }.to_json
 end
 
-# Обработка формы обратной связи
+# Получение всех специальностей
+get '/specialties' do
+  content_type :json
+  Specialty.all.to_json(only: [:id, :name])
+end
+
+# Получение специальностей врача
+get '/doctors/:id/specialties' do
+  content_type :json
+  doctor = Doctor.find(params[:id])
+  doctor.specialties.to_json(only: [:id, :name])
+end
+
+# Получение одобренных отзывов
+get '/reviews' do
+  content_type :json
+  Review.approved.recent.to_json(
+    only: [:id, :author_name, :content, :rating, :created_at],
+    methods: [:star_rating, :formatted_date]
+  )
+end
+
+# =============================================
+# ФОРМЫ ОБРАТНОЙ СВЯЗИ
+# =============================================
+
+# Обработка формы контактов
 post '/contacts' do
   content_type :json
   
@@ -152,29 +262,178 @@ post '/contacts' do
   end
 end
 
-get '/docs' do
-  erb :'pages/docs'
+# Создание записи на прием
+post '/appointments' do
+  content_type :json
+  
+  begin
+    appointment = Appointment.new(
+      patient_name: params[:patient_name],
+      birth_date: params[:birth_date],
+      phone: params[:phone],
+      email: params[:email],
+      doctor_id: params[:doctor_id].presence,
+      specialty_id: params[:specialty_id],
+      message: params[:message],
+      privacy_accepted: params[:privacy_accepted] == '1'
+    )
+
+    if appointment.save
+      { success: true, message: 'Запись успешно отправлена! Мы свяжемся с вами в ближайшее время.' }.to_json
+    else
+      { success: false, errors: appointment.errors.full_messages }.to_json
+    end
+  rescue => e
+    puts "Ошибка при создании записи: #{e.message}"
+    { success: false, error: 'Произошла ошибка при отправке записи' }.to_json
+  end
 end
 
-get '/privacy' do
-  erb :'pages/privacy'
+# Создание отзыва
+post '/reviews' do
+  content_type :json
+  
+  begin
+    # Определяем параметры в зависимости от типа запроса
+    if request.content_type && request.content_type.include?('application/json')
+      json_params = JSON.parse(request.body.read.force_encoding('UTF-8'))
+      author_name = json_params['author_name'].to_s.force_encoding('UTF-8')
+      content = json_params['content'].to_s.force_encoding('UTF-8')
+      rating = json_params['rating'].to_i
+    else
+      author_name = params[:author_name].to_s.force_encoding('UTF-8')
+      content = params[:content].to_s.force_encoding('UTF-8')
+      rating = params[:rating].to_i
+    end
+    
+    # Валидация
+    if author_name.nil? || author_name.strip.empty?
+      return { success: false, errors: ["Имя не может быть пустым"] }.to_json
+    end
+    
+    if content.nil? || content.strip.empty?
+      return { success: false, errors: ["Текст отзыва не может быть пустым"] }.to_json
+    end
+    
+    if rating < 1 || rating > 5
+      return { success: false, errors: ["Оценка должна быть от 1 до 5"] }.to_json
+    end
+    
+    review = Review.new(
+      author_name: author_name.strip,
+      content: content.strip,
+      rating: rating
+    )
+
+    if review.save
+      { 
+        success: true, 
+        message: 'Спасибо за ваш отзыв! Он будет опубликован после проверки администратором.' 
+      }.to_json
+    else
+      { 
+        success: false, 
+        errors: review.errors.full_messages 
+      }.to_json
+    end
+    
+  rescue => e
+    puts "Ошибка сохранения отзыва: #{e.message}"
+    { 
+      success: false, 
+      error: 'Internal server error' 
+    }.to_json
+  end
 end
 
-# Базовый маршрут для проверки
+# =============================================
+# СКАЧИВАНИЕ ФАЙЛОВ
+# =============================================
+
+# Скачивание лицензии
+get '/download/license' do
+  file_path = File.join(settings.public_folder, 'images', 'docs', 'lic.pdf')
+  
+  if File.exist?(file_path)
+    send_file file_path, 
+              filename: 'Лицензия_клиники_Медведевой.pdf',
+              type: 'application/pdf',
+              disposition: 'attachment'
+  else
+    status 404
+    "Файл лицензии не найден"
+  end
+end
+
+# Скачивание свидетельства
+get '/download/registration' do
+  file_path = File.join(settings.public_folder, 'images', 'docs', 'reg.webp')
+  
+  if File.exist?(file_path)
+    send_file file_path, 
+              filename: 'Свидетельство_клиники_Медведевой.webp',
+              type: 'image/webp',
+              disposition: 'attachment'
+  else
+    status 404
+    "Файл свидетельства не найден"
+  end
+end
+
+# =============================================
+# СЛУЖЕБНЫЕ МАРШРУТЫ
+# =============================================
+
+# Тестовый маршрут
 get '/test' do
   'Клиника доказательной медицины доктора Медведевой. Приложение работает!'
 end
 
-# ==================== АДМИНСКИЕ МАРШРУТЫ ====================
+# =============================================
+# АДМИНСКАЯ ПАНЕЛЬ
+# =============================================
 
-# Простая аутентификация для админки
+# Аутентификация для админки
 before '/admin*' do
+  # Аутентификация
   auth = Rack::Auth::Basic::Request.new(request.env)
   
   unless auth.provided? && auth.basic? && auth.credentials && auth.credentials == ['admin', '123']
     response['WWW-Authenticate'] = 'Basic realm="Админка"'
     halt 401, "Требуется авторизация\n"
   end
+  
+  # Устанавливаем переменные для лейаута
+  @admin_layout = true
+  @layout = :'admin/layout'
+end
+
+set :layout, :layout
+
+
+
+# API для получения количества новых уведомлений (должен быть ДО других маршрутов)
+get '/admin/notifications/count' do
+  content_type :json
+  
+  unread_messages = Message.where(status: 'new').count
+  new_appointments = Appointment.where(status: 'new').count
+  unread_count = unread_messages + new_appointments
+  
+  {
+    unread_messages: unread_messages,
+    new_appointments: new_appointments,
+    total: unread_count,
+    updated_at: Time.now.to_i
+  }.to_json
+end
+
+# -------------------------------------------------
+# ГЛАВНАЯ СТРАНИЦА АДМИНКИ
+# -------------------------------------------------
+
+get '/admin' do
+  redirect '/admin/messages'
 end
 
 get '/admin/logout' do
@@ -182,17 +441,20 @@ get '/admin/logout' do
   halt 401, "Вы вышли из админки. Обновите страницу для повторного входа.\n"
 end
 
-# Админская панель
-get '/admin' do
-  redirect '/admin/messages'
-end
+# -------------------------------------------------
+# УПРАВЛЕНИЕ СООБЩЕНИЯМИ И ЗАПИСЯМИ
+# -------------------------------------------------
 
-# Управление сообщениями
 get '/admin/messages' do
+  @title = "Сообщения и записи"
   @messages = Message.all
   @appointments = Appointment.all
-  erb :'admin/messages', layout: false
+  @breadcrumbs = [{ title: "Сообщения и записи" }]
+  
+  erb :'admin/messages', layout: :'admin/layout'
 end
+
+# Действия с сообщениями
 post '/admin/messages/:id/mark-read' do
   message = Message.find(params[:id])
   message.update(status: 'read')
@@ -227,226 +489,20 @@ post '/admin/appointments/:id/delete' do
   Appointment.find(params[:id]).destroy
   redirect '/admin/messages'
 end
-# Управление врачами
+
+# -------------------------------------------------
+# УПРАВЛЕНИЕ ВРАЧАМИ
+# -------------------------------------------------
+
 get '/admin/doctors' do
+  @title = "Управление врачами"
   @doctors = Doctor.all.order(:last_name, :first_name)
-  erb :'admin/doctors', layout: false
-end
-
-# Добавление врача
-# Добавление врача
-# Добавление врача
-post '/admin/doctors' do
-  begin
-    puts "DEBUG: Начало добавления врача"
-    puts "DEBUG: Параметры: #{params.inspect}"
-    
-    # Создаем врача
-    doctor = Doctor.new(
-      last_name: params[:doctor][:last_name],
-      first_name: params[:doctor][:first_name],
-      middle_name: params[:doctor][:middle_name],
-      experience_years: params[:doctor][:experience_years],
-      bio: params[:doctor][:bio],
-      photo_path: params[:doctor][:photo_path]
-    )
-    
-    puts "DEBUG: Врач создан, но не сохранен: #{doctor.inspect}"
-    
-    # Добавляем специальности
-    if params[:doctor][:specialty_ids]
-      puts "DEBUG: Выбранные специальности: #{params[:doctor][:specialty_ids]}"
-      params[:doctor][:specialty_ids].each do |specialty_id|
-        specialty = Specialty.find(specialty_id)
-        doctor.specialties << specialty
-      end
-    end
-    
-    # Сохраняем врача
-    if doctor.save
-      puts "DEBUG: Врач сохранен успешно, ID: #{doctor.id}"
-      
-      # Обработка загрузки фотографии
-      if params[:photo] && params[:photo][:tempfile]
-        photo = params[:photo]
-        photo_path = params[:doctor][:photo_path] || "/images/doctors/doctor_#{doctor.id}.jpg"
-        
-        puts "DEBUG: Загрузка фото в: #{photo_path}"
-        
-        # Создаем директорию если её нет
-        FileUtils.mkdir_p('public/images/doctors')
-        
-        # Сохраняем файл
-        File.open("public#{photo_path}", 'wb') do |f|
-          f.write(photo[:tempfile].read)
-        end
-        
-        # Обновляем путь к фото
-        doctor.update(photo_path: photo_path)
-        puts "DEBUG: Фото сохранено"
-      end
-      
-      redirect '/admin/doctors'
-    else
-      puts "DEBUG: Ошибка при сохранении врача: #{doctor.errors.full_messages}"
-      redirect '/admin/doctors'
-    end
-    
-  rescue => e
-    puts "DEBUG: Исключение при добавлении врача: #{e.message}"
-    puts "DEBUG: Backtrace: #{e.backtrace.first(10)}"
-    redirect '/admin/doctors'
-  end
-end
-
-# Удаление врача
-post '/admin/doctors/:id/delete' do
-  Doctor.find(params[:id]).destroy
-  redirect '/admin/doctors'
-end
-
-# Управление услугами
-get '/admin/prices' do
-  @service_categories = ServiceCategory.includes(:services).all
-  erb :'admin/prices', layout: false
-end
-
-# Добавление категории услуг
-post '/admin/categories' do
-  ServiceCategory.create(params[:category])
-  redirect '/admin/prices'
-end
-
-# Добавление услуги
-post '/admin/services' do
-  Service.create(params[:service])
-  redirect '/admin/prices'
-end
-
-# Удаление услуги
-post '/admin/services/:id/delete' do
-  Service.find(params[:id]).destroy
-  redirect '/admin/prices'
-end
-
-# Удаление категории
-post '/admin/categories/:id/delete' do
-  ServiceCategory.find(params[:id]).destroy
-  redirect '/admin/prices'
-end
-
-# Отметить сообщение как прочитанное
-post '/admin/messages/:id/read' do
-  message = Message.find(params[:id])
-  message.update(read: true)
-  redirect '/admin/messages'
-end
-
-# Удаление сообщения
-post '/admin/messages/:id/delete' do
-  Message.find(params[:id]).destroy
-  redirect '/admin/messages'
-end
-
-get '/admin/specialties' do
-  @specialties = Specialty.all
-  erb :'admin/specialties', layout: false
-end
-
-# Добавление специальности
-post '/admin/specialties' do
-  Specialty.create(name: params[:name])
-  redirect '/admin/specialties'
-end
-
-# Удаление специальности
-post '/admin/specialties/:id/delete' do
-  specialty = Specialty.find(params[:id])
+  @breadcrumbs = [{ title: "Врачи" }]
   
-  # Проверяем, используется ли специальность врачами
-  if specialty.doctors.empty?
-    specialty.destroy
-  else
-    # Можно добавить flash сообщение об ошибке
-  end
-  
-  redirect '/admin/specialties'
+  erb :'admin/doctors', layout: :'admin/layout'
 end
 
-
-# Хелпер для форматирования денег
-helpers do
-  def number_to_currency(number, options = {})
-    defaults = { unit: '₽', format: '%n %u' }
-    opts = defaults.merge(options)
-    
-    formatted_number = sprintf('%.2f', number.to_f)
-    formatted_number = formatted_number.gsub('.', ',')
-    formatted_number = formatted_number.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1 ")
-    
-    opts[:format].gsub('%n', formatted_number).gsub('%u', opts[:unit])
-  end
-  
-  # Функция для склонения русских слов
-  def russian_plural(number, one, few, many)
-    abs_number = number.to_i.abs
-    mod10 = abs_number % 10
-    mod100 = abs_number % 100
-    
-    if mod100.between?(11, 14)
-      return many
-    elsif mod10 == 1
-      return one
-    elsif mod10.between?(2, 4)
-      return few
-    else
-      return many
-    end
-  end
-end
-
-
-# Получение специальностей врача
-get '/doctors/:id/specialties' do
-  content_type :json
-  doctor = Doctor.find(params[:id])
-  doctor.specialties.to_json(only: [:id, :name])
-end
-
-post '/appointments' do
-  content_type :json
-  
-  begin
-    appointment = Appointment.new(
-      patient_name: params[:patient_name],
-      birth_date: params[:birth_date],
-      phone: params[:phone],
-      email: params[:email],
-      doctor_id: params[:doctor_id].presence,
-      specialty_id: params[:specialty_id],  # Здесь важно!
-      message: params[:message],
-      privacy_accepted: params[:privacy_accepted] == '1'
-    )
-
-    if appointment.save
-      { success: true, message: 'Запись успешно отправлена! Мы свяжемся с вами в ближайшее время.' }.to_json
-    else
-      { success: false, errors: appointment.errors.full_messages }.to_json
-    end
-  rescue => e
-    puts "Ошибка при создании записи: #{e.message}"
-    { success: false, error: 'Произошла ошибка при отправке записи' }.to_json
-  end
-end
-
-# Получение всех специальностей
-get '/specialties' do
-  content_type :json
-  Specialty.all.to_json(only: [:id, :name])
-end
-
-
-# Маршрут для получения данных врача для редактирования
+# Получение данных врача для редактирования (JSON)
 get '/admin/doctors/:id/edit' do
   content_type :json
   doctor = Doctor.find(params[:id])
@@ -457,7 +513,59 @@ get '/admin/doctors/:id/edit' do
   )
 end
 
-# Маршрут для обновления врача
+# Получение списка специальностей для выбора
+get '/admin/specialties/list' do
+  content_type :json
+  Specialty.all.to_json(only: [:id, :name])
+end
+
+# Добавление врача
+post '/admin/doctors' do
+  begin
+    doctor = Doctor.new(
+      last_name: params[:doctor][:last_name],
+      first_name: params[:doctor][:first_name],
+      middle_name: params[:doctor][:middle_name],
+      experience_years: params[:doctor][:experience_years],
+      bio: params[:doctor][:bio],
+      photo_path: params[:doctor][:photo_path]
+    )
+    
+    # Добавляем специальности
+    if params[:doctor][:specialty_ids]
+      params[:doctor][:specialty_ids].each do |specialty_id|
+        specialty = Specialty.find(specialty_id)
+        doctor.specialties << specialty
+      end
+    end
+    
+    if doctor.save
+      # Обработка загрузки фотографии
+      if params[:photo] && params[:photo][:tempfile]
+        photo = params[:photo]
+        photo_path = params[:doctor][:photo_path] || "/images/doctors/doctor_#{doctor.id}.jpg"
+        
+        FileUtils.mkdir_p('public/images/doctors')
+        
+        File.open("public#{photo_path}", 'wb') do |f|
+          f.write(photo[:tempfile].read)
+        end
+        
+        doctor.update(photo_path: photo_path)
+      end
+      
+      redirect '/admin/doctors'
+    else
+      redirect '/admin/doctors'
+    end
+    
+  rescue => e
+    puts "Ошибка при добавлении врача: #{e.message}"
+    redirect '/admin/doctors'
+  end
+end
+
+# Обновление врача
 post '/admin/doctors/:id/update' do
   begin
     doctor = Doctor.find(params[:id])
@@ -481,20 +589,16 @@ post '/admin/doctors/:id/update' do
     # Обработка новой фотографии
     if params[:photo] && params[:photo][:tempfile]
       photo = params[:photo]
-      
-      # Используем предоставленный путь или генерируем новый
       photo_path = params[:doctor][:photo_path] || "/images/doctors/doctor_#{doctor.id}_#{Time.now.to_i}.png"
       
       FileUtils.mkdir_p('public/images/doctors')
       
-      # Сохраняем файл
       File.open("public#{photo_path}", 'wb') do |f|
         f.write(photo[:tempfile].read)
       end
       
       doctor.photo_path = photo_path
     elsif params[:doctor][:photo_path] && params[:doctor][:photo_path].present?
-      # Если путь указан вручную
       doctor.photo_path = params[:doctor][:photo_path]
     end
     
@@ -508,17 +612,30 @@ post '/admin/doctors/:id/update' do
   end
 end
 
-# Маршрут для получения списка специальностей (JSON)
-get '/admin/specialties/list' do
-  content_type :json
-  Specialty.all.to_json(only: [:id, :name])
+# Удаление врача
+post '/admin/doctors/:id/delete' do
+  Doctor.find(params[:id]).destroy
+  redirect '/admin/doctors'
 end
 
+# -------------------------------------------------
+# УПРАВЛЕНИЕ УСЛУГАМИ И ЦЕНАМИ
+# -------------------------------------------------
+
+get '/admin/prices' do
+  @title = "Управление услугами и ценами"
+  @service_categories = ServiceCategory.includes(:services).all
+  @breadcrumbs = [{ title: "Услуги и цены" }]
+  
+  erb :'admin/prices', layout: :'admin/layout'
+end
+
+# Добавление категории услуг
 post '/admin/categories' do
   begin
-    puts "DEBUG: Создание категории с параметрами: #{params[:category].inspect}"
+    puts "Создание категории с параметрами: #{params[:category].inspect}"
     
-    # Обрабатываем позицию - преобразуем в целое число
+    # Обрабатываем позицию
     category_params = params[:category].dup
     if category_params[:position].present?
       category_params[:position] = category_params[:position].to_i
@@ -532,61 +649,63 @@ post '/admin/categories' do
     category = ServiceCategory.new(category_params)
     
     if category.save
-      puts "DEBUG: Категория создана: #{category.inspect}"
+      puts "Категория создана: #{category.inspect}"
       redirect '/admin/prices'
     else
-      puts "DEBUG: Ошибки при создании категории: #{category.errors.full_messages}"
+      puts "Ошибки при создании категории: #{category.errors.full_messages}"
       redirect '/admin/prices'
     end
   rescue => e
-    puts "DEBUG: Ошибка при создании категории: #{e.message}"
+    puts "Ошибка при создании категории: #{e.message}"
     redirect '/admin/prices'
   end
 end
 
+# Обновление категории
 patch '/admin/categories/:id' do
   begin
-    puts "DEBUG: Обновление категории #{params[:id]} с параметрами: #{params[:category].inspect}"
+    puts "Обновление категории #{params[:id]} с параметрами: #{params[:category].inspect}"
     
     category = ServiceCategory.find(params[:id])
     
-    # Обрабатываем позицию - преобразуем в целое число
+    # Обрабатываем позицию
     category_params = params[:category].dup
     if category_params[:position].present?
       category_params[:position] = category_params[:position].to_i
     end
     
     if category.update(category_params)
-      puts "DEBUG: Категория обновлена: #{category.inspect}"
+      puts "Категория обновлена: #{category.inspect}"
       redirect '/admin/prices'
     else
-      puts "DEBUG: Ошибки при обновлении категории: #{category.errors.full_messages}"
+      puts "Ошибки при обновлении категории: #{category.errors.full_messages}"
       redirect '/admin/prices'
     end
   rescue => e
-    puts "DEBUG: Ошибка при обновлении категории: #{e.message}"
+    puts "Ошибка при обновлении категории: #{e.message}"
     redirect '/admin/prices'
   end
 end
 
+# Удаление категории
 post '/admin/categories/:id/delete' do
   ServiceCategory.find(params[:id]).destroy
   redirect '/admin/prices'
 end
 
-# Маршруты для услуг
-post '/admin/services' do
-  Service.create(params[:service])
-  redirect '/admin/prices'
-end
-
-# Получение данных услуги для редактирования
+# Получение данных услуги для редактирования (JSON)
 get '/admin/services/:id/edit' do
   content_type :json
   service = Service.find(params[:id])
   service.to_json(
     only: [:id, :name, :description, :price, :duration_minutes, :service_code, :service_category_id, :active]
   )
+end
+
+# Добавление услуги
+post '/admin/services' do
+  Service.create(params[:service])
+  redirect '/admin/prices'
 end
 
 # Обновление услуги
@@ -596,115 +715,54 @@ patch '/admin/services/:id' do
   redirect '/admin/prices'
 end
 
+# Удаление услуги
 post '/admin/services/:id/delete' do
   Service.find(params[:id]).destroy
   redirect '/admin/prices'
 end
 
+# -------------------------------------------------
+# УПРАВЛЕНИЕ СПЕЦИАЛЬНОСТЯМИ
+# -------------------------------------------------
 
-# Маршруты для отзывов
-
-# Получение одобренных отзывов (для страницы)
-get '/reviews' do
-  content_type :json
-  Review.approved.recent.to_json(
-    only: [:id, :author_name, :content, :rating, :created_at],
-    methods: [:star_rating, :formatted_date]
-  )
+get '/admin/specialties' do
+  @title = "Управление специальностями"
+  @specialties = Specialty.all
+  @breadcrumbs = [{ title: "Специальности" }]
+  
+  erb :'admin/specialties', layout: :'admin/layout'
 end
 
-# Создание нового отзыва (исправленная версия)
-# Создание нового отзыва (исправленная версия с обработкой кодировки)
-post '/reviews' do
-  content_type :json
-  
-  puts "DEBUG: Получен запрос на /reviews"
-  
-  begin
-    # Читаем тело запроса как бинарные данные
-    request_body = request.body.read.force_encoding('UTF-8')
-    puts "DEBUG: Тело запроса (UTF-8): #{request_body}"
-    
-    # Парсим JSON если это JSON запрос
-    if request.content_type && request.content_type.include?('application/json')
-      begin
-        json_params = JSON.parse(request_body)
-        puts "DEBUG: JSON параметры: #{json_params.inspect}"
-        
-        author_name = json_params['author_name'].to_s.force_encoding('UTF-8') if json_params['author_name']
-        content = json_params['content'].to_s.force_encoding('UTF-8') if json_params['content']
-        rating = json_params['rating'].to_i
-      rescue JSON::ParserError => e
-        puts "DEBUG: Ошибка парсинга JSON: #{e.message}"
-        return { success: false, error: 'Неверный формат данных' }.to_json
-      end
-    else
-      # Используем обычные параметры формы
-      puts "DEBUG: Используем params: #{params.inspect}"
-      author_name = params[:author_name].to_s.force_encoding('UTF-8') if params[:author_name]
-      content = params[:content].to_s.force_encoding('UTF-8') if params[:content]
-      rating = params[:rating].to_i
-    end
-    
-    puts "DEBUG: Данные отзыва - имя: #{author_name.inspect}, контент: #{content.inspect}, рейтинг: #{rating.inspect}"
-    
-    # Проверяем обязательные поля
-    if author_name.nil? || author_name.strip.empty?
-      return { success: false, errors: ["Имя не может быть пустым"] }.to_json
-    end
-    
-    if content.nil? || content.strip.empty?
-      return { success: false, errors: ["Текст отзыва не может быть пустым"] }.to_json
-    end
-    
-    if rating < 1 || rating > 5
-      return { success: false, errors: ["Оценка должна быть от 1 до 5"] }.to_json
-    end
-    
-    review = Review.new(
-      author_name: author_name.strip,
-      content: content.strip,
-      rating: rating
-    )
+# Добавление специальности
+post '/admin/specialties' do
+  Specialty.create(name: params[:name])
+  redirect '/admin/specialties'
+end
 
-    puts "DEBUG: Создан отзыв: #{review.inspect}"
-    puts "DEBUG: Валидность: #{review.valid?}"
-    
-    unless review.valid?
-      puts "DEBUG: Ошибки: #{review.errors.full_messages}"
-    end
-
-    if review.save
-      puts "DEBUG: Отзыв успешно сохранен, ID: #{review.id}"
-      { 
-        success: true, 
-        message: 'Спасибо за ваш отзыв! Он будет опубликован после проверки администратором.' 
-      }.to_json
-    else
-      puts "DEBUG: Ошибки валидации: #{review.errors.full_messages}"
-      { 
-        success: false, 
-        errors: review.errors.full_messages 
-      }.to_json
-    end
-    
-  rescue => e
-    puts "DEBUG: Исключение при сохранении отзыва: #{e.message}"
-    puts "DEBUG: Класс исключения: #{e.class}"
-    puts "DEBUG: Backtrace: #{e.backtrace.first(10)}"
-    
-    # Возвращаем простой JSON без русских символов в сообщении об ошибке
-    { 
-      success: false, 
-      error: 'Internal server error' 
-    }.to_json
+# Удаление специальности
+post '/admin/specialties/:id/delete' do
+  specialty = Specialty.find(params[:id])
+  
+  # Проверяем, используется ли специальность врачами
+  if specialty.doctors.empty?
+    specialty.destroy
+  else
+    # Можно добавить flash сообщение об ошибке
   end
+  
+  redirect '/admin/specialties'
 end
 
-# Админские маршруты для отзывов
+# -------------------------------------------------
+# УПРАВЛЕНИЕ ОТЗЫВАМИ
+# -------------------------------------------------
+
 get '/admin/reviews' do
+  @title = "Управление отзывами"
   @reviews = Review.order(created_at: :desc)
-  erb :'admin/reviews', layout: false
+  @breadcrumbs = [{ title: "Отзывы" }]
+  
+  erb :'admin/reviews', layout: :'admin/layout'
 end
 
 # Одобрить отзыв
@@ -714,7 +772,7 @@ post '/admin/reviews/:id/approve' do
   redirect '/admin/reviews'
 end
 
-# Сделать отзыв рекомендованным (featured)
+# Сделать отзыв рекомендованным
 post '/admin/reviews/:id/feature' do
   review = Review.find(params[:id])
   review.update(featured: true)
@@ -741,33 +799,43 @@ post '/admin/reviews/:id/delete' do
   redirect '/admin/reviews'
 end
 
+# =============================================
+# ОБРАБОТЧИК ОШИБОК
+# =============================================
 
-# Маршрут для скачивания лицензии
-get '/download/license' do
-  file_path = File.join(settings.public_folder, 'images', 'docs', 'lic.pdf')
-  
-  if File.exist?(file_path)
-    send_file file_path, 
-              filename: 'Лицензия_клиники_Медведевой.pdf',
-              type: 'application/pdf',
-              disposition: 'attachment'
+# =============================================
+# ОБРАБОТЧИКИ ОШИБОК
+# =============================================
+
+not_found do
+  @title = "Страница не найдена"
+  status 404
+  erb :'errors/404'
+end
+
+error 500 do
+  @title = "Ошибка сервера"
+  @error_message = env['sinatra.error'].message if settings.development?
+  @error_backtrace = env['sinatra.error'].backtrace if settings.development?
+  status 500
+  erb :'errors/500'
+end
+
+# Обработка других ошибок
+error do
+  @title = "Произошла ошибка"
+  @error_message = env['sinatra.error'].message if settings.development?
+  @error_backtrace = env['sinatra.error'].backtrace if settings.development?
+  status 500
+  erb :'errors/500'
+end
+
+# Обработка ошибок ActiveRecord
+error ActiveRecord::RecordNotFound do
+  if admin_request?
+    redirect '/admin'
   else
-    status 404
-    "Файл лицензии не найден"
+    redirect '/'
   end
 end
 
-# Маршрут для скачивания свидетельства
-get '/download/registration' do
-  file_path = File.join(settings.public_folder, 'images', 'docs', 'reg.webp')
-  
-  if File.exist?(file_path)
-    send_file file_path, 
-              filename: 'Свидетельство_клиники_Медведевой.webp',
-              type: 'image/webp',
-              disposition: 'attachment'
-  else
-    status 404
-    "Файл свидетельства не найден"
-  end
-end

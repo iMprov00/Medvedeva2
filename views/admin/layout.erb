@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= @title || 'Админка - Клиника доктора Медведевой' %></title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+      /* Анимация пульсации для badge */
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+    </style>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            width: 200px;
+        }
+        .main-content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .nav-link.active {
+            background-color: #e5a7ff;
+            color: white !important;
+        }
+        .btn-primary {
+            background-color: #e5a7ff;
+            border-color: #e5a7ff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #d18cff;
+            border-color: #d18cff;
+        }
+        .btn-success {
+            background-color: #7effcd;
+            border-color: #7effcd;
+            color: #333;
+        }
+        .btn-success:hover {
+            background-color: #6aeebc;
+            border-color: #6aeebc;
+            color: #333;
+        }
+        
+        /* Общие стили для админки */
+        .badge-new {
+            background-color: #ff5757;
+            color: white;
+        }
+        .badge-read {
+            background-color: #57ff57;
+            color: white;
+        }
+        .badge-replied {
+            background-color: #5787ff;
+            color: white;
+        }
+        .badge-approved {
+            background-color: #57ff57;
+            color: white;
+        }
+        .badge-pending {
+            background-color: #ffbd57;
+            color: white;
+        }
+        .badge-featured {
+            background-color: #5787ff;
+            color: white;
+        }
+        
+        /* Анимации */
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="sidebar d-md-block bg-dark text-white">
+        <div class="sidebar-sticky pt-3">
+            <h6 class="sidebar-heading px-3 mb-3">
+                <span>Админ-панель</span>
+            </h6>
+            
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                      <a class="nav-link text-white <%= 'active' if request.path == '/admin/messages' %>" href="/admin/messages">
+                        <i class="bi bi-chat-left-text me-2"></i>
+                        Сообщения и записи
+                        <% if defined?(Message) && defined?(Appointment) %>
+                          <% unread_count = (Message.where(status: 'new').count + Appointment.where(status: 'new').count) %>
+                          <span id="notificationBadge" 
+                                class="badge bg-danger float-end" 
+                                style="<%= unread_count > 0 ? '' : 'display: none;' %>">
+                            <%= unread_count %>
+                          </span>
+                        <% end %>
+                      </a>
+                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white <%= 'active' if request.path == '/admin/doctors' %>" href="/admin/doctors">
+                        <i class="bi bi-people me-2"></i>
+                        Врачи
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white <%= 'active' if request.path == '/admin/prices' %>" href="/admin/prices">
+                        <i class="bi bi-currency-dollar me-2"></i>
+                        Услуги и цены
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white <%= 'active' if request.path == '/admin/specialties' %>" href="/admin/specialties">
+                        <i class="bi bi-tags me-2"></i>
+                        Специальности
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white <%= 'active' if request.path == '/admin/reviews' %>" href="/admin/reviews">
+                        <i class="bi bi-star me-2"></i>
+                        Отзывы
+                        <% if defined?(Review) %>
+                            <% pending_reviews = Review.where(approved: false).count %>
+                            <% if pending_reviews > 0 %>
+                                <span class="badge bg-danger float-end"><%= pending_reviews %></span>
+                            <% end %>
+                        <% end %>
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a class="nav-link text-white" href="/">
+                        <i class="bi bi-house me-2"></i>
+                        На сайт
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/logout">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Выйти
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Основное содержимое -->
+    <main class="main-content fade-in">
+        <div class="container-fluid">
+            <!-- Хлебные крошки (опционально) -->
+            <% if @breadcrumbs %>
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin">Админка</a></li>
+                        <% @breadcrumbs.each do |crumb| %>
+                            <% if crumb[:url] %>
+                                <li class="breadcrumb-item"><a href="<%= crumb[:url] %>"><%= crumb[:title] %></a></li>
+                            <% else %>
+                                <li class="breadcrumb-item active" aria-current="page"><%= crumb[:title] %></li>
+                            <% end %>
+                        <% end %>
+                    </ol>
+                </nav>
+            <% end %>
+            
+            <!-- Flash сообщения -->
+            <% if @flash %>
+                <div class="alert alert-<%= @flash[:type] %> alert-dismissible fade show" role="alert">
+                    <%= @flash[:message] %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% end %>
+            
+            <!-- Контент страницы -->
+            <%= yield %>
+        </div>
+    </main>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Общие скрипты для админки -->
+    <script>
+        // Автоматическое скрытие алертов через 5 секунд
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+        
+        // Подтверждение удаления
+        document.addEventListener('submit', function(e) {
+            if (e.target.matches('form[action*="/delete"]') || 
+                e.target.matches('form[action*="/cancel"]') ||
+                e.target.matches('form[action*="/reject"]')) {
+                if (!confirm('Вы уверены, что хотите выполнить это действие?')) {
+                    e.preventDefault();
+                }
+            }
+        });
+        
+        // Плавная загрузка страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем класс loaded для плавного появления
+            document.body.classList.add('loaded');
+            
+            // Инициализируем все тултипы
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+<audio id="notificationSound" preload="auto">
+  <source src="/sounds/notification.mp3" type="audio/mpeg">
+</audio>
+<script>
+  // Функция для обновления счетчика уведомлений
+  function updateNotificationCount() {
+    fetch('/admin/notifications/count', {
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const badge = document.querySelector('a[href="/admin/messages"] .badge');
+        const notificationCount = data.total;
+        
+        if (badge) {
+          if (notificationCount > 0) {
+            // Если есть новые уведомления
+            if (badge.textContent != notificationCount) {
+              badge.textContent = notificationCount;
+              badge.classList.remove('bg-secondary');
+              badge.classList.add('bg-danger');
+              badge.style.display = 'inline-block';
+              
+              // Пульсация только если число изменилось И выросло
+              if (parseInt(badge.textContent) < notificationCount) {
+                badge.style.animation = 'pulse 1s';
+                setTimeout(() => {
+                  badge.style.animation = '';
+                }, 1000);
+              }
+            }
+          } else {
+            // Если нет новых уведомлений, скрываем badge
+            badge.style.display = 'none';
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Ошибка при обновлении счетчика уведомлений:', error);
+      });
+  }
+  
+  // Инициализация при загрузке
+  document.addEventListener('DOMContentLoaded', function() {
+    // Получаем текущее значение счетчика из DOM
+    const initialBadge = document.querySelector('a[href="/admin/messages"] .badge');
+    let lastCount = initialBadge ? parseInt(initialBadge.textContent || 0) : 0;
+    
+    // Первое обновление через 2 секунды после загрузки
+    setTimeout(updateNotificationCount, 2000);
+    
+    // Затем каждые 30 секунд
+    const notificationInterval = setInterval(updateNotificationCount, 30000);
+    
+    // Обновляем при возвращении на вкладку
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        updateNotificationCount();
+      }
+    });
+    
+    // Обновляем при фокусе
+    window.addEventListener('focus', updateNotificationCount);
+    
+    // Очищаем интервал при закрытии страницы
+    window.addEventListener('beforeunload', function() {
+      clearInterval(notificationInterval);
+    });
+  });
+</script>
+
+
+
+
+
+    
+    <%= yield_content :styles %>
+    <%= yield_content :scripts %>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!-- Страница 500 -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="error-container">
+                <div class="error-number display-1 fw-bold text-danger mb-4">
+                    500
+                </div>
+                <h1 class="display-5 fw-bold mb-4">Ошибка сервера</h1>
+                <p class="lead text-muted mb-5">
+                    Произошла внутренняя ошибка сервера. Наша команда уже уведомлена о проблеме 
+                    и работает над её устранением.
+                </p>
+                
+                <!-- Информация для разработчика (только в режиме разработки) -->
+                <% if settings.development? && @error_message %>
+                    <div class="alert alert-warning text-start mb-4">
+                        <h5 class="alert-heading">Информация для разработчика:</h5>
+                        <p class="mb-2"><strong>Сообщение:</strong> <%= @error_message %></p>
+                        <% if @error_backtrace %>
+                            <details>
+                                <summary>Трассировка стека</summary>
+                                <pre class="mt-2 small bg-dark text-light p-3 rounded overflow-auto" style="max-height: 200px;"><%= @error_backtrace.join("\n") %></pre>
+                            </details>
+                        <% end %>
+                    </div>
+                <% end %>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="icon-wrapper icon-wrapper-primary mb-3">
+                                    <i class="bi bi-arrow-clockwise fs-2"></i>
+                                </div>
+                                <h5 class="fw-bold mb-3">Обновите страницу</h5>
+                                <p class="text-muted small mb-0">
+                                    Попробуйте обновить страницу через несколько минут. 
+                                    Возможно, проблема уже решена.
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <button onclick="location.reload()" class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Обновить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="icon-wrapper icon-wrapper-secondary mb-3">
+                                    <i class="bi bi-house fs-2"></i>
+                                </div>
+                                <h5 class="fw-bold mb-3">Вернитесь на главную</h5>
+                                <p class="text-muted small mb-0">
+                                    Перейдите на главную страницу и продолжите работу 
+                                    с сайтом оттуда.
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <a href="/" class="btn btn-primary w-100">
+                                    <i class="bi bi-house me-2"></i>На главную
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Контакты для поддержки -->
+                <div class="mt-5 pt-4 border-top">
+                    <h4 class="h5 mb-3">Если проблема повторяется:</h4>
+                    <p class="text-muted mb-3">
+                        Свяжитесь с нашей технической поддержкой и сообщите о проблеме:
+                    </p>
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                        <a href="tel:+79133650464" class="btn btn-outline-danger">
+                            <i class="bi bi-telephone me-2"></i>+7 (913) 365-04-64
+                        </a>
+                        <a href="mailto:info@medvedeva-clinic.ru" class="btn btn-outline-primary">
+                            <i class="bi bi-envelope me-2"></i>info@medvedeva-clinic.ru
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Время последней проверки -->
+                <div class="mt-4 pt-3 border-top">
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Время сервера: <%= Time.now.strftime('%d.%m.%Y %H:%M:%S') %>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-container {
+        padding: 3rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .error-number {
+        font-size: 8rem;
+        line-height: 1;
+        text-shadow: 4px 4px 0 rgba(255, 87, 87, 0.2);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 1; }
+    }
+    
+    .card {
+        transition: transform 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    @media (max-width: 768px) {
+        .error-number {
+            font-size: 6rem;
+        }
+        
+        .error-container {
+            padding: 2rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .error-number {
+            font-size: 4rem;
+            animation: none;
+        }
+        
+        .display-5 {
+            font-size: 1.8rem;
+        }
+        
+        .error-container {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    // Автоматическое обновление через 30 секунд при ошибке 500
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            console.log('Автоматическое обновление страницы...');
+            location.reload();
+        }, 30000);
+    });
+</script>
