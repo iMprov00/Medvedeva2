@@ -21,14 +21,7 @@ end
 # Загружаем модели
 Dir[File.join(__dir__, 'models', '*.rb')].each { |file| require file }
 
-# Настройка подключения к базе данных
-configure :development do
-  ActiveRecord::Base.establish_connection(
-    adapter: 'sqlite3',
-    database: 'db/development.sqlite3'
-  )
-end
-
+set :database_file, 'config/database.yml'
 # Включаем поддержку статических файлов
 set :public_folder, File.dirname(__FILE__) + '/public'
 
