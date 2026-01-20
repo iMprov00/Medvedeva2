@@ -7,8 +7,9 @@ gem 'sqlite3' # Для разработки. Для продакшена поз�
 gem 'puma'
 gem 'rackup'
 gem 'sinatra-contrib'
+gem 'dotenv'
 
 
-group :development do
+group :dev+elopment do
   gem 'pry'
 end

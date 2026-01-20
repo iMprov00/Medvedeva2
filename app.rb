@@ -1,4 +1,5 @@
 # app.rb
+require 'dotenv/load'
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sqlite3'
@@ -395,10 +396,15 @@ end
 
 # Аутентификация для админки
 before '/admin*' do
-  # Аутентификация
+  # Аутентификация через переменные окружения
   auth = Rack::Auth::Basic::Request.new(request.env)
   
-  unless auth.provided? && auth.basic? && auth.credentials && auth.credentials == ['admin', '123']
+  # Читаем из .env файла
+  admin_username = ENV['ADMIN_USERNAME'] || 'admin'        # если нет в .env, будет 'admin'
+  admin_password = ENV['ADMIN_PASSWORD'] || '123'         # если нет в .env, будет '123'
+  
+  unless auth.provided? && auth.basic? && auth.credentials && 
+         auth.credentials == [admin_username, admin_password]
     response['WWW-Authenticate'] = 'Basic realm="Админка"'
     halt 401, "Требуется авторизация\n"
   end
