@@ -17,12 +17,57 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (newReviewForm) {
         initReviewForm();
+        initReviewFormValidation();
     }
     
     if (document.querySelector('.rating-input')) {
         initRatingStars();
     }
 });
+
+/**
+ * Инициализация валидации формы отзыва
+ */
+function initReviewFormValidation() {
+    const reviewForm = document.getElementById('newReviewForm');
+    if (!reviewForm) return;
+    
+    // Добавляем обработчики для валидации в реальном времени
+    const inputs = reviewForm.querySelectorAll('input[required], textarea[required]');
+    
+    inputs.forEach(input => {
+        // Сброс ошибки при вводе
+        input.addEventListener('input', function() {
+            if (this.value.trim()) {
+                clearFieldError(this);
+            }
+        });
+        
+        // Валидация при потере фокуса
+        input.addEventListener('blur', function() {
+            validateReviewField(this);
+        });
+    });
+    
+    // Валидация чекбокса
+    const privacyCheckbox = document.getElementById('privacyReview');
+    if (privacyCheckbox) {
+        privacyCheckbox.addEventListener('change', function() {
+            validateReviewField(this);
+        });
+    }
+    
+    // Валидация рейтинга
+    const ratingInput = document.getElementById('rating');
+    if (ratingInput) {
+        // Скрытое поле рейтинга, валидация через клик на звезды
+        document.querySelectorAll('.rating-input .stars i').forEach(star => {
+            star.addEventListener('click', function() {
+                clearFieldError(ratingInput);
+            });
+        });
+    }
+}
 
 /**
  * Загрузка отзывов с сервера
@@ -181,6 +226,9 @@ function initRatingStars() {
             ratingInput.value = rating;
             highlightRatingStars(rating);
             ratingText.textContent = ratingTexts[rating];
+            
+            // Сбрасываем ошибку рейтинга если была
+            clearFieldError(ratingInput);
         });
     });
     
@@ -224,36 +272,35 @@ function initReviewForm() {
     const form = document.getElementById('newReviewForm');
     if (!form) return;
     
-    // Определяем переменные здесь, чтобы они были доступны во всей функции
-    const ratingInput = document.getElementById('rating');
-    const ratingTextElement = document.getElementById('ratingText');
-    
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        const authorName = document.getElementById('authorName').value.trim();
-        const content = document.getElementById('content').value.trim();
-        const rating = ratingInput ? ratingInput.value : '';
+        // Проверяем все обязательные поля
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!validateReviewField(field)) {
+                isValid = false;
+            }
+        });
+        
+        // Специальная проверка рейтинга
+        const ratingInput = document.getElementById('rating');
+        if (ratingInput && (!ratingInput.value || ratingInput.value < 1 || ratingInput.value > 5)) {
+            showFieldError(ratingInput, 'Пожалуйста, поставьте оценку от 1 до 5 звезд');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            showNotification('Пожалуйста, заполните все обязательные поля корректно', 'warning');
+            return;
+        }
+        
+        // Проверяем согласие с политикой конфиденциальности
         const privacyCheckbox = document.getElementById('privacyReview');
-        
-        // Валидация с использованием showNotification вместо alert
-        if (!authorName) {
-            showNotification('Пожалуйста, введите ваше имя', 'warning');
-            return;
-        }
-        
-        if (!content) {
-            showNotification('Пожалуйста, напишите текст отзыва', 'warning');
-            return;
-        }
-        
-        const ratingNum = parseInt(rating);
-        if (!ratingNum || ratingNum < 1 || ratingNum > 5) {
-            showNotification('Пожалуйста, поставьте оценку от 1 до 5 звезд', 'warning');
-            return;
-        }
-        
         if (!privacyCheckbox || !privacyCheckbox.checked) {
+            showFieldError(privacyCheckbox, 'Необходимо согласиться с политикой конфиденциальности');
             showNotification('Пожалуйста, подтвердите согласие с политикой конфиденциальности', 'warning');
             return;
         }
@@ -265,6 +312,11 @@ function initReviewForm() {
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Отправка...';
         
         try {
+            // Получаем данные формы
+            const authorName = document.getElementById('authorName').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const rating = document.getElementById('rating').value;
+            
             const response = await fetch('/reviews', {
                 method: 'POST',
                 headers: {
@@ -274,34 +326,229 @@ function initReviewForm() {
                 body: JSON.stringify({
                     author_name: authorName,
                     content: content,
-                    rating: ratingNum
+                    rating: parseInt(rating)
                 })
             });
             
             const result = await response.json();
             
             if (result.success) {
+                // Показываем успешное уведомление
                 showNotification(result.message, 'success');
+                
+                // Сбрасываем форму
                 form.reset();
                 
                 // Сбрасываем рейтинг
-                if (ratingInput) ratingInput.value = '';
-                if (ratingTextElement) ratingTextElement.textContent = 'Выберите оценку';
+                if (ratingInput) {
+                    ratingInput.value = '';
+                    highlightRatingStars(0);
+                }
                 
-                highlightRatingStars(0);
-                loadReviews(); // Перезагружаем отзывы
+                // Сбрасываем текст рейтинга
+                const ratingText = document.getElementById('ratingText');
+                if (ratingText) {
+                    ratingText.textContent = 'Выберите оценку';
+                }
+                
+                // Сбрасываем все ошибки
+                clearAllErrors(form);
+                
+                // Перезагружаем отзывы
+                loadReviews();
+                
             } else {
                 const errorMessage = result.errors ? result.errors.join(', ') : result.error;
                 showNotification(errorMessage || 'Произошла ошибка при отправке отзыва', 'danger');
+                
+                // Помечаем поля с ошибками на сервере
+                if (result.errors && Array.isArray(result.errors)) {
+                    result.errors.forEach(error => {
+                        // Попробуем найти поле по имени
+                        const fieldName = extractReviewFieldNameFromError(error);
+                        if (fieldName) {
+                            const field = form.querySelector(`[name="${fieldName}"]`);
+                            if (field) {
+                                showFieldError(field, error);
+                            }
+                        }
+                    });
+                }
             }
+            
         } catch (error) {
             console.error('Ошибка отправки отзыва:', error);
             showNotification('Произошла ошибка при отправке отзыва. Пожалуйста, попробуйте еще раз.', 'danger');
         } finally {
-            // Разблокируем кнопку
+            // Восстанавливаем кнопку
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         }
+    });
+}
+
+/**
+ * Валидация поля формы отзыва
+ */
+function validateReviewField(field) {
+    if (!field) return false;
+    
+    // Для чекбоксов проверяем checked
+    if (field.type === 'checkbox') {
+        if (!field.checked) {
+            showFieldError(field, 'Это поле обязательно для заполнения');
+            return false;
+        } else {
+            clearFieldError(field);
+            return true;
+        }
+    }
+    
+    // Для рейтинга (скрытое поле)
+    if (field.name === 'rating') {
+        if (!field.value || field.value < 1 || field.value > 5) {
+            showFieldError(field, 'Пожалуйста, поставьте оценку от 1 до 5 звезд');
+            return false;
+        } else {
+            clearFieldError(field);
+            return true;
+        }
+    }
+    
+    // Для остальных полей проверяем значение
+    if (!field.value.trim()) {
+        showFieldError(field, 'Это поле обязательно для заполнения');
+        return false;
+    }
+    
+    // Специальная проверка для имени (мин. 2 символа)
+    if (field.name === 'author_name' && field.value.trim().length < 2) {
+        showFieldError(field, 'Имя должно содержать минимум 2 символа');
+        return false;
+    }
+    
+    // Специальная проверка для текста отзыва (мин. 10 символов)
+    if (field.name === 'content' && field.value.trim().length < 10) {
+        showFieldError(field, 'Текст отзыва должен содержать минимум 10 символов');
+        return false;
+    }
+    
+    clearFieldError(field);
+    return true;
+}
+
+/**
+ * Извлечение имени поля из сообщения об ошибке для отзывов
+ */
+function extractReviewFieldNameFromError(error) {
+    const fieldMap = {
+        'имя': 'author_name',
+        'текст': 'content',
+        'отзыв': 'content',
+        'оценка': 'rating',
+        'рейтинг': 'rating',
+        'согласие': 'privacy_accepted'
+    };
+    
+    for (const [rusName, engName] of Object.entries(fieldMap)) {
+        if (error.toLowerCase().includes(rusName)) {
+            return engName;
+        }
+    }
+    
+    return null;
+}
+
+/**
+ * Показать ошибку для поля (общая функция)
+ */
+function showFieldError(field, message) {
+    if (!field) return;
+    
+    // Добавляем класс ошибки
+    field.classList.add('is-invalid');
+    
+    // Для скрытого поля рейтинга - показываем ошибку у контейнера звезд
+    if (field.type === 'hidden' && field.name === 'rating') {
+        const ratingContainer = document.querySelector('.rating-input');
+        if (ratingContainer) {
+            // Удаляем старую ошибку если есть
+            const existingError = ratingContainer.querySelector('.invalid-feedback');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Добавляем сообщение об ошибке
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'invalid-feedback d-block';
+            errorDiv.textContent = message;
+            
+            // Добавляем после контейнера звезд
+            const stars = ratingContainer.querySelector('.stars');
+            if (stars) {
+                stars.parentNode.insertBefore(errorDiv, stars.nextSibling);
+            }
+        }
+        return;
+    }
+    
+    // Удаляем старую ошибку если есть
+    const existingError = field.parentNode.querySelector('.invalid-feedback');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Добавляем сообщение об ошибке
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'invalid-feedback';
+    errorDiv.textContent = message;
+    
+    // Для чекбоксов добавляем после label
+    if (field.type === 'checkbox') {
+        const label = field.parentNode.querySelector('label');
+        if (label) {
+            label.parentNode.insertBefore(errorDiv, label.nextSibling);
+        } else {
+            field.parentNode.appendChild(errorDiv);
+        }
+    } else {
+        field.parentNode.appendChild(errorDiv);
+    }
+}
+
+/**
+ * Очистить ошибку поля (общая функция)
+ */
+function clearFieldError(field) {
+    if (!field) return;
+    
+    field.classList.remove('is-invalid');
+    
+    // Для скрытого поля рейтинга - очищаем ошибку у контейнера звезд
+    if (field.type === 'hidden' && field.name === 'rating') {
+        const ratingContainer = document.querySelector('.rating-input');
+        if (ratingContainer) {
+            const errorDiv = ratingContainer.querySelector('.invalid-feedback');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+        return;
+    }
+    
+    const errorDiv = field.parentNode.querySelector('.invalid-feedback');
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+}
+
+/**
+ * Очистить все ошибки в форме (общая функция)
+ */
+function clearAllErrors(form) {
+    const errorFields = form.querySelectorAll('.is-invalid');
+    errorFields.forEach(field => {
+        clearFieldError(field);
     });
 }
 

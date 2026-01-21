@@ -3,8 +3,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">Контакты</h1>
-                <p class="lead text-muted mb-0">Мы всегда рады помочь вам и ответить на ваши вопросы</p>
+                <h1 class="display-4 fw-bold mb-3 fade-in-up">Контакты</h1>
+                <p class="lead text-muted mb-0 fade-in-up" style="animation-delay: 0.1s">Мы всегда рады помочь вам и ответить на ваши вопросы</p>
             </div>
         </div>
     </div>
@@ -17,8 +17,8 @@
             <!-- Информация о клинике -->
             <div class="col-lg-6">
                 <div class="mb-5">
-                    <h2 class="display-6 fw-bold mb-4">Остались вопросы? Мы вам поможем</h2>
-                    <p class="text-muted mb-4">
+                    <h2 class="display-6 fw-bold mb-4 fade-in-up" style="animation-delay: 0.2s">Остались вопросы? Мы вам поможем</h2>
+                    <p class="text-muted mb-4 fade-in-up" style="animation-delay: 0.3s">
                         Запишитесь на прием, уточните информацию о лечении или задайте любой вопрос о здоровье вашего ребенка. 
                         Мы ответим оперативно и подробно.
                     </p>
@@ -26,7 +26,7 @@
                 
                 <!-- Контактные блоки -->
                 <div class="row g-4">
-                    <div class="col-md-6">
+                    <div class="col-md-6 fade-in-up" style="animation-delay: 0.4s">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-start gap-3 mb-3">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-6 fade-in-up" style="animation-delay: 0.5s">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-start gap-3 mb-3">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-6 fade-in-up" style="animation-delay: 0.6s">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-start gap-3 mb-3">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-6 fade-in-up" style="animation-delay: 0.7s">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-start gap-3 mb-3">
@@ -106,12 +106,10 @@
                         </div>
                     </div>
                 </div>
-                
-
             </div>
             
             <!-- Форма обратной связи -->
-            <div class="col-lg-6">
+            <div class="col-lg-6 fade-in-up" style="animation-delay: 0.8s">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body p-4">
                         <h3 class="h4 mb-4">Напишите нам прямо сейчас</h3>
@@ -120,22 +118,22 @@
                         <form id="contactForm">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="name" class="form-label">Ваше имя *</label>
+                                    <label for="name" class="form-label">Ваше имя</label>
                                     <input type="text" class="form-control" id="name" name="name" required>
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <label for="phone" class="form-label">Телефон *</label>
+                                    <label for="phone" class="form-label">Телефон</label>
                                     <input type="tel" class="form-control" id="phone" name="phone" required>
                                 </div>
                                 
                                 <div class="col-12">
-                                    <label for="email" class="form-label">Email *</label>
+                                    <label for="email" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
                                 
                                 <div class="col-12">
-                                    <label for="subject" class="form-label">Тема *</label>
+                                    <label for="subject" class="form-label">Тема</label>
                                     <select class="form-select" id="subject" name="subject" required>
                                         <option value="">Выберите тему</option>
                                         <option value="Консультация">Консультация</option>
@@ -147,7 +145,7 @@
                                 </div>
                                 
                                 <div class="col-12">
-                                    <label for="message" class="form-label">Сообщение *</label>
+                                    <label for="message" class="form-label">Сообщение</label>
                                     <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
                                 </div>
                                 
@@ -179,50 +177,123 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-6 fw-bold mb-4 text-center">Как добраться</h2>
+                <h2 class="display-6 fw-bold mb-4 text-center fade-in-up" style="animation-delay: 0.9s">Как добраться</h2>
                 
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm fade-in-up" style="animation-delay: 1s">
                     <div class="card-body p-0">
                         <!-- Карта -->
                         <div class="position-relative">
                             <div id="map" class="rounded-top" style="height: 400px; width: 100%;">
                             <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A3271854cc32f28ece92a708a0d6ed2a5aca19c4f85608b8da95dd56852b00d28&width=100%&height=400&lang=ru_RU&scroll=true"></script></div>
                         </div>
-                        
-                        <!-- Инструкции -->
-<%#                         <div class="p-4">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <h5 class="fw-bold mb-3">Общественный транспорт</h5>
-                                    <div class="d-flex align-items-start gap-2 mb-2">
-                                        <i class="bi bi-subway text-primary mt-1"></i>
-                                        <div>
-                                            <div class="fw-semibold">Метро "Примерная"</div>
-                                            <small class="text-muted">5 минут пешком от выхода из метро</small>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-start gap-2">
-                                        <i class="bi bi-bus-front text-primary mt-1"></i>
-                                        <div>
-                                            <div class="fw-semibold">Автобусы: 123, 456</div>
-                                            <small class="text-muted">Остановка "Клиническая"</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <h5 class="fw-bold mb-3">Парковка</h5>
-                                    <ul class="list-unstyled text-muted">
-                                        <li class="mb-1">✓ Бесплатная парковка во дворе</li>
-                                        <li class="mb-1">✓ 15 машиномест для пациентов</li>
-                                        <li>✓ Крытая охраняемая парковка</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> %>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<style>
+/* CSS для чередования цветов и анимаций */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для валидации формы */
+.form-control.is-invalid,
+.form-select.is-invalid,
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid {
+    border-color: #dc3545 !important;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.form-check-input.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.form-check-input.is-invalid:checked {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.form-check-input.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.invalid-feedback {
+    display: block !important;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+.form-check .invalid-feedback {
+    margin-top: 0;
+}
+
+/* Плавные переходы для валидации */
+.form-control,
+.form-select,
+.form-check-input {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Анимация для появления ошибок */
+.invalid-feedback {
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+/* Стили для обязательных полей */
+.form-label:after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Анимация для кнопок */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .fade-in-up {
+        animation: fadeInUp 0.4s ease forwards;
+    }
+    
+    .gallery-thumbnail {
+        height: 150px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gallery-thumbnail {
+        height: 120px;
+    }
+}
+</style>
