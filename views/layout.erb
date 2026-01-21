@@ -19,117 +19,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- PhotoSwipe CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css">
-    <!-- Кастомные стили Bootstrap -->
-    <style>
-        :root {
-            --bs-primary: #77e0b2;
-            --bs-secondary: #e5a7ff;
-            --bs-primary-rgb: 126, 255, 205;
-            --bs-secondary-rgb: 229, 167, 255;
-        }
-        
-        .btn-primary {
-            background-color: var(--bs-secondary);
-            border-color: var(--bs-secondary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #d18cff;
-            border-color: #d18cff;
-        }
-        
-        .btn-outline-primary {
-            color: var(--bs-secondary);
-            border-color: var(--bs-secondary);
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--bs-secondary);
-            border-color: var(--bs-secondary);
-        }
-        
-        .text-primary {
-            color: var(--bs-secondary) !important;
-        }
-        
-        .border-primary {
-            border-color: var(--bs-secondary) !important;
-        }
-        
-        .bg-primary {
-            background-color: var(--bs-primary) !important;
-        }
-        
-        .bg-secondary-light {
-            background-color: rgba(229, 167, 255, 0.08) !important;
-        }
-        
-        .text-accent {
-            color: var(--bs-primary) !important;
-        }
-        
-        .bg-accent-light {
-            background-color: rgba(126, 255, 205, 0.1) !important;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        /* Плавный скролл для якорей */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Стили для выпадающего меню */
-        .dropdown-menu {
-            border: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 10px 0;
-            margin-top: 10px;
-            min-width: 200px;
-        }
-        
-        .dropdown-item {
-            padding: 10px 20px;
-            font-weight: 500;
-            transition: all 0.2s;
-            color: #333;
-        }
-        
-        .dropdown-item:hover {
-            background-color: rgba(229, 167, 255, 0.1);
-            color: #e5a7ff;
-            padding-left: 25px;
-        }
-        
-        .dropdown-item.active {
-            background-color: rgba(229, 167, 255, 0.15);
-            color: #e5a7ff;
-        }
-        
-        .dropdown-divider {
-            margin: 5px 0;
-        }
-        
-        /* Стили для навигации на мобильных */
-        @media (max-width: 991.98px) {
-            .dropdown-menu {
-                box-shadow: none;
-                border-radius: 0;
-                border: none;
-                padding-left: 15px;
-            }
-            
-            .dropdown-item {
-                padding: 8px 15px;
-            }
-        }
-    </style>
     
     <!-- Мета-теги -->
     <meta name="description" content="Клиника доказательной медицины доктора Медведевой. Современный подход к лечению, основанный на научных данных и индивидуальном подходе к каждому пациенту.">
@@ -154,16 +46,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-        <% unless request.path.start_with?('/admin') %>
+    <% unless request.path.start_with?('/admin') %>
     <!-- Шапка -->
     <header class="header sticky-top bg-white shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light py-3">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="/">
-                        <div class="me-3">
-                            <img src="/images/logo.png" alt="Логотип клиники доктора Медведевой" 
-                                 height="80" width="80" class="img-fluid">
-                        </div>
+                    <div class="me-3">
+                        <img src="/images/logo.png" alt="Логотип клиники доктора Медведевой" 
+                             height="80" width="80" class="img-fluid">
+                    </div>
                     <div>
                         <span class="fw-bold fs-5 text-dark">Клиника доктора Медведевой</span><br>
                         <small class="text-muted">Доказательная медицина</small>
@@ -199,6 +91,7 @@
                         <li class="nav-item">
                             <a class="nav-link <%= 'active fw-bold' if request.path == '/doctors' %>" href="/doctors">Врачи</a>
                         </li>
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle <%= 'active fw-bold' if request.path == '/prices' %>" 
                                href="#" 
@@ -212,6 +105,7 @@
                                 <li><a class="dropdown-item" href="/prices#promotions">Акции</a></li>
                             </ul>
                         </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link <%= 'active fw-bold' if request.path == '/contacts' %>" href="/contacts">Контакты</a>
                         </li>
@@ -284,17 +178,6 @@
                         <p class="mb-2">Сб: 9:15 - 15:00</p>
                         <p class="mb-3">Вс: Выходной</p>
                     </div>
-                    <%# <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle p-2">
-                            <i class="bi bi-telegram"></i>
-                        </a>
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle p-2">
-                            <i class="bi bi-vimeo"></i>
-                        </a>
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle p-2">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                    </div> %>
                 </div>
             </div>
             
@@ -313,9 +196,9 @@
             </div>
         </div>
     </footer>
-        <% else %>
-    <!-- Для админки - только контент -->
-    <%= yield %>
+    <% else %>
+        <!-- Для админки - только контент -->
+        <%= yield %>
     <% end %>
     
     <!-- Модальное окно для записи -->
@@ -360,7 +243,6 @@
                                 <label for="specialtiesSelect" class="form-label">Специальность врача *</label>
                                 <select class="form-select" id="specialtiesSelect" name="specialty_id" required>
                                     <option value="">Выберите специальность</option>
-                                    <!-- Опции будут загружаться динамически -->
                                 </select>
                             </div>
                             
@@ -388,19 +270,6 @@
         </div>
     </div>
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- PhotoSwipe JS -->
-    <script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.umd.min.js"></script>
-    
-    <!-- Наш JS -->
-    <script src="/js/app.js"></script>
-    <script src="/js/image-modal.js"></script>
-    <script src="/js/reviews.js"></script>
-    <script src="/js/contacts.js"></script>
-    <script src="/js/doctors.js"></script>
-    <script src="/js/prices.js"></script>
-
     <!-- Модальное окно для просмотра фотографий -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -414,26 +283,32 @@
             </div>
         </div>
     </div>
-
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- PhotoSwipe JS -->
+    <script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.umd.min.js"></script>
+    
+    <!-- Наш JS -->
+    <script src="/js/app.js"></script>
+    <script src="/js/image-modal.js"></script>
+    <script src="/js/reviews.js"></script>
+    <script src="/js/contacts.js"></script>
+    <script src="/js/doctors.js"></script>
+    <script src="/js/prices.js"></script>
+    
     <!-- JavaScript для выделения активного пункта в выпадающем меню -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Получаем текущий URL
             const currentUrl = window.location.pathname + window.location.hash;
-            
-            // Находим все пункты меню
             const menuItems = document.querySelectorAll('.dropdown-item');
             
-            // Убираем активный класс у всех пунктов
             menuItems.forEach(item => {
                 item.classList.remove('active');
             });
             
-            // Проверяем, есть ли якорь в URL
             if (window.location.hash) {
                 const hash = window.location.hash;
-                
-                // Находим соответствующий пункт меню
                 menuItems.forEach(item => {
                     if (item.getAttribute('href') === hash || 
                         item.getAttribute('href') === '/about' + hash) {
@@ -442,7 +317,6 @@
                 });
             }
             
-            // Также проверяем для основного пункта "О нас"
             if (currentUrl === '/about' || currentUrl === '/about#') {
                 const aboutItem = document.querySelector('.dropdown-item[href="/about"]');
                 if (aboutItem) {
@@ -451,6 +325,5 @@
             }
         });
     </script>
-
 </body>
 </html>

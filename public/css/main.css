@@ -1,7 +1,17 @@
-/* Основные переменные и стили */
+/* ==========================================================================
+   Основные переменные и глобальные стили
+   ========================================================================== */
+
 :root {
+    /* Цветовая палитра */
     --primary-accent: #365046;
     --secondary-accent: #e5a7ff;
+    --bs-primary: #77e0b2;
+    --bs-secondary: #e5a7ff;
+    --bs-primary-rgb: 126, 255, 205;
+    --bs-secondary-rgb: 229, 167, 255;
+    
+    /* Дополнительные цвета */
     --primary-light: rgba(126, 255, 205, 0.1);
     --secondary-light: rgba(229, 167, 255, 0.1);
     --text-dark: #1a1a1a;
@@ -10,12 +20,20 @@
     --background-light: #f8fafc;
     --white: #ffffff;
     --border-color: #e2e8f0;
-    --border-radius: 12px;
+    
+    /* Тени */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.05);
+    
+    /* Прочие */
+    --border-radius: 12px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ==========================================================================
+   Базовые стили и кастомные классы Bootstrap
+   ========================================================================== */
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -23,7 +41,56 @@ body {
     line-height: 1.6;
 }
 
-/* Кастомные утилиты */
+/* Кастомные классы для Bootstrap */
+.btn-primary {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #d18cff;
+    border-color: #d18cff;
+}
+
+.btn-outline-primary {
+    color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.text-primary {
+    color: var(--bs-secondary) !important;
+}
+
+.border-primary {
+    border-color: var(--bs-secondary) !important;
+}
+
+.bg-primary {
+    background-color: var(--bs-primary) !important;
+}
+
+.bg-secondary-light {
+    background-color: rgba(229, 167, 255, 0.08) !important;
+}
+
+.text-accent {
+    color: var(--bs-primary) !important;
+}
+
+.bg-accent-light {
+    background-color: rgba(126, 255, 205, 0.1) !important;
+}
+
+/* ==========================================================================
+   Утилиты и вспомогательные классы
+   ========================================================================== */
+
 .hover-shadow:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
@@ -46,13 +113,15 @@ body {
     padding: 5rem 0;
 }
 
-@media (max-width: 768px) {
-    .section-padding {
-        padding: 3rem 0;
-    }
+.highlight-bg {
+    background-color: var(--primary-light);
+    border-left: 4px solid var(--primary-accent);
 }
 
-/* Анимации */
+/* ==========================================================================
+   Анимации
+   ========================================================================== */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -64,17 +133,68 @@ body {
     }
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .fade-in-up {
     animation: fadeInUp 0.6s ease-out;
 }
 
-/* Стили для выделения */
-.highlight-bg {
-    background-color: var(--primary-light);
-    border-left: 4px solid var(--primary-accent);
+.category-section {
+    animation: fadeIn 0.3s ease;
 }
 
-/* Кастомный скроллбар */
+/* ==========================================================================
+   Общие стили для выпадающего меню
+   ========================================================================== */
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px 0;
+    margin-top: 10px;
+    min-width: 200px;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.2s;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(229, 167, 255, 0.1);
+    color: #e5a7ff;
+    padding-left: 25px;
+}
+
+.dropdown-item.active {
+    background-color: rgba(229, 167, 255, 0.15);
+    color: #e5a7ff;
+}
+
+.dropdown-divider {
+    margin: 5px 0;
+}
+
+/* ==========================================================================
+   Плавный скролл и кастомный скроллбар
+   ========================================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -92,3 +212,25 @@ body {
     background: #d18cff;
 }
 
+/* ==========================================================================
+   Медиа-запросы
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 3rem 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .dropdown-menu {
+        box-shadow: none;
+        border-radius: 0;
+        border: none;
+        padding-left: 15px;
+    }
+    
+    .dropdown-item {
+        padding: 8px 15px;
+    }
+}

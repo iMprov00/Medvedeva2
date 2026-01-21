@@ -1,4 +1,8 @@
-/* Карточки */
+/* ==========================================================================
+   КАРТОЧКИ
+   ========================================================================== */
+
+/* Карточки врачей */
 .doctor-card {
     border: none;
     border-radius: var(--border-radius);
@@ -32,7 +36,28 @@
     border-color: var(--secondary-accent);
 }
 
-/* Иконки */
+/* Карточки акций */
+.discount-card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.discount-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.discount-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+/* ==========================================================================
+   ИКОНКИ
+   ========================================================================== */
+
 .icon-wrapper {
     width: 64px;
     height: 64px;
@@ -53,13 +78,34 @@
     color: var(--secondary-accent);
 }
 
-/* Формы */
+/* ==========================================================================
+   ФОРМЫ И ИНПУТЫ
+   ========================================================================== */
+
 .form-control:focus {
     border-color: var(--secondary-accent);
     box-shadow: 0 0 0 0.25rem rgba(229, 167, 255, 0.25);
 }
 
-/* Списки */
+/* Рейтинг (звезды) */
+.rating-input .stars {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.rating-input .stars i {
+    margin-right: 2px;
+    transition: color 0.2s;
+}
+
+.rating-input .stars i:hover {
+    color: #ffc107 !important;
+}
+
+/* ==========================================================================
+   СПИСКИ
+   ========================================================================== */
+
 .list-styled {
     list-style: none;
     padding-left: 0;
@@ -79,7 +125,10 @@
     font-weight: bold;
 }
 
-/* Таблицы */
+/* ==========================================================================
+   ТАБЛИЦЫ
+   ========================================================================== */
+
 .table-custom th {
     font-weight: 600;
     color: var(--text-dark);
@@ -90,7 +139,41 @@
     vertical-align: middle;
 }
 
-/* Аккордеоны */
+/* Стили для таблицы услуг */
+.service-row {
+    transition: all 0.2s ease;
+}
+
+.service-row:hover {
+    background-color: rgba(229, 167, 255, 0.05) !important;
+    transform: translateX(5px);
+}
+
+/* Код услуги */
+.service-code {
+    font-family: 'Courier New', monospace;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 0.85em;
+    color: #495057;
+    cursor: help;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.service-code:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ==========================================================================
+   АККОРДЕОНЫ
+   ========================================================================== */
+
 .accordion-custom .accordion-button {
     font-weight: 600;
     color: var(--text-dark);
@@ -108,86 +191,56 @@
     border-color: var(--secondary-accent);
 }
 
-/* Секции */
-.hero-section {
-    position: relative;
-    overflow: hidden;
+/* ==========================================================================
+   ГАЛЕРЕЯ И ИЗОБРАЖЕНИЯ
+   ========================================================================== */
+
+/* Галерея клиники */
+.gallery-thumbnail {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
 }
+
+.gallery-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Модальное окно с изображением */
+#imageModal .modal-body {
+    padding: 0;
+}
+
+#imageModal .modal-dialog {
+    max-width: 90vw;
+}
+
+#imageModal #modalImage {
+    max-height: 90vh;
+    width: auto;
+    object-fit: contain;
+}
+
+/* ==========================================================================
+   ВРАЧИ И ФОТО
+   ========================================================================== */
 
 /* Сетка врачей */
 .doctors-grid .col-md-6 {
     margin-bottom: 2rem;
 }
 
-@media (max-width: 768px) {
-    .doctors-grid .col-md-6 {
-        margin-bottom: 1.5rem;
-    }
+/* Чередование цветов фона для врачей */
+.doctor-card:nth-child(odd) .doctor-photo-container {
+    background-color: #77e0b2;
 }
 
-
-/* Стили для страницы услуг */
-.category-section {
-    animation: fadeIn 0.3s ease;
+.doctor-card:nth-child(even) .doctor-photo-container {
+    background-color: #e5a8e0;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Анимация строк таблицы */
-.service-row {
-    transition: all 0.2s ease;
-}
-
-.service-row:hover {
-    background-color: rgba(229, 167, 255, 0.05) !important;
-    transform: translateX(5px);
-}
-
-/* Стили для иконок */
-.icon-wrapper {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-}
-
-.icon-wrapper-primary {
-    background-color: rgba(126, 255, 205, 0.15);
-    color: var(--bs-primary);
-}
-
-.icon-wrapper-secondary {
-    background-color: rgba(229, 167, 255, 0.15);
-    color: var(--bs-secondary);
-}
-
-/* Адаптивная таблица */
-@media (max-width: 768px) {
-    .table-responsive table {
-        font-size: 0.9rem;
-    }
-    
-    .table-responsive th,
-    .table-responsive td {
-        padding: 0.75rem 0.5rem;
-    }
-}
-
-/* Фоны для фото врачей */
-.bg-doctor-0 {
-    background-color: #66d9b2 !important;
-}
-
-.bg-doctor-1 {
-    background-color: #c9a8e0 !important;
-}
-
-/* Контейнер для фото врача */
 .doctor-photo-container {
     position: relative;
     overflow: hidden;
@@ -215,86 +268,10 @@
     transform: scale(1.05);
 }
 
+/* ==========================================================================
+   ОТЗЫВЫ
+   ========================================================================== */
 
-/* Адаптивный контейнер для карусели */
-.gallery-image-container {
-    position: relative;
-    padding-top: 56.25%; /* Соотношение 16:9 (можно изменить на 75% для 4:3) */
-    overflow: hidden;
-    background-color: #f8f9fa;
-}
-
-.gallery-image-container img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Все изображение видно */
-    object-position: center;
-    background-color: white; /* Фон для изображений с прозрачностью */
-}
-
-/* Кастомизация индикаторов и кнопок */
-.carousel-indicators button {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--bs-secondary);
-    opacity: 0.5;
-}
-
-.carousel-indicators button.active {
-    opacity: 1;
-    transform: scale(1.2);
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    width: 50px;
-    height: 50px;
-    background-color: rgba(229, 167, 255, 0.15); /* Ваш цвет secondary */
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0 15px;
-    transition: all 0.3s ease;
-}
-
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-    background-color: rgba(229, 167, 255, 0.3);
-}
-
-/* Стили для миниатюр галереи */
-.gallery-thumbnail {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    object-fit: cover; /* Важно! Обрезает фото, сохраняя пропорции */
-    height: 200px;      /* Фиксированная высота для всех превью */
-    width: 100%;
-}
-
-.gallery-thumbnail:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-/* Стили для модального окна с изображением */
-#imageModal .modal-body {
-  padding: 0;
-}
-
-#imageModal .modal-dialog {
-  max-width: 90vw; /* Максимальная ширина окна 90% от ширины экрана */
-}
-
-#imageModal #modalImage {
-  max-height: 90vh; /* Максимальная высота картинки 90% от высоты экрана */
-  width: auto;
-  object-fit: contain; /* Важно! Сохраняет пропорции и вмещает картинку */
-}
-
-/* Стили для отзывов */
 .reviews-container {
     scrollbar-width: thin;
     scrollbar-color: #e5a7ff #f8f9fa;
@@ -314,47 +291,89 @@
     border-radius: 10px;
 }
 
-/* Звездный рейтинг */
-.rating-input .stars {
-    font-size: 1.5rem;
+/* ==========================================================================
+   КАРУСЕЛИ И ГАЛЕРЕИ
+   ========================================================================== */
+
+/* Адаптивный контейнер для карусели */
+.gallery-image-container {
+    position: relative;
+    padding-top: 56.25%;
+    overflow: hidden;
+    background-color: #f8f9fa;
+}
+
+.gallery-image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    background-color: white;
+}
+
+/* Кастомизация индикаторов и кнопок карусели */
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--bs-secondary);
+    opacity: 0.5;
+}
+
+.carousel-indicators button.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(229, 167, 255, 0.15);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 15px;
+    transition: all 0.3s ease;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: rgba(229, 167, 255, 0.3);
+}
+
+/* ==========================================================================
+   РАЗДЕЛ УСЛУГ И ЦЕН
+   ========================================================================== */
+
+/* Стили для категорий услуг */
+.category-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.category-section:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.category-header {
     cursor: pointer;
 }
 
-.rating-input .stars i {
-    margin-right: 2px;
-    transition: color 0.2s;
+.category-header:hover {
+    color: var(--bs-primary);
 }
 
-.rating-input .stars i:hover {
-    color: #ffc107 !important;
-}
+/* ==========================================================================
+   АКЦИИ И СКИДКИ
+   ========================================================================== */
 
-/* Анимация для отзывов */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.card {
-    animation: fadeIn 0.5s ease-out;
-}
-
-
-/* Стили для карточек акций */
-.discount-card {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.discount-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-/* Контейнер для изображения */
 .discount-image-wrapper {
     height: 100%;
     min-height: 300px;
@@ -366,7 +385,6 @@
     overflow: hidden;
 }
 
-/* Стили для изображения с анимацией */
 .discount-image {
     max-height: 280px;
     width: auto;
@@ -379,7 +397,7 @@
     transform: scale(1.15) translateY(-10px);
 }
 
-/* Декоративные элементы */
+/* Декоративные элементы для карточек акций */
 .discount-card::before {
     content: '';
     position: absolute;
@@ -404,7 +422,44 @@
     z-index: 1;
 }
 
-/* Адаптивность */
+/* ==========================================================================
+   МЕДИА-ЗАПРОСЫ ДЛЯ КОМПОНЕНТОВ
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .doctors-grid .col-md-6 {
+        margin-bottom: 1.5rem;
+    }
+    
+    .doctor-photo-wrapper {
+        height: 240px;
+    }
+    
+    .gallery-thumbnail {
+        height: 150px;
+    }
+    
+    .service-code {
+        font-size: 0.75em;
+        padding: 2px 4px;
+    }
+    
+    /* Скрываем код услуги на мобильных */
+    .table > :not(caption) > * > *:first-child {
+        display: none;
+    }
+    
+    /* Расширяем другие колонки */
+    .table > :not(caption) > * > *:nth-child(2) {
+        width: 55%;
+    }
+    
+    .table > :not(caption) > * > *:nth-child(3),
+    .table > :not(caption) > * > *:nth-child(4) {
+        width: 22.5%;
+    }
+}
+
 @media (max-width: 992px) {
     .discount-card .row {
         flex-direction: column;
@@ -439,22 +494,12 @@
     }
 }
 
-/* Анимация для появления */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+@media (max-width: 576px) {
+    .doctor-photo-wrapper {
+        height: 200px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .gallery-thumbnail {
+        height: 120px;
     }
-}
-
-.discount-card {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.discount-card:nth-child(2) {
-    animation-delay: 0.2s;
 }
