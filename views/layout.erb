@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
     <title>Клиника доказательной медицины доктора Медведевой</title>
     
     <!-- Bootstrap 5 CSS -->
@@ -44,36 +45,56 @@
     <meta name="theme-color" content="#7effcd">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Клиника Медведевой">
 </head>
-<body>
+<body class="safe-area-top safe-area-bottom">
     <% unless request.path.start_with?('/admin') %>
     <!-- Шапка -->
     <header class="header sticky-top bg-white shadow-sm">
-        <nav class="navbar navbar-expand-lg navbar-light py-3">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-2 py-lg-3">
+            <div class="container-fluid container-lg">
                 <a class="navbar-brand d-flex align-items-center" href="/">
-                    <div class="me-3">
-                        <img src="/images/logo.png" alt="Логотип клиники доктора Медведевой" 
-                             height="80" width="80" class="img-fluid">
+                    <div class="me-2 me-lg-3">
+                        <img src="/images/logo.png" 
+                             alt="Логотип клиники доктора Медведевой" 
+                             height="50" width="50" 
+                             class="img-fluid"
+                             loading="eager">
                     </div>
-                    <div>
-                        <span class="fw-bold fs-5 text-dark">Клиника доктора Медведевой</span><br>
-                        <small class="text-muted">Доказательная медицина</small>
+                    <div class="d-none d-md-block">
+                        <span class="fw-bold fs-6 fs-lg-5 text-dark">Клиника доктора Медведевой</span>
+                        <small class="text-muted d-block d-lg-inline d-lg-block">Доказательная медицина</small>
+                    </div>
+                    <div class="d-md-none">
+                        <span class="fw-bold fs-6 text-dark">Клиника доктора Медведевой</span>
                     </div>
                 </a>
                 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <!-- Телефоны для мобильных -->
+                <div class="d-flex d-lg-none align-items-center ms-auto me-3">
+                    <a href="tel:+79133650464" class="btn btn-sm btn-outline-primary touch-target">
+                        <i class="bi bi-telephone"></i>
+                    </a>
+                </div>
+                
+                <button class="navbar-toggler touch-target" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav"
+                        aria-label="Меню"
+                        aria-controls="navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link <%= 'active fw-bold' if request.path == '/' %>" href="/">Главная</a>
+                            <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/' %>" 
+                               href="/">Главная</a>
                         </li>
                         
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle <%= 'active fw-bold' if request.path == '/about' %>" 
+                            <a class="nav-link dropdown-toggle py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/about' %>" 
                                href="#" 
                                role="button" 
                                data-bs-toggle="dropdown" 
@@ -81,19 +102,20 @@
                                 О клинике
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item <%= 'active' if request.path == '/about' %>" href="/about">О нас</a></li>
-                                <li><a class="dropdown-item" href="/about#founder">Основатель</a></li>
-                                <li><a class="dropdown-item" href="/about#gallery">Галерея</a></li>
-                                <li><a class="dropdown-item" href="/about#reviews">Отзывы</a></li>
+                                <li><a class="dropdown-item py-2 <%= 'active' if request.path == '/about' %>" href="/about">О нас</a></li>
+                                <li><a class="dropdown-item py-2" href="/about#founder">Основатель</a></li>
+                                <li><a class="dropdown-item py-2" href="/about#gallery">Галерея</a></li>
+                                <li><a class="dropdown-item py-2" href="/about#reviews">Отзывы</a></li>
                             </ul>
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link <%= 'active fw-bold' if request.path == '/doctors' %>" href="/doctors">Врачи</a>
+                            <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/doctors' %>" 
+                               href="/doctors">Врачи</a>
                         </li>
                         
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle <%= 'active fw-bold' if request.path == '/prices' %>" 
+                            <a class="nav-link dropdown-toggle py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/prices' %>" 
                                href="#" 
                                role="button" 
                                data-bs-toggle="dropdown" 
@@ -101,25 +123,41 @@
                                 Услуги и цены
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item <%= 'active' if request.path == '/prices' %>" href="/prices">Прайс-лист</a></li>
-                                <li><a class="dropdown-item" href="/prices#promotions">Акции</a></li>
+                                <li><a class="dropdown-item py-2 <%= 'active' if request.path == '/prices' %>" href="/prices">Прайс-лист</a></li>
+                                <li><a class="dropdown-item py-2" href="/prices#promotions">Акции</a></li>
                             </ul>
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link <%= 'active fw-bold' if request.path == '/contacts' %>" href="/contacts">Контакты</a>
+                            <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/contacts' %>" 
+                               href="/contacts">Контакты</a>
                         </li>
                     </ul>
                     
-                    <div class="d-flex align-items-center ms-lg-4">
-                        <div class="d-none d-lg-block me-4">
-                            <a href="tel:+79991234567" class="text-decoration-none text-dark fw-semibold">
-                                <i class="bi bi-telephone me-2"></i>+7 (913) 365-04-64 <br/>
-                                <i class="bi bi-telephone me-2"></i>+7 (385) 225-65-75                               
-                            </a>
+                    <!-- Телефоны для десктопа -->
+                    <div class="d-none d-lg-flex align-items-center ms-lg-4">
+                        <div class="me-4">
+                            <div class="d-flex flex-column">
+                                <a href="tel:+79133650464" class="text-decoration-none text-dark fw-semibold small mb-1">
+                                    <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
+                                </a>
+                                <a href="tel:+73852256575" class="text-decoration-none text-dark fw-semibold small">
+                                    <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
+                                </a>
+                            </div>
                         </div>
-                        <a href="/doctors" class="btn btn-primary">
-                            <i class="bi bi-calendar-check me-2"></i>Записаться
+                        <a href="/doctors" class="btn btn-primary btn-sm px-3 touch-target">
+                            <i class="bi bi-calendar-check me-1"></i>Записаться
+                        </a>
+                    </div>
+                    
+                    <!-- Телефоны для планшетов -->
+                    <div class="d-none d-lg-none d-md-flex flex-column mt-3 mt-md-0">
+                        <a href="tel:+79133650464" class="btn btn-outline-primary mb-2 touch-target">
+                            <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
+                        </a>
+                        <a href="tel:+73852256575" class="btn btn-outline-primary touch-target">
+                            <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
                         </a>
                     </div>
                 </div>
@@ -128,52 +166,67 @@
     </header>
 
     <!-- Основное содержимое -->
-    <main>
+    <main class="min-vh-50">
         <%= yield %>
     </main>
 
     <!-- Подвал -->
-    <footer class="bg-dark text-white pt-5 pb-4">
+    <footer class="bg-dark text-white pt-4 pb-3">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4 order-1">
                     <a href="/" class="text-decoration-none d-flex align-items-center mb-3">
                         <div class="me-3">
-                            <img src="/images/logo.png" alt="Логотип клиники доктора Медведевой" 
-                                 height="80" width="80" class="img-fluid">
+                            <img src="/images/logo.png" 
+                                 alt="Логотип клиники доктора Медведевой" 
+                                 height="60" width="60" 
+                                 class="img-fluid">
                         </div>
                         <div>
-                            <span class="fw-bold fs-5 text-white">Клиника доктора Медведевой</span><br>
-                            <small class="text-light">Доказательная медицина</small>
+                            <span class="fw-bold fs-6 text-white">Клиника доктора Медведевой</span>
+                            <small class="text-light d-block">Доказательная медицина</small>
                         </div>
                     </a>
-                    <p class="text-light opacity-75">Профессиональный подход к здоровью вашего ребенка, основанный на научных данных и современных протоколах лечения.</p>
+                    <p class="text-light opacity-75 small">
+                        Профессиональный подход к здоровью вашего ребенка, основанный на научных данных и современных протоколах лечения.
+                    </p>
                 </div>
                 
-                <div class="col-lg-2 col-md-6">
-                    <h5 class="fw-bold mb-4">Навигация</h5>
+                <div class="col-6 col-md-3 col-lg-2 order-3 order-md-2">
+                    <h5 class="fw-bold mb-3 fs-6">Навигация</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="/" class="text-light text-decoration-none opacity-75 hover-opacity-100">Главная</a></li>
-                        <li class="mb-2"><a href="/about" class="text-light text-decoration-none opacity-75 hover-opacity-100">О клинике</a></li>
-                        <li class="mb-2"><a href="/doctors" class="text-light text-decoration-none opacity-75 hover-opacity-100">Врачи</a></li>
-                        <li class="mb-2"><a href="/prices" class="text-light text-decoration-none opacity-75 hover-opacity-100">Услуги и цены</a></li>
-                        <li class="mb-2"><a href="/contacts" class="text-light text-decoration-none opacity-75 hover-opacity-100">Контакты</a></li>
+                        <li class="mb-2"><a href="/" class="text-light text-decoration-none opacity-75 hover-opacity-100 small">Главная</a></li>
+                        <li class="mb-2"><a href="/about" class="text-light text-decoration-none opacity-75 hover-opacity-100 small">О клинике</a></li>
+                        <li class="mb-2"><a href="/doctors" class="text-light text-decoration-none opacity-75 hover-opacity-100 small">Врачи</a></li>
+                        <li class="mb-2"><a href="/prices" class="text-light text-decoration-none opacity-75 hover-opacity-100 small">Услуги и цены</a></li>
+                        <li class="mb-2"><a href="/contacts" class="text-light text-decoration-none opacity-75 hover-opacity-100 small">Контакты</a></li>
                     </ul>
                 </div>
                 
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-4">Контакты</h5>
-                    <address class="text-light opacity-75">
-                        <p class="mb-2"><i class="bi bi-geo-alt me-2"></i>г. Барнаул, ул. 280-летия Барнаула, д. 22</p>
-                        <p class="mb-2"><i class="bi bi-telephone me-2"></i><a href="tel:+79133650464" class="text-light text-decoration-none">+7 (913) 365-04-64</a></p>
-                        <p class="mb-2"><i class="bi bi-telephone me-2"></i><a href="tel:+73852256575" class="text-light text-decoration-none">+7 (385) 225-65-75</a></p>
-                        <p class="mb-0"><i class="bi bi-envelope me-2"></i><a href="mailto:info@medvedeva-clinic.ru" class="text-light text-decoration-none">info@medvedeva-clinic.ru</a></p>
+                <div class="col-6 col-md-3 col-lg-3 order-4 order-md-3">
+                    <h5 class="fw-bold mb-3 fs-6">Контакты</h5>
+                    <address class="text-light opacity-75 small">
+                        <p class="mb-2">
+                            <i class="bi bi-geo-alt me-2"></i>г. Барнаул, ул. 280-летия Барнаула, д. 22
+                        </p>
+                        <p class="mb-2">
+                            <i class="bi bi-telephone me-2"></i>
+                            <a href="tel:+79133650464" class="text-light text-decoration-none">+7 (913) 365-04-64</a>
+                        </p>
+                        <p class="mb-2">
+                            <i class="bi bi-telephone me-2"></i>
+                            <a href="tel:+73852256575" class="text-light text-decoration-none">+7 (385) 225-65-75</a>
+                        </p>
+                        <p class="mb-0">
+                            <i class="bi bi-envelope me-2"></i>
+                            <a href="mailto:info@medvedeva-clinic.ru" class="text-light text-decoration-none">info@medvedeva-clinic.ru</a>
+                        </p>
                     </address>
                 </div>
                 
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-4">Часы работы</h5>
-                    <div class="text-light opacity-75">
+                <div class="col-12 col-md-6 col-lg-3 order-2 order-md-4">
+                    <h5 class="fw-bold mb-3 fs-6">Часы работы</h5>
+                    <div class="text-light opacity-75 small">
                         <p class="mb-2">Пн-Пт: 09:00 - 19:00</p>
                         <p class="mb-2">Сб: 9:15 - 15:00</p>
                         <p class="mb-3">Вс: Выходной</p>
@@ -181,17 +234,17 @@
                 </div>
             </div>
             
-            <hr class="my-4 opacity-25">
+            <hr class="my-3 opacity-25">
             
             <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0 text-light opacity-75">
+                <div class="col-12 col-md-6 mb-2 mb-md-0 text-center text-md-start">
+                    <p class="mb-0 text-light opacity-75 small">
                         © <%= Time.now.year %> Клиника доказательной медицины доктора Медведевой
                     </p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="/docs" class="text-light text-decoration-none opacity-75 hover-opacity-100 me-3">Документы</a>
-                    <a href="/privacy" class="text-light text-decoration-none opacity-75 hover-opacity-100">Политика конфиденциальности</a>
+                <div class="col-12 col-md-6 text-center text-md-end">
+                    <a href="/docs" class="text-light text-decoration-none opacity-75 hover-opacity-100 small me-3">Документы</a>
+                    <a href="/privacy" class="text-light text-decoration-none opacity-75 hover-opacity-100 small">Политика конфиденциальности</a>
                 </div>
             </div>
         </div>
@@ -206,56 +259,56 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="appointmentModalLabel">Запись на прием</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title fs-6 fs-md-5" id="appointmentModalLabel">Запись на прием</h5>
+                    <button type="button" class="btn-close touch-target" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="appointmentForm">
                         <input type="hidden" id="appointmentDoctorId" name="doctor_id" value="">
                         
                         <div class="row g-3">
-                            <div class="col-md-12">
-                                <label for="patientName" class="form-label">ФИО *</label>
-                                <input type="text" class="form-control" id="patientName" name="patient_name" required>
+                            <div class="col-12">
+                                <label for="patientName" class="form-label small">ФИО *</label>
+                                <input type="text" class="form-control form-control-lg" id="patientName" name="patient_name" required>
                             </div>
                             
-                            <div class="col-md-6">
-                                <label for="birthDate" class="form-label">Дата рождения *</label>
-                                <input type="date" class="form-control" id="birthDate" name="birth_date" required>
+                            <div class="col-12 col-md-6">
+                                <label for="birthDate" class="form-label small">Дата рождения *</label>
+                                <input type="date" class="form-control form-control-lg" id="birthDate" name="birth_date" required>
                             </div>
                             
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">Телефон *</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            <div class="col-12 col-md-6">
+                                <label for="phone" class="form-label small">Телефон *</label>
+                                <input type="tel" class="form-control form-control-lg" id="phone" name="phone" required>
                             </div>
                             
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="col-12 col-md-6">
+                                <label for="email" class="form-label small">Email *</label>
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" required>
                             </div>
                             
-                            <div class="col-md-6">
-                                <label for="doctorName" class="form-label">Врач</label>
-                                <input type="text" class="form-control" id="doctorName" readonly>
+                            <div class="col-12 col-md-6">
+                                <label for="doctorName" class="form-label small">Врач</label>
+                                <input type="text" class="form-control form-control-lg" id="doctorName" readonly>
                             </div>
                             
                             <div class="col-12">
-                                <label for="specialtiesSelect" class="form-label">Специальность врача *</label>
-                                <select class="form-select" id="specialtiesSelect" name="specialty_id" required>
+                                <label for="specialtiesSelect" class="form-label small">Специальность врача *</label>
+                                <select class="form-select form-select-lg" id="specialtiesSelect" name="specialty_id" required>
                                     <option value="">Выберите специальность</option>
                                 </select>
                             </div>
                             
                             <div class="col-12">
-                                <label for="message" class="form-label">Дополнительное сообщение (необязательно)</label>
-                                <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                                <label for="message" class="form-label small">Дополнительное сообщение</label>
+                                <textarea class="form-control form-control-lg" id="message" name="message" rows="3"></textarea>
                             </div>
                             
                             <div class="col-12">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="privacyAccepted" name="privacy_accepted" value="1" required>
-                                    <label class="form-check-label" for="privacyAccepted">
-                                        Я соглашаюсь с <a href="/privacy" target="_blank">политикой конфиденциальности и обработкой персональных данных</a> *
+                                    <label class="form-check-label small" for="privacyAccepted">
+                                        Я соглашаюсь с <a href="/privacy" target="_blank" class="text-decoration-none">политикой конфиденциальности</a> *
                                     </label>
                                 </div>
                             </div>
@@ -263,8 +316,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" id="submitAppointment">Отправить запись</button>
+                    <button type="button" class="btn btn-secondary px-4 touch-target" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary px-4 touch-target" id="submitAppointment">Отправить</button>
                 </div>
             </div>
         </div>
@@ -275,10 +328,10 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content bg-dark border-0">
                 <div class="modal-body p-0 text-center">
-                    <!-- Кнопка закрытия -->
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <!-- Сюда будет вставляться изображение -->
-                    <img id="modalImage" src="" class="img-fluid" alt="">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 touch-target" 
+                            data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                    <img id="modalImage" src="" class="img-fluid" alt="" loading="lazy">
                 </div>
             </div>
         </div>
@@ -323,7 +376,104 @@
                     aboutItem.classList.add('active');
                 }
             }
+            
+            // Мобильная навигация
+            const navToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            
+            if (navToggler && navbarCollapse) {
+                navToggler.addEventListener('click', function() {
+                    document.body.classList.toggle('mobile-menu-open');
+                });
+                
+                // Закрытие меню при клике на ссылку на мобильных
+                if (window.innerWidth <= 991) {
+                    document.querySelectorAll('.nav-link, .dropdown-item').forEach(link => {
+                        link.addEventListener('click', function() {
+                            if (navbarCollapse.classList.contains('show')) {
+                                navToggler.click();
+                            }
+                        });
+                    });
+                }
+            }
+            
+            // Предотвращение зума на iOS при фокусе на инпутах
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                document.addEventListener('focus', function(e) {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                        document.body.style.fontSize = '16px';
+                    }
+                }, true);
+                
+                document.addEventListener('blur', function(e) {
+                    document.body.style.fontSize = '';
+                }, true);
+            }
         });
     </script>
+
+<script>
+    // Фикс для высоты на мобильных устройствах
+    function setVH() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    // Установить высоту при загрузке и изменении размера
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+
+    // Оптимизация загрузки изображений для мобильных
+    if ('IntersectionObserver' in window) {
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src || img.src;
+                    img.classList.add('loaded');
+                    imageObserver.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px 0px',
+            threshold: 0.1
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+    }
+
+    // Предотвращение зума на iOS при фокусе
+    document.addEventListener('touchstart', function() {}, {passive: true});
+
+    // Оптимизация скролла на iOS
+    document.addEventListener('touchmove', function(e) {
+        if (e.target.tagName === 'INPUT' || 
+            e.target.tagName === 'TEXTAREA' || 
+            e.target.tagName === 'SELECT') {
+            return;
+        }
+        e.preventDefault();
+    }, { passive: false });
+
+    // Закрытие меню при клике на ссылку на мобильных
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991 && navbarCollapse.classList.contains('show')) {
+                    const toggler = document.querySelector('.navbar-toggler');
+                    if (toggler) toggler.click();
+                }
+            });
+        });
+    });
+</script>
+    
 </body>
 </html>

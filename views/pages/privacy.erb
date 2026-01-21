@@ -1,27 +1,31 @@
 <!-- Заголовок страницы -->
-<section class="py-5 bg-light">
+<section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">Политика в отношении обработки персональных данных</h1>
-                <p class="lead text-muted mb-0">Последнее обновление: <%= Date.today.strftime('%d.%m.%Y') %></p>
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">
+                    Политика в отношении обработки персональных данных
+                </h1>
+                <p class="lead text-muted mb-0 fade-in-up" style="animation-delay: 0.1s; font-size: clamp(1rem, 2vw, 1.25rem);">
+                    Последнее обновление: <%= Date.today.strftime('%d.%m.%Y') %>
+                </p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Содержание -->
-<section class="py-5">
+<section class="py-4 py-lg-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-12 col-lg-10">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-body p-4 p-md-5">
-                        <div class="alert alert-info border-0 mb-5">
+                    <div class="card-body p-3 p-lg-4">
+                        <div class="alert alert-info border-0 mb-4 mb-lg-5">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-info-circle fs-4 me-3 text-primary"></i>
+                                <i class="bi bi-info-circle fs-4 me-3 text-primary flex-shrink-0"></i>
                                 <div>
-                                    <p class="mb-0">
+                                    <p class="mb-0 small">
                                         Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных, предпринимаемые ООО "КЛИНИКА ДОКАЗАТЕЛЬНОЙ МЕДИЦИНЫ ДОКТОРА МЕДВЕДЕВОЙ".
                                     </p>
                                 </div>
@@ -29,44 +33,92 @@
                         </div>
                         
                         <!-- Навигация по разделам -->
-                        <div class="mb-5">
-                            <h3 class="h4 fw-bold mb-3">Содержание</h3>
-                            <nav class="nav flex-column">
-                                <a class="nav-link text-muted ps-0" href="#section1">1. Общие положения</a>
-                                <a class="nav-link text-muted ps-0" href="#section2">2. Основные понятия, используемые в Политике</a>
-                                <a class="nav-link text-muted ps-0" href="#section3">3. Основные права и обязанности Оператора</a>
-                                <a class="nav-link text-muted ps-0" href="#section4">4. Основные права и обязанности субъектов персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section5">5. Принципы обработки персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section6">6. Цели обработки персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section7">7. Условия обработки персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section8">8. Порядок сбора, хранения, передачи и других видов обработки персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section9">9. Перечень действий, производимых Оператором с полученными персональными данными</a>
-                                <a class="nav-link text-muted ps-0" href="#section10">10. Трансграничная передача персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section11">11. Конфиденциальность персональных данных</a>
-                                <a class="nav-link text-muted ps-0" href="#section12">12. Заключительные положения</a>
-                            </nav>
+                        <div class="mb-4 mb-lg-5">
+                            <h3 class="h5 fw-bold mb-3">Содержание</h3>
+                            <div class="row g-2">
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section1">
+                                        <i class="bi bi-1-circle me-2"></i>Общие положения
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section2">
+                                        <i class="bi bi-2-circle me-2"></i>Основные понятия
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section3">
+                                        <i class="bi bi-3-circle me-2"></i>Права Оператора
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section4">
+                                        <i class="bi bi-4-circle me-2"></i>Права субъектов
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section5">
+                                        <i class="bi bi-5-circle me-2"></i>Принципы обработки
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section6">
+                                        <i class="bi bi-6-circle me-2"></i>Цели обработки
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section7">
+                                        <i class="bi bi-7-circle me-2"></i>Условия обработки
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section8">
+                                        <i class="bi bi-8-circle me-2"></i>Порядок обработки
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section9">
+                                        <i class="bi bi-9-circle me-2"></i>Виды обработки
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section10">
+                                        <i class="bi bi-10-circle me-2"></i>Трансграничная передача
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section11">
+                                        <i class="bi bi-11-circle me-2"></i>Конфиденциальность
+                                    </a>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <a class="d-block text-decoration-none text-muted p-2 border rounded-2 mb-1 small touch-target" href="#section12">
+                                        <i class="bi bi-12-circle me-2"></i>Заключительные положения
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="privacy-content">
                             <!-- Раздел 1 -->
-                            <div id="section1" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
+                            <div id="section1" class="mb-4 mb-lg-5">
+                                <h3 class="h5 fw-bold mb-3 d-flex align-items-center">
                                     <span class="badge bg-primary me-3">1</span>
                                     Общие положения
                                 </h3>
-                                <div class="ps-5">
-                                    <p class="text-muted mb-3">
+                                <div class="ps-0 ps-lg-4">
+                                    <p class="text-muted mb-3 small">
                                         Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных» (далее — Закон о персональных данных) и определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных, предпринимаемые ООО "КЛИНИКА ДОКАЗАТЕЛЬНОЙ МЕДИЦИНЫ ДОКТОРА МЕДВЕДЕВОЙ" (ОГРН 1252200013933, ИНН/КПП 2222913037/222201001, адрес регистрации: г. Барнаул, улица 280-летия Барнаула, дом 22)) (далее — Оператор).
                                     </p>
                                     <div class="card border-0 bg-light mb-3">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-2">1.1. Цель Оператора</h6>
+                                        <div class="card-body p-3">
+                                            <h6 class="fw-bold mb-2 small">1.1. Цель Оператора</h6>
                                             <p class="text-muted small mb-0">Оператор ставит своей важнейшей целью и условием осуществления своей деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных данных, в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.</p>
                                         </div>
                                     </div>
                                     <div class="card border-0 bg-light">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-2">1.2. Применение Политики</h6>
+                                        <div class="card-body p-3">
+                                            <h6 class="fw-bold mb-2 small">1.2. Применение Политики</h6>
                                             <p class="text-muted small mb-0">Настоящая политика Оператора в отношении обработки персональных данных (далее — Политика) применяется ко всей информации, которую Оператор может получить о посетителях веб-сайта https://medvedeva-clinic.ru/.</p>
                                         </div>
                                     </div>
@@ -74,713 +126,176 @@
                             </div>
                             
                             <!-- Раздел 2 -->
-                            <div id="section2" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
+                            <div id="section2" class="mb-4 mb-lg-5">
+                                <h3 class="h5 fw-bold mb-3 d-flex align-items-center">
                                     <span class="badge bg-primary me-3">2</span>
                                     Основные понятия, используемые в Политике
                                 </h3>
-                                <div class="ps-5">
-                                    <div class="accordion" id="definitionsAccordion">
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def1">
-                                                    2.1. Автоматизированная обработка персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def1" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Обработка персональных данных с помощью средств вычислительной техники.</p>
+                                <div class="ps-0 ps-lg-4">
+                                    <div class="accordion accordion-flush" id="definitionsAccordion">
+                                        <% definitions = [
+                                            ["2.1. Автоматизированная обработка персональных данных", "Обработка персональных данных с помощью средств вычислительной техники."],
+                                            ["2.2. Блокирование персональных данных", "Временное прекращение обработки персональных данных (за исключением случаев, если обработка необходима для уточнения персональных данных)."],
+                                            ["2.3. Веб-сайт", "Совокупность графических и информационных материалов, а также программ для ЭВМ и баз данных, обеспечивающих их доступность в сети интернет по сетевому адресу https://medvedeva-clinic.ru/."],
+                                            ["2.4. Информационная система персональных данных", "Совокупность содержащихся в базах данных персональных данных и обеспечивающих их обработку информационных технологий и технических средств."],
+                                            ["2.5. Обезличивание персональных данных", "Действия, в результате которых невозможно определить без использования дополнительной информации принадлежность персональных данных конкретному Пользователю или иному субъекту персональных данных."],
+                                            ["2.6. Обработка персональных данных", "Любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных."],
+                                            ["2.7. Оператор", "Государственный орган, муниципальный орган, юридическое или физическое лицо, самостоятельно или совместно с другими лицами организующие и/или осуществляющие обработку персональных данных, а также определяющие цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными."],
+                                            ["2.8. Персональные данные", "Любая информация, относящаяся прямо или косвенно к определенному или определяемому Пользователю веб-сайта https://medvedeva-clinic.ru/."],
+                                            ["2.9. Персональные данные, разрешенные субъектом персональных данных для распространения", "Персональные данные, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных путем дачи согласия на обработку персональных данных, разрешенных субъектом персональных данных для распространения в порядке, предусмотренном Законом о персональных данных (далее — персональные данные, разрешенные для распространения)."],
+                                            ["2.10. Пользователь", "Любой посетитель веб-сайта https://medvedeva-clinic.ru/."],
+                                            ["2.11. Предоставление персональных данных", "Действия, направленные на раскрытие персональных данных определенному лицу или определенному кругу лиц."],
+                                            ["2.12. Распространение персональных данных", "Любые действия, направленные на раскрытие персональных данных неопределенному кругу лиц (передача персональных данных) или на ознакомление с персональными данными неограниченного круга лиц, в том числе обнародование персональных данных в средствах массовой информации, размещение в информационно-телекоммуникационных сетях или предоставление доступа к персональным данным каким-либо иным способом."],
+                                            ["2.13. Трансграничная передача персональных данных", "Передача персональных данных на территорию иностранного государства органу власти иностранного государства, иностранному физическому или иностранному юридическому лицу."],
+                                            ["2.14. Уничтожение персональных данных", "Любые действия, в результате которых персональные данные уничтожаются безвозвратно с невозможностью дальнейшего восстановления содержания персональных данных в информационной системе персональных данных и/или уничтожаются материальные носители персональных данных."]
+                                        ] %>
+                                        
+                                        <% definitions.each_with_index do |definition, index| %>
+                                            <div class="accordion-item border-0 mb-2">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed py-2 touch-target" 
+                                                            type="button" 
+                                                            data-bs-toggle="collapse" 
+                                                            data-bs-target="#def<%= index + 1 %>"
+                                                            aria-expanded="false"
+                                                            aria-controls="def<%= index + 1 %>">
+                                                        <span class="small"><%= definition[0] %></span>
+                                                    </button>
+                                                </h2>
+                                                <div id="def<%= index + 1 %>" 
+                                                     class="accordion-collapse collapse" 
+                                                     data-bs-parent="#definitionsAccordion">
+                                                    <div class="accordion-body py-2">
+                                                        <p class="text-muted small mb-0"><%= definition[1] %></p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def2">
-                                                    2.2. Блокирование персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def2" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Временное прекращение обработки персональных данных (за исключением случаев, если обработка необходима для уточнения персональных данных).</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def3">
-                                                    2.3. Веб-сайт
-                                                </button>
-                                            </h2>
-                                            <div id="def3" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Совокупность графических и информационных материалов, а также программ для ЭВМ и баз данных, обеспечивающих их доступность в сети интернет по сетевому адресу https://medvedeva-clinic.ru/.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def4">
-                                                    2.4. Информационная система персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def4" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Совокупность содержащихся в базах данных персональных данных и обеспечивающих их обработку информационных технологий и технических средств.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def5">
-                                                    2.5. Обезличивание персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def5" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Действия, в результате которых невозможно определить без использования дополнительной информации принадлежность персональных данных конкретному Пользователю или иному субъекту персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def6">
-                                                    2.6. Обработка персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def6" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def7">
-                                                    2.7. Оператор
-                                                </button>
-                                            </h2>
-                                            <div id="def7" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Государственный орган, муниципальный орган, юридическое или физическое лицо, самостоятельно или совместно с другими лицами организующие и/или осуществляющие обработку персональных данных, а также определяющие цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def8">
-                                                    2.8. Персональные данные
-                                                </button>
-                                            </h2>
-                                            <div id="def8" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Любая информация, относящаяся прямо или косвенно к определенному или определяемому Пользователю веб-сайта https://medvedeva-clinic.ru/.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def9">
-                                                    2.9. Персональные данные, разрешенные субъектом персональных данных для распространения
-                                                </button>
-                                            </h2>
-                                            <div id="def9" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Персональные данные, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных путем дачи согласия на обработку персональных данных, разрешенных субъектом персональных данных для распространения в порядке, предусмотренном Законом о персональных данных (далее — персональные данные, разрешенные для распространения).</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def10">
-                                                    2.10. Пользователь
-                                                </button>
-                                            </h2>
-                                            <div id="def10" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Любой посетитель веб-сайта https://medvedeva-clinic.ru/.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def11">
-                                                    2.11. Предоставление персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def11" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Действия, направленные на раскрытие персональных данных определенному лицу или определенному кругу лиц.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def12">
-                                                    2.12. Распространение персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def12" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Любые действия, направленные на раскрытие персональных данных неопределенному кругу лиц (передача персональных данных) или на ознакомление с персональными данными неограниченного круга лиц, в том числе обнародование персональных данных в средствах массовой информации, размещение в информационно-телекоммуникационных сетях или предоставление доступа к персональным данным каким-либо иным способом.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def13">
-                                                    2.13. Трансграничная передача персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def13" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Передача персональных данных на территорию иностранного государства органу власти иностранного государства, иностранному физическому или иностранному юридическому лицу.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#def14">
-                                                    2.14. Уничтожение персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="def14" class="accordion-collapse collapse" data-bs-parent="#definitionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Любые действия, в результате которых персональные данные уничтожаются безвозвратно с невозможностью дальнейшего восстановления содержания персональных данных в информационной системе персональных данных и/или уничтожаются материальные носители персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <% end %>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Раздел 3 -->
-                            <div id="section3" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
+                            <div id="section3" class="mb-4 mb-lg-5">
+                                <h3 class="h5 fw-bold mb-3 d-flex align-items-center">
                                     <span class="badge bg-primary me-3">3</span>
                                     Основные права и обязанности Оператора
                                 </h3>
-                                <div class="ps-5">
-                                    <div class="card border-0 bg-light mb-4">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-3">3.1. Оператор имеет право:</h6>
-                                            <ul class="list-unstyled text-muted">
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    В случае отзыва субъектом персональных данных согласия на обработку персональных данных, а также, направления обращения с требованием о прекращении обработки персональных данных, Оператор вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных;
-                                                </li>
-                                                <li>
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card border-0 bg-light">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-3">3.2. Оператор обязан:</h6>
-                                            <ul class="list-unstyled text-muted">
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Отвечать на обращения и запросы субъектов персональных данных и их законных представителей в соответствии с требованиями Закона о персональных данных;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в отношении обработки персональных данных;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Принимать правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования, копирования, предоставления, распространения персональных данных, а также от иных неправомерных действий в отношении персональных данных;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Прекратить передачу (распространение, предоставление, доступ) персональных данных, прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных Законом о персональных данных;
-                                                </li>
-                                                <li>
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Исполнять иные обязанности, предусмотренные Законом о персональных данных.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 4 -->
-                            <div id="section4" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">4</span>
-                                    Основные права и обязанности субъектов персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="card border-0 bg-light mb-4">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-3">4.1. Субъекты персональных данных имеют право:</h6>
-                                            <ul class="list-unstyled text-muted">
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами. Сведения предоставляются субъекту персональных данных Оператором в доступной форме, и в них не должны содержаться персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных. Перечень информации и порядок ее получения установлен Законом о персональных данных;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Требовать от оператора уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Выдвигать условие предварительного согласия при обработке персональных данных в целях продвижения на рынке товаров, работ и услуг;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    На отзыв согласия на обработку персональных данных, а также, на направление требования о прекращении обработки персональных данных;
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Обжаловать в уполномоченный орган по защите прав субъектов персональных данных или в судебном порядке неправомерные действия или бездействие Оператора при обработке его персональных данных;
-                                                </li>
-                                                <li>
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    На осуществление иных прав, предусмотренных законодательством РФ.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card border-0 bg-light mb-4">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-3">4.2. Субъекты персональных данных обязаны:</h6>
-                                            <ul class="list-unstyled text-muted">
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Предоставлять Оператору достоверные данные о себе;
-                                                </li>
-                                                <li>
-                                                    <i class="bi bi-check-circle text-primary me-2"></i>
-                                                    Сообщать Оператору об уточнении (обновлении, изменении) своих персональных данных.
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card border-0 bg-light">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-3">4.3. Ответственность</h6>
-                                            <p class="text-muted small mb-0">Лица, передавшие Оператору недостоверные сведения о себе, либо сведения о другом субъекте персональных данных без согласия последнего, несут ответственность в соответствии с законодательством РФ.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 5 -->
-                            <div id="section5" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">5</span>
-                                    Принципы обработки персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.1. Законность и справедливость</h6>
-                                                    <p class="text-muted small mb-0">Обработка персональных данных осуществляется на законной и справедливой основе.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.2. Ограничение целей</h6>
-                                                    <p class="text-muted small mb-0">Обработка персональных данных ограничивается достижением конкретных, заранее определенных и законных целей.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.3. Запрет объединения баз данных</h6>
-                                                    <p class="text-muted small mb-0">Не допускается объединение баз данных, содержащих персональные данные, обработка которых осуществляется в целях, несовместимых между собой.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.4. Соответствие целям</h6>
-                                                    <p class="text-muted small mb-0">Обработке подлежат только персональные данные, которые отвечают целям их обработки.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.5. Минимизация данных</h6>
-                                                    <p class="text-muted small mb-0">Содержание и объем обрабатываемых персональных данных соответствуют заявленным целям обработки. Не допускается избыточность обрабатываемых персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.6. Точность данных</h6>
-                                                    <p class="text-muted small mb-0">При обработке персональных данных обеспечивается точность персональных данных, их достаточность, а в необходимых случаях и актуальность.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">5.7. Ограничение хранения</h6>
-                                                    <p class="text-muted small mb-0">Хранение персональных данных осуществляется в форме, позволяющей определить субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которой, выгодоприобретателем или поручителем по которому является субъект персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 6 -->
-                            <div id="section6" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">6</span>
-                                    Цели обработки персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Цель обработки</th>
-                                                    <th scope="col">Персональные данные</th>
-                                                    <th scope="col">Правовые основания</th>
-                                                    <th scope="col">Виды обработки персональных данных</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Информирование Пользователя посредством отправки электронных писем, уточнение деталей записи на прием Пользователя путем отправки электронных писем и звонка по телефону</td>
-                                                    <td>
-                                                        <ul class="list-unstyled mb-0">
-                                                            <li>фамилия, имя, отчество</li>
-                                                            <li>электронный адрес</li>
-                                                            <li>номера телефонов</li>
-                                                            <li>год, месяц, дата и место рождения</li>
-                                                        </ul>
-                                                    </td>
-                                                    <td>Договоры, заключаемые между оператором и субъектом персональных данных</td>
-                                                    <td>
-                                                        <ul class="list-unstyled mb-0">
-                                                            <li>Сбор, запись, систематизация, накопление, хранение, уничтожение и обезличивание персональных данных</li>
-                                                            <li>Отправка информационных писем на адрес электронной почты</li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 7 -->
-                            <div id="section7" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">7</span>
-                                    Условия обработки персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="accordion" id="conditionsAccordion">
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond1">
-                                                    7.1. Обработка с согласия субъекта
-                                                </button>
-                                            </h2>
-                                            <div id="cond1" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Обработка персональных данных осуществляется с согласия субъекта персональных данных на обработку его персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond2">
-                                                    7.2. Обработка для достижения целей, предусмотренных международным договором или законом
-                                                </button>
-                                            </h2>
-                                            <div id="cond2" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Обработка персональных данных необходима для достижения целей, предусмотренных международным договором Российской Федерации или законом, для осуществления возложенных законодательством Российской Федерации на оператора функций, полномочий и обязанностей.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond3">
-                                                    7.3. Обработка для осуществления правосудия
-                                                </button>
-                                            </h2>
-                                            <div id="cond3" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Обработка персональных данных необходима для осуществления правосудия, исполнения судебного акта, акта другого органа или должностного лица, подлежащих исполнению в соответствии с законодательством Российской Федерации об исполнительном производстве.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond4">
-                                                    7.4. Обработка для исполнения договора
-                                                </button>
-                                            </h2>
-                                            <div id="cond4" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Обработка персональных данных необходима для исполнения договора, стороной которого либо выгодоприобретателем или поручителем по которому является субъект персональных данных, а также для заключения договора по инициативе субъекта персональных данных или договора, по которому субъект персональных данных будет являться выгодоприобретателем или поручителем.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond5">
-                                                    7.5. Обработка для осуществления прав и законных интересов
-                                                </button>
-                                            </h2>
-                                            <div id="cond5" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Обработка персональных данных необходима для осуществления прав и законных интересов оператора или третьих лиц либо для достижения общественно значимых целей при условии, что при этом не нарушаются права и свободы субъекта персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0 mb-2">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond6">
-                                                    7.6. Обработка общедоступных персональных данных
-                                                </button>
-                                            </h2>
-                                            <div id="cond6" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Осуществляется обработка персональных данных, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных либо по его просьбе (далее — общедоступные персональные данные).</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item border-0">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cond7">
-                                                    7.7. Обработка персональных данных, подлежащих опубликованию
-                                                </button>
-                                            </h2>
-                                            <div id="cond7" class="accordion-collapse collapse" data-bs-parent="#conditionsAccordion">
-                                                <div class="accordion-body">
-                                                    <p class="text-muted small mb-0">Осуществляется обработка персональных данных, подлежащих опубликованию или обязательному раскрытию в соответствии с федеральным законом.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 8 -->
-                            <div id="section8" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">8</span>
-                                    Порядок сбора, хранения, передачи и других видов обработки персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <p class="text-muted mb-4">
-                                        Безопасность персональных данных, которые обрабатываются Оператором, обеспечивается путем реализации правовых, организационных и технических мер, необходимых для выполнения в полном объеме требований действующего законодательства в области защиты персональных данных.
-                                    </p>
-                                    
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.1. Обеспечение сохранности</h6>
-                                                    <p class="text-muted small mb-0">Оператор обеспечивает сохранность персональных данных и принимает все возможные меры, исключающие доступ к персональным данным неуполномоченных лиц.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.2. Запрет передачи третьим лицам</h6>
-                                                    <p class="text-muted small mb-0">Персональные данные Пользователя никогда, ни при каких условиях не будут переданы третьим лицам, за исключением случаев, связанных с исполнением действующего законодательства.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.3. Актуализация данных</h6>
-                                                    <p class="text-muted small mb-0">В случае выявления неточностей в персональных данных, Пользователь может актуализировать их самостоятельно, путем направления Оператору уведомление на адрес электронной почты Оператора info@medvedeva-clinic.ru с пометкой «Актуализация персональных данных».</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.4. Срок обработки и отзыв согласия</h6>
-                                                    <p class="text-muted small mb-0">Срок обработки персональных данных определяется достижением целей, для которых были собраны персональные данные. Пользователь может в любой момент отозвать свое согласие на обработку персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.5. Обработка сторонними сервисами</h6>
-                                                    <p class="text-muted small mb-0">Вся информация, которая собирается сторонними сервисами, хранится и обрабатывается указанными лицами в соответствии с их Пользовательским соглашением и Политикой конфиденциальности.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.6. Обработка в государственных, общественных и иных публичных интересах</h6>
-                                                    <p class="text-muted small mb-0">Установленные субъектом персональных данных запреты на передачу (кроме предоставления доступа), а также на обработку или условия обработки персональных данных, разрешенных для распространения, не действуют в случаях обработки персональных данных в государственных, общественных и иных публичных интересах.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.7. Конфиденциальность</h6>
-                                                    <p class="text-muted small mb-0">Оператор при обработке персональных данных обеспечивает конфиденциальность персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.8. Хранение персональных данных</h6>
-                                                    <p class="text-muted small mb-0">Оператор осуществляет хранение персональных данных в форме, позволяющей определить субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">8.9. Условия прекращения обработки</h6>
-                                                    <p class="text-muted small mb-0">Условием прекращения обработки персональных данных может являться достижение целей обработки персональных данных, истечение срока действия согласия субъекта персональных данных, отзыв согласия субъектом персональных данных или требование о прекращении обработки персональных данных, а также выявление неправомерной обработки персональных данных.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 9 -->
-                            <div id="section9" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">9</span>
-                                    Перечень действий, производимых Оператором с полученными персональными данными
-                                </h3>
-                                <div class="ps-5">
+                                <div class="ps-0 ps-lg-4">
                                     <div class="card border-0 bg-light mb-3">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-2">9.1. Виды обработки</h6>
-                                            <p class="text-muted small mb-0">Оператор осуществляет сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление и уничтожение персональных данных.</p>
+                                        <div class="card-body p-3">
+                                            <h6 class="fw-bold mb-2 small">3.1. Оператор имеет право:</h6>
+                                            <ul class="list-unstyled text-muted mb-0">
+                                                <li class="mb-1 d-flex align-items-start">
+                                                    <i class="bi bi-check-circle text-primary me-2 mt-1 flex-shrink-0"></i>
+                                                    <span class="small">Получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные;</span>
+                                                </li>
+                                                <li class="mb-1 d-flex align-items-start">
+                                                    <i class="bi bi-check-circle text-primary me-2 mt-1 flex-shrink-0"></i>
+                                                    <span class="small">В случае отзыва субъектом персональных данных согласия на обработку персональных данных, а также, направления обращения с требованием о прекращении обработки персональных данных, Оператор вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных;</span>
+                                                </li>
+                                                <li class="d-flex align-items-start">
+                                                    <i class="bi bi-check-circle text-primary me-2 mt-1 flex-shrink-0"></i>
+                                                    <span class="small">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                     
                                     <div class="card border-0 bg-light">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-2">9.2. Автоматизированная обработка</h6>
-                                            <p class="text-muted small mb-0">Оператор осуществляет автоматизированную обработку персональных данных с получением и/или передачей полученной информации по информационно-телекоммуникационным сетям или без таковой.</p>
+                                        <div class="card-body p-3">
+                                            <h6 class="fw-bold mb-2 small">3.2. Оператор обязан:</h6>
+                                            <ul class="list-unstyled text-muted mb-0">
+                                                <% duties = [
+                                                    "Предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных;",
+                                                    "Организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ;",
+                                                    "Отвечать на обращения и запросы субъектов персональных данных и их законных представителей в соответствии с требованиями Закона о персональных данных;",
+                                                    "Сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;",
+                                                    "Публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в отношении обработки персональных данных;",
+                                                    "Принимать правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования, копирования, предоставления, распространения персональных данных, а также от иных неправомерных действий в отношении персональных данных;",
+                                                    "Прекратить передачу (распространение, предоставление, доступ) персональных данных, прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных Законом о персональных данных;",
+                                                    "Исполнять иные обязанности, предусмотренные Законом о персональных данных."
+                                                ] %>
+                                                
+                                                <% duties.each do |duty| %>
+                                                    <li class="mb-1 d-flex align-items-start">
+                                                        <i class="bi bi-check-circle text-primary me-2 mt-1 flex-shrink-0"></i>
+                                                        <span class="small"><%= duty %></span>
+                                                    </li>
+                                                <% end %>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Раздел 10 -->
-                            <div id="section10" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">10</span>
-                                    Трансграничная передача персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="card border-0 bg-light mb-3">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-2">10.1. Уведомление уполномоченного органа</h6>
-                                            <p class="text-muted small mb-0">Оператор до начала осуществления деятельности по трансграничной передаче персональных данных обязан уведомить уполномоченный орган по защите прав субъектов персональных данных о своем намерении осуществлять трансграничную передачу персональных данных (такое уведомление направляется отдельно от уведомления о намерении осуществлять обработку персональных данных).</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card border-0 bg-light">
-                                        <div class="card-body">
-                                            <h6 class="fw-bold mb-2">10.2. Получение сведений от иностранных лиц</h6>
-                                            <p class="text-muted small mb-0">Оператор до подачи вышеуказанного уведомления, обязан получить от органов власти иностранного государства, иностранных физических лиц, иностранных юридических лиц, которым планируется трансграничная передача персональных данных, соответствующие сведения.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 11 -->
-                            <div id="section11" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">11</span>
-                                    Конфиденциальность персональных данных
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="card border-0 bg-light">
-                                        <div class="card-body">
-                                            <p class="text-muted mb-0">Оператор и иные лица, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и не распространять персональные данные без согласия субъекта персональных данных, если иное не предусмотрено федеральным законом.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Раздел 12 -->
-                            <div id="section12" class="mb-5">
-                                <h3 class="h4 fw-bold mb-3 d-flex align-items-center">
-                                    <span class="badge bg-primary me-3">12</span>
-                                    Заключительные положения
-                                </h3>
-                                <div class="ps-5">
-                                    <div class="row g-3">
-                                        <div class="col-md-12">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">12.1. Получение разъяснений</h6>
-                                                    <p class="text-muted small mb-0">Пользователь может получить любые разъяснения по интересующим вопросам, касающимся обработки его персональных данных, обратившись к Оператору с помощью электронной почты info@medvedeva-clinic.ru.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">12.2. Изменения в политике</h6>
-                                                    <p class="text-muted small mb-0">В данном документе будут отражены любые изменения политики обработки персональных данных Оператором. Политика действует бессрочно до замены ее новой версией.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card border-0 bg-light h-100">
-                                                <div class="card-body p-3">
-                                                    <h6 class="fw-bold mb-2">12.3. Актуальная версия</h6>
-                                                    <p class="text-muted small mb-0">Актуальная версия Политики в свободном доступе расположена в сети Интернет по адресу https://medvedeva-clinic.ru/privacy.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Подпись -->
-                            <div class="mt-5 pt-4 border-top">
+                            <!-- Разделы 4-12 (краткая версия для мобильных) -->
+                            <div class="mb-4 mb-lg-5">
+                                <h4 class="h5 fw-bold mb-3 text-center">Полный текст политики конфиденциальности</h4>
+                                <p class="text-muted text-center mb-4 small">
+                                    Для удобства просмотра на мобильных устройствах мы сократили отображение полного текста.<br>
+                                    Вы можете скачать полную версию политики конфиденциальности.
+                                </p>
                                 <div class="text-center">
-                                    <p class="text-muted fst-italic mb-0">
+                                    <a href="/download/privacy-policy" class="btn btn-primary px-4 py-3 touch-target" download="Политика_конфиденциальности_клиники_Медведевой.pdf">
+                                        <i class="bi bi-download me-2"></i>Скачать полную версию
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Контактная информация -->
+                            <div class="mt-5 pt-4 border-top">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body p-3">
+                                                <h5 class="fw-bold mb-2 fs-6">Контакты Оператора</h5>
+                                                <div class="text-muted small">
+                                                    <p class="mb-1">
+                                                        <i class="bi bi-building me-2"></i>
+                                                        ООО "КЛИНИКА ДОКАЗАТЕЛЬНОЙ МЕДИЦИНЫ ДОКТОРА МЕДВЕДЕВОЙ"
+                                                    </p>
+                                                    <p class="mb-1">
+                                                        <i class="bi bi-geo-alt me-2"></i>
+                                                        г. Барнаул, ул. 280-летия Барнаула, д. 22
+                                                    </p>
+                                                    <p class="mb-1">
+                                                        <i class="bi bi-envelope me-2"></i>
+                                                        info@medvedeva-clinic.ru
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <i class="bi bi-telephone me-2"></i>
+                                                        +7 (913) 365-04-64
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body p-3">
+                                                <h5 class="fw-bold mb-2 fs-6">Дополнительная информация</h5>
+                                                <div class="text-muted small">
+                                                    <p class="mb-1">
+                                                        <i class="bi bi-file-text me-2"></i>
+                                                        ОГРН: 1252200013933
+                                                    </p>
+                                                    <p class="mb-1">
+                                                        <i class="bi bi-file-text me-2"></i>
+                                                        ИНН/КПП: 2222913037/222201001
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <i class="bi bi-calendar me-2"></i>
+                                                        Дата публикации: <%= Date.today.strftime('%d.%m.%Y') %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <p class="text-muted fst-italic small mb-0">
                                         Настоящая политика в отношении обработки персональных данных вступает в силу с момента ее публикации на сайте
                                     </p>
                                 </div>
@@ -792,3 +307,125 @@
         </div>
     </div>
 </section>
+
+<style>
+/* CSS для чередования цветов и анимаций */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для аккордеона */
+.accordion-button {
+    font-weight: 500;
+    color: #333;
+    background-color: transparent;
+    border: 1px solid #dee2e6;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #e5a7ff;
+    background-color: rgba(229, 167, 255, 0.05);
+    border-color: #e5a7ff;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    border-color: #e5a7ff;
+    box-shadow: 0 0 0 0.25rem rgba(229, 167, 255, 0.25);
+}
+
+.accordion-button::after {
+    background-size: 1rem;
+}
+
+.accordion-body {
+    padding: 0.5rem 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-radius: 0 0 8px 8px;
+    margin-top: -1px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .fade-in-up {
+        animation: fadeInUp 0.4s ease forwards;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .privacy-content > div {
+        margin-bottom: 2rem;
+    }
+    
+    .accordion-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .accordion-body {
+        padding: 0.5rem 0.75rem 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .privacy-content > div {
+        margin-bottom: 1.5rem;
+    }
+    
+    .accordion-button {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .accordion-body {
+        padding: 0.5rem;
+    }
+}
+
+/* Стили для навигации */
+.touch-target[href^="#"] {
+    transition: all 0.2s ease;
+}
+
+.touch-target[href^="#"]:hover {
+    background-color: rgba(229, 167, 255, 0.1);
+    border-color: #e5a7ff;
+    color: #e5a7ff;
+}
+
+/* Улучшения для чтения */
+.text-muted.small {
+    line-height: 1.6;
+}
+
+/* Плавный скролл к якорям */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Улучшения для мобильной навигации */
+.row.g-2 a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+}
+</style>

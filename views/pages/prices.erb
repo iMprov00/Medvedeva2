@@ -1,38 +1,43 @@
 <!-- Заголовок страницы -->
-<section class="py-5 bg-light">
+<section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">Услуги и цены</h1>
-                <p class="lead text-muted mb-0">Полный перечень медицинских услуг. Цены являются ознакомительными</p>
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Услуги и цены</h1>
+                <p class="lead text-muted mb-0 fade-in-up" style="animation-delay: 0.1s; font-size: clamp(1rem, 2vw, 1.25rem);">
+                    Полный перечень медицинских услуг. Цены являются ознакомительными
+                </p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Поиск и фильтры -->
-<section class="py-5">
+<section class="py-4 py-lg-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-3"><i class="bi bi-search me-2"></i>Поиск услуг</h5>
+            <div class="col-12 col-lg-10">
+                <div class="card border-0 shadow-sm mb-4 mb-lg-5">
+                    <div class="card-body p-3 p-lg-4">
+                        <h5 class="fw-bold mb-3 fs-6 fs-lg-5">
+                            <i class="bi bi-search me-2"></i>Поиск услуг
+                        </h5>
                         <form id="serviceSearchForm">
-                            <div class="row g-3">
-                                <div class="col-md-8">
+                            <div class="row g-2 g-lg-3">
+                                <div class="col-12 col-md-8">
                                     <div class="input-group">
                                         <span class="input-group-text bg-transparent border-end-0">
                                             <i class="bi bi-search text-muted"></i>
                                         </span>
                                         <input type="text" 
-                                               class="form-control border-start-0" 
+                                               class="form-control border-start-0 form-control-lg" 
                                                id="serviceSearchInput" 
-                                               placeholder="Найти услугу по названию, описанию или коду...">
+                                               placeholder="Найти услугу по названию..."
+                                               aria-label="Поиск услуг">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <select class="form-select" id="serviceCategorySelect">
+                                <div class="col-12 col-md-4">
+                                    <select class="form-select form-select-lg touch-target" id="serviceCategorySelect">
                                         <option value="">Все категории</option>
                                         <% @service_categories.each do |category| %>
                                             <option value="<%= category.id %>"><%= category.name %></option>
@@ -41,8 +46,8 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="mt-3 text-end">
-                            <small class="text-muted">
+                        <div class="mt-2 mt-lg-3 text-end">
+                            <small class="text-muted small">
                                 <span id="servicesCount"><%= Service.count %></span> услуг
                             </small>
                         </div>
@@ -56,10 +61,12 @@
             <% if @service_categories.empty? %>
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <i class="bi bi-clipboard-x display-1 text-muted mb-3"></i>
-                        <h4 class="fw-bold mb-3">Услуги временно недоступны</h4>
-                        <p class="text-muted">Мы обновляем прейскурант. Пожалуйста, проверьте позже или свяжитесь с нами.</p>
-                        <a href="/contacts" class="btn btn-primary mt-3">
+                        <div class="icon-wrapper icon-wrapper-secondary mx-auto mb-3" style="width: 80px; height: 80px;">
+                            <i class="bi bi-clipboard-x fs-2"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 fs-5">Услуги временно недоступны</h4>
+                        <p class="text-muted mb-4 small">Мы обновляем прейскурант. Пожалуйста, проверьте позже или свяжитесь с нами.</p>
+                        <a href="/contacts" class="btn btn-primary touch-target">
                             <i class="bi bi-telephone me-2"></i>Связаться с клиникой
                         </a>
                     </div>
@@ -69,22 +76,25 @@
                 <% @service_categories.each do |category| %>
                     <% unless category.services.empty? %>
                         <div class="col-12">
-                            <div class="category-section mb-4" data-category-id="<%= category.id %>">
+                            <div class="category-section mb-3 mb-lg-4 fade-in-up" data-category-id="<%= category.id %>">
                                 <!-- Компактный заголовок категории -->
                                 <div class="category-header border-bottom pb-2 mb-3">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div>
-                                            <h3 class="h4 fw-bold mb-0 text-primary">
+                                            <h3 class="h5 fw-bold mb-1 text-primary">
                                                 <i class="bi bi-folder me-2"></i><%= category.name %>
                                             </h3>
-                                            <small class="text-muted">
+                                            <small class="text-muted small">
                                                 <%= category.services.count %> 
                                                 <%= russian_plural(category.services.count, 'услуга', 'услуги', 'услуг') %>
                                             </small>
                                         </div>
                                         <div class="category-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" 
-                                                    data-bs-target="#category-<%= category.id %>" aria-expanded="true">
+                                            <button class="btn btn-sm btn-outline-primary touch-target" 
+                                                    data-bs-toggle="collapse" 
+                                                    data-bs-target="#category-<%= category.id %>" 
+                                                    aria-expanded="true"
+                                                    aria-label="Показать/скрыть услуги">
                                                 <i class="bi bi-chevron-down"></i>
                                             </button>
                                         </div>
@@ -95,9 +105,9 @@
                                 <div class="category-content collapse show" id="category-<%= category.id %>">
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-hover mb-0">
-                                            <thead class="bg-light">
+                                            <thead class="bg-light d-none d-md-table-header-group">
                                                 <tr>
-                                                    <th width="10%" class="text-center ps-3">Код</th>
+                                                    <th width="15%" class="text-center ps-3">Код</th>
                                                     <th width="40%">Услуга</th>
                                                     <th width="15%" class="text-center">Длительность</th>
                                                     <th width="15%" class="text-end pe-3">Цена</th>
@@ -111,19 +121,19 @@
                                                             data-description="<%= service.description.to_s.downcase %>"
                                                             data-code="<%= service.service_code.to_s.downcase %>"
                                                             data-category="<%= category.id %>">
-                                                            <td class="text-center ps-3">
+                                                            <td class="text-center ps-3 d-none d-md-table-cell">
                                                                 <% if service.service_code.present? %>
-                                                                    <span class="badge bg-light text-dark border rounded-pill px-3 py-1 service-code" 
+                                                                    <span class="badge bg-light text-dark border rounded-pill px-2 px-lg-3 py-1 service-code touch-target" 
                                                                           title="Код услуги: <%= service.service_code %>"
                                                                           data-bs-toggle="tooltip" 
                                                                           data-bs-placement="top">
                                                                         <%= service.service_code %>
                                                                     </span>
                                                                 <% else %>
-                                                                    <span class="text-muted fst-italic" title="Код не указан">—</span>
+                                                                    <span class="text-muted fst-italic small" title="Код не указан">—</span>
                                                                 <% end %>
                                                             </td>
-                                                            <td>
+                                                            <td class="pe-2">
                                                                 <div class="fw-semibold text-dark">
                                                                     <%= service.name %>
                                                                 </div>
@@ -132,18 +142,46 @@
                                                                         <%= service.description.truncate(60) %>
                                                                     </div>
                                                                 <% end %>
+                                                                <div class="d-md-none mt-2">
+                                                                    <div class="row g-2">
+                                                                        <div class="col-6">
+                                                                            <% if service.service_code.present? %>
+                                                                                <span class="badge bg-light text-dark border rounded-pill px-2 py-1 service-code touch-target" 
+                                                                                      title="Код услуги: <%= service.service_code %>"
+                                                                                      data-bs-toggle="tooltip" 
+                                                                                      data-bs-placement="top">
+                                                                                    Код: <%= service.service_code %>
+                                                                                </span>
+                                                                            <% end %>
+                                                                        </div>
+                                                                        <div class="col-6 text-end">
+                                                                            <% if service.duration_minutes.present? %>
+                                                                                <span class="badge bg-light text-dark border rounded-pill px-2 py-1">
+                                                                                    <i class="bi bi-clock me-1"></i><%= service.duration_minutes %> мин.
+                                                                                </span>
+                                                                            <% end %>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </td>
-                                                            <td class="text-center">
+                                                            <td class="text-center d-none d-md-table-cell">
                                                                 <% if service.duration_minutes.present? %>
-                                                                    <span class="text-dark">
+                                                                    <span class="text-dark small">
                                                                         <%= service.duration_minutes %> мин.
                                                                     </span>
                                                                 <% else %>
-                                                                    <span class="text-muted">—</span>
+                                                                    <span class="text-muted small">—</span>
                                                                 <% end %>
                                                             </td>
                                                             <td class="text-end fw-bold text-primary pe-3">
-                                                                <%= number_to_currency(service.price) %>
+                                                                <span class="d-block">
+                                                                    <%= number_to_currency(service.price) %>
+                                                                </span>
+                                                                <div class="d-md-none mt-1">
+                                                                    <a href="#" class="btn btn-sm btn-outline-primary touch-target">
+                                                                        <i class="bi bi-calendar-check me-1"></i>Запись
+                                                                    </a>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     <% end %>
@@ -161,10 +199,12 @@
 
         <!-- Сообщение о пустом поиске -->
         <div id="noResultsMessage" class="text-center py-5 d-none">
-            <i class="bi bi-search display-1 text-muted mb-3"></i>
-            <h4 class="fw-bold mb-3">Услуги не найдены</h4>
-            <p class="text-muted">Попробуйте изменить условия поиска</p>
-            <button id="clearSearchBtn" class="btn btn-outline-primary mt-3">
+            <div class="icon-wrapper icon-wrapper-secondary mx-auto mb-3" style="width: 80px; height: 80px;">
+                <i class="bi bi-search fs-2"></i>
+            </div>
+            <h4 class="fw-bold mb-3 fs-5">Услуги не найдены</h4>
+            <p class="text-muted mb-4 small">Попробуйте изменить условия поиска</p>
+            <button id="clearSearchBtn" class="btn btn-outline-primary touch-target">
                 <i class="bi bi-arrow-clockwise me-2"></i>Сбросить поиск
             </button>
         </div>
@@ -172,70 +212,72 @@
 </section>
 
 <!-- Цены и условия -->
-<section class="py-5 bg-light">
+<section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h2 class="display-6 fw-bold mb-4">Наши условия</h2>
-                <p class="text-muted mb-4">
+            <div class="col-12 col-lg-6 order-2 order-lg-1 mt-4 mt-lg-0">
+                <h2 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.5rem, 3vw, 2rem);">
+                    Наши условия
+                </h2>
+                <p class="text-muted mb-4 fade-in-up" style="animation-delay: 0.1s">
                     Мы ценим доверие наших пациентов и стремимся к максимальной прозрачности в вопросах стоимости услуг.
                 </p>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6 fade-in-up" style="animation-delay: 0.2s">
+                        <div class="d-flex align-items-start gap-3 p-3 bg-white rounded-3 shadow-sm h-100">
+                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0 mt-1">
                                 <i class="bi bi-receipt"></i>
                             </div>
                             <div>
-                                <h5 class="fw-bold mb-2">Честные цены</h5>
+                                <h5 class="fw-bold mb-2 fs-6">Честные цены</h5>
                                 <p class="text-muted small mb-0">Никаких скрытых платежей и дополнительных сборов</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
+                    <div class="col-12 col-sm-6 fade-in-up" style="animation-delay: 0.3s">
+                        <div class="d-flex align-items-start gap-3 p-3 bg-white rounded-3 shadow-sm h-100">
+                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0 mt-1">
                                 <i class="bi bi-cash-stack"></i>
                             </div>
                             <div>
-                                <h5 class="fw-bold mb-2">Удобная оплата</h5>
+                                <h5 class="fw-bold mb-2 fs-6">Удобная оплата</h5>
                                 <p class="text-muted small mb-0">Наличные, банковские карты, QR-код</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                    <div class="col-12 col-sm-6 fade-in-up" style="animation-delay: 0.4s">
+                        <div class="d-flex align-items-start gap-3 p-3 bg-white rounded-3 shadow-sm h-100">
+                            <div class="icon-wrapper icon-wrapper-primary flex-shrink-0 mt-1">
                                 <i class="bi bi-shield-check"></i>
                             </div>
                             <div>
-                                <h5 class="fw-bold mb-2">Качество услуг</h5>
+                                <h5 class="fw-bold mb-2 fs-6">Качество услуг</h5>
                                 <p class="text-muted small mb-0">Все услуги соответствуют стандартам доказательной медицины</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
+                    <div class="col-12 col-sm-6 fade-in-up" style="animation-delay: 0.5s">
+                        <div class="d-flex align-items-start gap-3 p-3 bg-white rounded-3 shadow-sm h-100">
+                            <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0 mt-1">
                                 <i class="bi bi-clock-history"></i>
                             </div>
                             <div>
-                                <h5 class="fw-bold mb-2">Время для вас</h5>
+                                <h5 class="fw-bold mb-2 fs-6">Время для вас</h5>
                                 <p class="text-muted small mb-0">Прием длится столько, сколько нужно для качественной консультации</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="col-12 col-lg-6 order-1 order-lg-2 fade-in-up" style="animation-delay: 0.6s">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-body p-5">
-                        <h4 class="fw-bold mb-4">Важная информация</h4>
-                        <div class="alert alert-warning border-0">
+                    <div class="card-body p-3 p-lg-5">
+                        <h4 class="fw-bold mb-3 fs-5 fs-lg-4">Важная информация</h4>
+                        <div class="alert alert-warning border-0 mb-4">
                             <div class="d-flex align-items-start">
                                 <i class="bi bi-exclamation-triangle me-2 mt-1 flex-shrink-0"></i>
                                 <div>
-                                    <p class="mb-0">
+                                    <p class="mb-0 small">
                                         Цены на сайте являются ознакомительными и могут отличаться от фактических. 
                                         Окончательная стоимость определяется после консультации с врачом.
                                     </p>
@@ -243,46 +285,46 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <p class="text-muted mb-2">
+                            <p class="text-muted mb-2 small">
                                 <i class="bi bi-info-circle text-primary me-2"></i>
                                 Представленная информация не является публичной офертой.
                             </p>
-                            <p class="text-muted mb-0">
+                            <p class="text-muted mb-0 small">
                                 <i class="bi bi-telephone text-primary me-2"></i>
                                 Для уточнения точной стоимости услуг свяжитесь с администратором.
                             </p>
                         </div>
                         <div class="pt-3 border-top">
-                            <h5 class="fw-bold mb-3">Способы оплаты</h5>
+                            <h5 class="fw-bold mb-3 fs-6">Способы оплаты</h5>
                             <div class="row g-2">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center gap-2">
+                                <div class="col-6 col-md-3">
+                                    <div class="d-flex align-items-center gap-2 small">
                                         <i class="bi bi-cash text-primary"></i>
                                         <span>Наличные</span>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center gap-2">
+                                <div class="col-6 col-md-3">
+                                    <div class="d-flex align-items-center gap-2 small">
                                         <i class="bi bi-credit-card text-primary"></i>
-                                        <span>Банковские карты</span>
+                                        <span>Карты</span>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center gap-2">
+                                <div class="col-6 col-md-3">
+                                    <div class="d-flex align-items-center gap-2 small">
                                         <i class="bi bi-qr-code text-primary"></i>
                                         <span>QR-код</span>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center gap-2">
+                                <div class="col-6 col-md-3">
+                                    <div class="d-flex align-items-center gap-2 small">
                                         <i class="bi bi-receipt text-primary"></i>
-                                        <span>Безналичный расчет</span>
+                                        <span>Безнал</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="d-grid mt-4">
-                            <a href="/contacts" class="btn btn-primary">
+                            <a href="/contacts" class="btn btn-primary touch-target">
                                 <i class="bi bi-calendar-check me-2"></i>Записаться на консультацию
                             </a>
                         </div>
@@ -294,45 +336,47 @@
 </section>
 
 <!-- Акции -->
-<section class="py-5" id="promotions">
+<section class="py-4 py-lg-5" id="promotions">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-6 fw-bold mb-3">Акции и специальные предложения</h2>
-            <p class="text-muted lead">Выгодные условия для наших пациентов</p>
+        <div class="text-center mb-4 mb-lg-5">
+            <h2 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.5rem, 3vw, 2rem);">
+                Акции и специальные предложения
+            </h2>
+            <p class="text-muted fade-in-up" style="animation-delay: 0.1s; font-size: clamp(0.9rem, 1.5vw, 1.1rem);">
+                Выгодные условия для наших пациентов
+            </p>
         </div>
         
-        <div class="row justify-content-center g-4 mb-4">
+        <div class="row justify-content-center g-3 g-lg-4 mb-4">
             <!-- Акция 1 -->
-            <div class="col-lg-10">
-                <div class="discount-card" style="background-color: #66d9b2 !important;">
+            <div class="col-12 col-lg-10">
+                <div class="discount-card rounded-4 overflow-hidden" style="background-color: #66d9b2 !important;">
                     <div class="row align-items-center g-0">
-                        <div class="col-lg-8">
-                            <div class="p-4 p-lg-5">
-                                <span class="badge bg-white text-dark mb-3 fs-6 px-3 py-2">Специальное предложение</span>
-                                <h3 class="fw-bold mb-3 text-white">Для второго ребенка из двойни</h3>
-                                <div class="display-4 fw-bold text-white mb-3">-30%</div>
-                                <p class="text-white mb-4 opacity-90">
+                        <div class="col-12 col-lg-8 order-2 order-lg-1">
+                            <div class="p-3 p-lg-4 p-xl-5">
+                                <span class="badge bg-white text-dark mb-2 mb-lg-3 fs-6 px-2 px-lg-3 py-1 py-lg-2">Специальное предложение</span>
+                                <h3 class="fw-bold mb-2 mb-lg-3 text-white fs-5 fs-lg-4">Для второго ребенка из двойни</h3>
+                                <div class="display-6 fw-bold text-white mb-2 mb-lg-3">-30%</div>
+                                <p class="text-white mb-3 mb-lg-4 opacity-90 small">
                                     Заботимся о каждой семье! При одновременном лечении двоих детей из двойни, 
                                     второй ребенок получает скидку 30% на все медицинские услуги.
                                 </p>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <span class="badge bg-white text-dark px-3 py-2">
-                                        <i class="bi bi-check-circle me-1"></i>На все услуги клиники
+                                <div class="d-flex flex-wrap gap-1 gap-lg-2">
+                                    <span class="badge bg-white text-dark px-2 px-lg-3 py-1">
+                                        <i class="bi bi-check-circle me-1"></i>На все услуги
                                     </span>
-                                    <span class="badge bg-white text-dark px-3 py-2">
+                                    <span class="badge bg-white text-dark px-2 px-lg-3 py-1">
                                         <i class="bi bi-check-circle me-1"></i>Без ограничений
-                                    </span>
-                                    <span class="badge bg-white text-dark px-3 py-2">
-                                        <i class="bi bi-check-circle me-1"></i>При одновременном посещении
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 position-relative">
-                            <div class="discount-image-wrapper">
+                        <div class="col-12 col-lg-4 order-1 order-lg-2 position-relative">
+                            <div class="discount-image-wrapper p-3 p-lg-4">
                                 <img src="/images/discounts/kids.png" 
                                      alt="Дети из двойни" 
-                                     class="img-fluid discount-image">
+                                     class="img-fluid discount-image"
+                                     loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -340,36 +384,34 @@
             </div>
             
             <!-- Акция 2 -->
-            <div class="col-lg-10">
-                <div class="discount-card" style="background-color: #c9a8e0 !important;">
+            <div class="col-12 col-lg-10">
+                <div class="discount-card rounded-4 overflow-hidden" style="background-color: #c9a8e0 !important;">
                     <div class="row align-items-center g-0">
-                        <div class="col-lg-8">
-                            <div class="p-4 p-lg-5">
-                                <span class="badge bg-white text-dark mb-3 fs-6 px-3 py-2">Социальная поддержка</span>
-                                <h3 class="fw-bold mb-3 text-white">Скидка для людей с инвалидностью</h3>
-                                <div class="display-4 fw-bold text-white mb-3">-30%</div>
-                                <p class="text-white mb-4 opacity-90">
+                        <div class="col-12 col-lg-8 order-2 order-lg-1">
+                            <div class="p-3 p-lg-4 p-xl-5">
+                                <span class="badge bg-white text-dark mb-2 mb-lg-3 fs-6 px-2 px-lg-3 py-1 py-lg-2">Социальная поддержка</span>
+                                <h3 class="fw-bold mb-2 mb-lg-3 text-white fs-5 fs-lg-4">Скидка для людей с инвалидностью</h3>
+                                <div class="display-6 fw-bold text-white mb-2 mb-lg-3">-30%</div>
+                                <p class="text-white mb-3 mb-lg-4 opacity-90 small">
                                     Поддерживаем особенные семьи. Предоставляем скидку 30% на медицинские услуги 
                                     для детей и взрослых с подтвержденной инвалидностью.
                                 </p>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <span class="badge bg-white text-dark px-3 py-2">
+                                <div class="d-flex flex-wrap gap-1 gap-lg-2">
+                                    <span class="badge bg-white text-dark px-2 px-lg-3 py-1">
                                         <i class="bi bi-check-circle me-1"></i>Требуется документ
                                     </span>
-                                    <span class="badge bg-white text-dark px-3 py-2">
+                                    <span class="badge bg-white text-dark px-2 px-lg-3 py-1">
                                         <i class="bi bi-check-circle me-1"></i>На все услуги
-                                    </span>
-                                    <span class="badge bg-white text-dark px-3 py-2">
-                                        <i class="bi bi-check-circle me-1"></i>Без ограничения возраста
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 position-relative">
-                            <div class="discount-image-wrapper">
+                        <div class="col-12 col-lg-4 order-1 order-lg-2 position-relative">
+                            <div class="discount-image-wrapper p-3 p-lg-4">
                                 <img src="/images/discounts/support.png" 
                                      alt="Скидка для людей с инвалидностью" 
-                                     class="img-fluid discount-image">
+                                     class="img-fluid discount-image"
+                                     loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -377,11 +419,9 @@
             </div>
         </div>
         
-        <div class="text-center mt-4">
-
-            
-            <div class="mt-4">
-                <a href="/contacts" class="btn btn-outline-primary btn-lg">
+        <div class="text-center mt-3 mt-lg-4">
+            <div class="mt-3 mt-lg-4">
+                <a href="/contacts" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto touch-target">
                     <i class="bi bi-telephone me-2"></i>Узнать об акциях по телефону
                 </a>
             </div>
@@ -390,24 +430,26 @@
 </section>
 
 <!-- Дополнительная информация -->
-<section class="py-5 bg-light">
+<section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="p-5 bg-secondary-light rounded-4">
-                    <h3 class="fw-bold mb-4">Остались вопросы по услугам?</h3>
-                    <p class="text-muted mb-4">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="p-3 p-lg-4 p-xl-5 bg-secondary-light rounded-3 rounded-lg-4 fade-in-up">
+                    <h3 class="fw-bold mb-3 text-center" style="font-size: clamp(1.5rem, 3vw, 1.75rem);">
+                        Остались вопросы по услугам?
+                    </h3>
+                    <p class="text-muted mb-4 text-center" style="font-size: clamp(1rem, 1.5vw, 1.1rem);">
                         Наши администраторы помогут вам подобрать подходящую услугу, 
                         рассчитать точную стоимость и записаться на прием к специалисту.
                     </p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="/contacts" class="btn btn-primary btn-lg px-4">
+                    <div class="d-grid gap-2 d-md-flex justify-content-center">
+                        <a href="/contacts" class="btn btn-primary px-4 py-3 w-100 w-md-auto touch-target">
                             <i class="bi bi-envelope me-2"></i>Написать нам
                         </a>
-                        <a href="tel:+79133650464" class="btn btn-outline-primary btn-lg px-5">
+                        <a href="tel:+79133650464" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto mt-2 mt-md-0 ms-md-2 touch-target">
                             <i class="bi bi-telephone me-2"></i>+7 (913) 365-04-64
                         </a>
-                        <a href="tel:+73852256575" class="btn btn-outline-primary btn-lg px-5">
+                        <a href="tel:+73852256575" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto mt-2 mt-md-0 ms-md-2 touch-target">
                             <i class="bi bi-telephone me-2"></i>+7 (385) 225-65-75
                         </a>
                     </div>
@@ -418,86 +460,6 @@
 </section>
 
 <style>
-/* Стили для кода услуги */
-.service-code-container {
-    font-family: 'Courier New', monospace;
-}
-
-.service-code {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 4px;
-    padding: 3px 6px;
-    font-size: 0.85em;
-    color: #495057;
-    cursor: help;
-    transition: all 0.2s ease;
-    display: inline-block;
-}
-
-.service-code:hover {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Адаптивность для кода услуги */
-@media (max-width: 768px) {
-    .service-code {
-        font-size: 0.75em;
-        padding: 2px 4px;
-    }
-}
-
-
-/* Стили для компактной таблицы */
-.category-section {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    transition: all 0.3s ease;
-}
-
-.category-section:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
-
-.category-header {
-    cursor: pointer;
-}
-
-.category-header:hover {
-    color: var(--bs-primary);
-}
-
-.table-borderless > :not(caption) > * > * {
-    border-bottom-width: 0;
-}
-
-.table > :not(caption) > * > * {
-    padding: 0.75rem 0.5rem;
-    vertical-align: middle;
-}
-
-.table > :not(caption) > * > *:first-child {
-    padding-left: 1rem;
-}
-
-.table > :not(caption) > * > *:last-child {
-    padding-right: 1rem;
-}
-
-.service-row {
-    transition: all 0.2s ease;
-}
-
-.service-row:hover {
-    background-color: rgba(229, 167, 255, 0.05);
-    transform: translateX(4px);
-}
-
 /* Стили для кода услуги */
 .service-code {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
@@ -512,23 +474,48 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Стили для компактной таблицы */
+.category-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 1rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.category-section:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.table-borderless > :not(caption) > * > * {
+    border-bottom-width: 0;
+}
+
+.service-row {
+    transition: all 0.2s ease;
+}
+
+.service-row:hover {
+    background-color: rgba(229, 167, 255, 0.05);
+}
+
 /* Анимация для раскрытия/скрытия категорий */
 .category-content {
     transition: all 0.3s ease;
 }
 
-.collapsing {
-    transition: height 0.3s ease;
-}
-
 /* Адаптивность */
 @media (max-width: 768px) {
     .category-section {
-        padding: 1rem;
+        padding: 0.75rem 0.75rem 1rem;
+        border-radius: 10px;
     }
     
     .table-responsive {
-        font-size: 0.9rem;
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
     }
     
     .service-code {
@@ -536,19 +523,44 @@
         padding: 0.25rem 0.5rem !important;
     }
     
-    /* Скрываем код услуги на мобильных */
-    .table > :not(caption) > * > *:first-child {
-        display: none;
+    .discount-card .row {
+        flex-direction: column;
     }
     
-    /* Расширяем другие колонки */
-    .table > :not(caption) > * > *:nth-child(2) {
-        width: 55%;
+    .discount-card .col-lg-8,
+    .discount-card .col-lg-4 {
+        width: 100%;
     }
     
-    .table > :not(caption) > * > *:nth-child(3),
-    .table > :not(caption) > * > *:nth-child(4) {
-        width: 22.5%;
+    .discount-image-wrapper {
+        min-height: 180px;
+        padding: 1.5rem !important;
+    }
+    
+    .discount-image {
+        max-height: 140px;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-section {
+        padding: 0.5rem 0.5rem 0.75rem;
+    }
+    
+    .table-responsive {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .discount-image-wrapper {
+        min-height: 150px;
+    }
+    
+    .discount-image {
+        max-height: 120px;
     }
 }
 
@@ -576,5 +588,90 @@
     animation-delay: 0.2s;
 }
 
-</style>
+/* Стили для акций */
+.discount-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.discount-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.discount-image-wrapper {
+    height: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.discount-image {
+    max-height: 160px;
+    width: auto;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center center;
+}
+
+.discount-card:hover .discount-image {
+    transform: scale(1.1);
+}
+
+/* Touch улучшения */
+@media (hover: none) and (pointer: coarse) {
+    .discount-card:hover {
+        transform: none;
+    }
+    
+    .service-code:hover {
+        transform: none;
+    }
+}
+
+/* Улучшенная таблица на мобильных */
+@media (max-width: 768px) {
+    .table > :not(caption) > * > * {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .table > thead {
+        display: none;
+    }
+    
+    .table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    .table tbody td {
+        display: block;
+        text-align: left;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f8f9fa;
+    }
+    
+    .table tbody td:last-child {
+        border-bottom: none;
+        text-align: right;
+    }
+    
+    .table tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 0.8rem;
+        margin-right: 0.5rem;
+    }
+}
+</style>

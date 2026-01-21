@@ -234,3 +234,219 @@ html {
         padding: 8px 15px;
     }
 }
+
+/* ==========================================================================
+   MOBILE FIRST STYLES
+   ========================================================================== */
+
+/* Базовые мобильные стили */
+@media (max-width: 576px) {
+    body {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .container-fluid.container-lg {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* Отступы для touch-устройств */
+.btn, .nav-link, .dropdown-item {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Touch-friendly элементы */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Адаптивная типографика */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-6 {
+        font-size: 1.75rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Адаптивные изображения */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Карточки на мобильных */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* Таблицы на мобильных */
+@media (max-width: 768px) {
+    .table-responsive {
+        margin-left: -16px;
+        margin-right: -16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .table {
+        font-size: 0.875rem;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.5rem;
+    }
+}
+
+/* Формы на мобильных */
+@media (max-width: 768px) {
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Предотвращает зум на iOS */
+        padding: 0.75rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+}
+
+/* Герой-секция на мобильных */
+@media (max-width: 768px) {
+    .hero-section .min-vh-75 {
+        min-height: auto !important;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 1.75rem;
+        line-height: 1.3;
+    }
+    
+    .hero-section .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Галерея на мобильных */
+@media (max-width: 768px) {
+    .gallery-thumbnail {
+        height: 120px;
+    }
+    
+    #my-gallery .col-6 {
+        padding: 4px;
+    }
+}
+
+/* Врачи на мобильных */
+@media (max-width: 768px) {
+    .doctor-photo-wrapper {
+        height: 180px;
+    }
+    
+    .doctor-card .card-img-top {
+        height: 200px;
+    }
+    
+    .doctor-info {
+        padding: 1rem;
+    }
+}
+
+/* Отзывы на мобильных */
+@media (max-width: 768px) {
+    .reviews-container {
+        max-height: 300px;
+    }
+    
+    .rating-input .stars i {
+        font-size: 1.25rem;
+    }
+}
+
+/* Акции на мобильных */
+@media (max-width: 768px) {
+    .discount-card {
+        margin-bottom: 1rem;
+    }
+    
+    .discount-image-wrapper {
+        min-height: 150px;
+    }
+    
+    .discount-image {
+        max-height: 120px;
+    }
+}
+
+/* Оптимизация скролла на iOS */
+.reviews-container,
+.modal-body {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Предотвращение горизонтального скролла */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Safe area для iPhone X+ */
+.safe-area-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}

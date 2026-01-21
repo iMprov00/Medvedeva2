@@ -1,40 +1,42 @@
-<!-- views/pages/doctors.erb или views/dynamic/doctors.erb -->
 <!-- Заголовок страницы -->
-<section class="py-5 bg-light">
+<section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">Наши врачи</h1>
-                <p class="lead text-muted mb-0">Профессиональная команда специалистов, которые помогут вашему ребенку сохранить здоровье</p>
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Наши врачи</h1>
+                <p class="lead text-muted mb-0 fade-in-up" style="animation-delay: 0.1s; font-size: clamp(1rem, 2vw, 1.25rem);">
+                    Профессиональная команда специалистов, которые помогут вашему ребенку сохранить здоровье
+                </p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Поиск и фильтры -->
-<section class="py-5">
+<section class="py-4 py-lg-5">
     <div class="container">
-        <div class="row g-3 mb-5">
-            <div class="col-md-8">
+        <div class="row g-3 mb-4 mb-lg-5">
+            <div class="col-12 col-md-8">
                 <div class="input-group input-group-lg">
                     <span class="input-group-text bg-white border-end-0">
                         <i class="bi bi-search text-muted"></i>
                     </span>
                     <input type="text" 
                            id="doctor-search" 
-                           class="form-control border-start-0" 
-                           placeholder="Поиск врачей по ФИО...">
+                           class="form-control border-start-0 form-control-lg" 
+                           placeholder="Поиск врачей по ФИО..."
+                           aria-label="Поиск врачей">
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <div class="d-flex gap-2">
-                    <select id="specialty-filter" class="form-select form-select-lg">
+                    <select id="specialty-filter" class="form-select form-select-lg touch-target">
                         <option value="">Все специальности</option>
                         <% @specialties.each do |specialty| %>
                             <option value="<%= specialty %>"><%= specialty %></option>
                         <% end %>
                     </select>
-                    <button id="reset-filters" class="btn btn-outline-secondary btn-lg">
+                    <button id="reset-filters" class="btn btn-outline-secondary btn-lg px-3 touch-target">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
                 </div>
@@ -43,19 +45,91 @@
         
         <!-- Список врачей -->
         <div class="doctors-grid">
-            <div class="row g-4" id="doctors-list">
+            <div class="row g-3 g-lg-4" id="doctors-list">
                 <% if @doctors.empty? %>
                     <div class="col-12">
                         <div class="text-center py-5">
-                            <i class="bi bi-people display-1 text-muted mb-3"></i>
-                            <h4 class="mb-3">Врачи не найдены</h4>
-                            <p class="text-muted">Попробуйте изменить условия поиска</p>
+                            <div class="icon-wrapper icon-wrapper-secondary mx-auto mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-people fs-2"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3 fs-5">Врачи не найдены</h4>
+                            <p class="text-muted small">Попробуйте изменить условия поиска</p>
                         </div>
                     </div>
                 <% else %>
                     <% @doctors.each_with_index do |doctor, index| %>
-                        <div class="col-md-6 col-lg-4 fade-in-up">
-                            <%= erb :'dynamic/_doctor_card', locals: { doctor: doctor, index: index } %>
+                        <div class="col-12 col-sm-6 col-lg-4 fade-in-up">
+                            <div class="card doctor-card shadow-sm border-0 h-100" data-doctor-index="<%= index %>">
+                                <div class="position-relative doctor-photo-container overflow-hidden <%= index.even? ? 'bg-doctor-0' : 'bg-doctor-1' %>">
+                                    <div class="doctor-photo-wrapper">
+                                        <% if doctor.photo_path && !doctor.photo_path.empty? %>
+                                            <div class="position-absolute top-0 left-0 w-100 h-100 <%= index.even? ? 'bg-doctor-0' : 'bg-doctor-1' %>"></div>
+                                            
+                                            <div style="
+                                                position: relative;
+                                                width: 100%;
+                                                max-width: 280px;
+                                                height: 240px;
+                                                margin: 0 auto;
+                                                overflow: hidden;
+                                                border-radius: 20px 20px 0 0;
+                                            ">
+                                                <img src="<%= doctor.photo_path %>" 
+                                                     class="position-absolute top-0 left-0 w-100 h-100" 
+                                                     alt="Доктор <%= doctor.full_name %>"
+                                                     style="
+                                                         object-fit: cover;
+                                                         object-position: center top;
+                                                     "
+                                                     loading="lazy">
+                                            </div>
+                                        <% else %>
+                                            <div class="position-absolute top-50 start-50 translate-middle">
+                                                <i class="bi bi-person-circle display-1 text-white opacity-50"></i>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    
+                                    <% if doctor.experience_years && doctor.experience_years > 0 %>
+                                        <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary rounded-pill shadow-sm small">
+                                            Опыт <%= doctor.experience_text %>
+                                        </span>
+                                    <% end %>
+                                </div>
+                                
+                                <div class="card-body d-flex flex-column p-3 p-lg-4">
+                                    <h5 class="card-title fw-bold mb-2 fs-6"><%= doctor.full_name %></h5>
+                                    
+                                    <div class="mb-3">
+                                        <% if doctor.specialties.any? %>
+                                            <% doctor.specialties.each do |specialty| %>
+                                                <span class="badge bg-secondary-light text-primary mb-1 me-1 small">
+                                                    <%= specialty.name %>
+                                                </span>
+                                            <% end %>
+                                        <% else %>
+                                            <span class="badge bg-secondary-light text-primary mb-1 small">
+                                                Специалист
+                                            </span>
+                                        <% end %>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted flex-grow-1 mb-3 small">
+                                        <%= doctor.bio.to_s.truncate(100) %>
+                                    </p>
+                                    
+                                    <div class="mt-auto">
+                                        <div class="d-grid">
+                                            <a href="#" 
+                                               class="btn btn-primary btn-sm btn-appointment touch-target" 
+                                               data-doctor-id="<%= doctor.id %>" 
+                                               data-doctor-name="<%= doctor.full_name %>">
+                                              <i class="bi bi-calendar-check me-1"></i>Записаться
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     <% end %>
                 <% end %>
@@ -63,7 +137,6 @@
         </div>
     </div>
 </section>
-
 
 <style>
 /* CSS для чередования цветов и анимаций */
@@ -81,42 +154,27 @@
 }
 
 /* Чередование цветов фона для контейнеров с фото */
-.doctor-card:nth-child(odd) .doctor-photo-container {
+.bg-doctor-0 {
     background-color: #77e0b2;
 }
 
-.doctor-card:nth-child(even) .doctor-photo-container {
+.bg-doctor-1 {
     background-color: #e5a7ff;
 }
 
-/* Для поддержки динамического добавления через AJAX */
-#doctors-list > .col-md-6:nth-child(odd) .doctor-card .doctor-photo-container {
-    background-color: #77e0b2 !important;
-}
-
-#doctors-list > .col-md-6:nth-child(even) .doctor-card .doctor-photo-container {
-    background-color: #e5a7ff !important;
-}
-
-/* Стили для фото врачей */
 .doctor-photo-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 280px;
-    overflow: hidden;
+    min-height: 240px;
     position: relative;
 }
 
 .doctor-photo-wrapper img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
     transition: transform 0.3s ease;
 }
 
-.doctor-photo-wrapper img:hover {
+.doctor-card:hover .doctor-photo-wrapper img {
     transform: scale(1.05);
 }
 
@@ -129,13 +187,58 @@
 /* Адаптивность */
 @media (max-width: 768px) {
     .doctor-photo-wrapper {
-        height: 240px;
+        min-height: 200px;
+    }
+    
+    .doctor-card .doctor-photo-wrapper div[style] {
+        height: 180px;
+        max-width: 200px;
     }
 }
 
 @media (max-width: 576px) {
     .doctor-photo-wrapper {
-        height: 200px;
+        min-height: 180px;
+    }
+    
+    .doctor-card .doctor-photo-wrapper div[style] {
+        height: 160px;
+        max-width: 180px;
+    }
+    
+    .doctors-grid .col-12 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Touch улучшения */
+@media (hover: none) and (pointer: coarse) {
+    .doctor-card:hover .doctor-photo-wrapper img {
+        transform: none;
+    }
+}
+
+/* Плавная загрузка карточек */
+.doctor-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Стили для мобильного поиска */
+@media (max-width: 768px) {
+    .input-group-lg .form-control,
+    .input-group-lg .input-group-text {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+    
+    .form-select-lg {
+        font-size: 1rem;
+        padding: 0.75rem 2.25rem 0.75rem 1rem;
     }
 }
 </style>

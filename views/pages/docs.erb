@@ -1,90 +1,102 @@
 <!-- Заголовок страницы -->
-<section class="py-5 bg-light">
+<section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">Документы</h1>
-                <p class="lead text-muted mb-0">Лицензии, сертификаты и разрешительная документация клиники</p>
+            <div class="col-lg-10 mx-auto text-center">
+                <h1 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Документы</h1>
+                <p class="lead text-muted mb-0 fade-in-up" style="animation-delay: 0.1s; font-size: clamp(1rem, 2vw, 1.25rem);">
+                    Лицензии, сертификаты и разрешительная документация клиники
+                </p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Документы -->
-<section class="py-5">
+<section class="py-4 py-lg-5">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-3 g-lg-4">
             <!-- Основные документы -->
-            <div class="col-lg-8">
-                <div class="row g-4">
-                    <div class="col-md-6">
+            <div class="col-12 col-lg-8">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 fade-in-up" style="animation-delay: 0.2s">
                         <div class="card border-0 shadow-sm h-100 card-hover">
-                            <div class="card-body p-4">
+                            <div class="card-body p-3">
                                 <div class="d-flex align-items-start gap-3 mb-3">
                                     <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
                                         <i class="bi bi-file-text fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold mb-2">Лицензия на медицинскую деятельность</h5>
-                                        <p class="text-muted mb-2">Лицензия № Л041-01151-22_04079331 от 25.12.2025</p>
-                                            <a href="/download/license" class="btn btn-outline-primary btn-sm" download="Лицензия_клиники_Медведевой.pdf">
+                                        <h5 class="fw-bold mb-2 fs-6">Лицензия на медицинскую деятельность</h5>
+                                        <p class="text-muted mb-2 small">Лицензия № Л041-01151-22_04079331 от 25.12.2025</p>
+                                        <div class="d-flex gap-2">
+                                            <a href="/download/license" class="btn btn-outline-primary btn-sm touch-target" download="Лицензия_клиники_Медведевой.pdf">
                                                 <i class="bi bi-download me-1"></i>Скачать
                                             </a>
+                                            <a href="/download/license" class="btn btn-outline-secondary btn-sm touch-target" target="_blank">
+                                                <i class="bi bi-eye me-1"></i>Посмотреть
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6 fade-in-up" style="animation-delay: 0.3s">
                         <div class="card border-0 shadow-sm h-100 card-hover">
-                            <div class="card-body p-4">
+                            <div class="card-body p-3">
                                 <div class="d-flex align-items-start gap-3 mb-3">
                                     <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
                                         <i class="bi bi-file-earmark-text fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold mb-2">Свидетельство о государственной регистрации</h5>
-                                        <p class="text-muted mb-2">ОГРН 1252200013933 от 17.10.2025</p>
-                                            <a href="/download/registration" class="btn btn-outline-primary btn-sm" download="Свидетельство_клиники_Медведевой.webp">
+                                        <h5 class="fw-bold mb-2 fs-6">Свидетельство о государственной регистрации</h5>
+                                        <p class="text-muted mb-2 small">ОГРН 1252200013933 от 17.10.2025</p>
+                                        <div class="d-flex gap-2">
+                                            <a href="/download/registration" class="btn btn-outline-primary btn-sm touch-target" download="Свидетельство_клиники_Медведевой.webp">
                                                 <i class="bi bi-download me-1"></i>Скачать
                                             </a>
+                                            <a href="/download/registration" class="btn btn-outline-secondary btn-sm touch-target" target="_blank">
+                                                <i class="bi bi-eye me-1"></i>Посмотреть
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-<%#                     <div class="col-md-6">
+                    <div class="col-12 col-md-6 fade-in-up" style="animation-delay: 0.4s">
                         <div class="card border-0 shadow-sm h-100 card-hover">
-                            <div class="card-body p-4">
+                            <div class="card-body p-3">
                                 <div class="d-flex align-items-start gap-3 mb-3">
                                     <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
                                         <i class="bi bi-file-medical fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold mb-2">Правила оказания медицинских услуг</h5>
-                                        <p class="text-muted mb-2">Утверждены приказом №45 от 20.03.2021</p>
-                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <h5 class="fw-bold mb-2 fs-6">Правила оказания медицинских услуг</h5>
+                                        <p class="text-muted mb-2 small">Утверждены приказом №45 от 20.03.2021</p>
+                                        <a href="#" class="btn btn-outline-primary btn-sm touch-target">
                                             <i class="bi bi-download me-1"></i>Скачать
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div> %>
+                    </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6 fade-in-up" style="animation-delay: 0.5s">
                         <div class="card border-0 shadow-sm h-100 card-hover">
-                            <div class="card-body p-4">
+                            <div class="card-body p-3">
                                 <div class="d-flex align-items-start gap-3 mb-3">
                                     <div class="icon-wrapper icon-wrapper-secondary flex-shrink-0">
                                         <i class="bi bi-shield-check fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold mb-2">Политика конфиденциальности</h5>
-                                        <p class="text-muted mb-2">Обработка персональных данных пациентов</p>
-                                        <a href="/privacy" class="btn btn-outline-primary btn-sm">
+                                        <h5 class="fw-bold mb-2 fs-6">Политика конфиденциальности</h5>
+                                        <p class="text-muted mb-2 small">Обработка персональных данных пациентов</p>
+                                        <a href="/privacy" class="btn btn-outline-primary btn-sm touch-target">
                                             <i class="bi bi-eye me-1"></i>Подробнее
                                         </a>
                                     </div>
@@ -96,38 +108,38 @@
             </div>
             
             <!-- Информация -->
-            <div class="col-lg-4">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-3">Информация о документах</h5>
+            <div class="col-12 col-lg-4 fade-in-up" style="animation-delay: 0.6s">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-3">
+                        <h5 class="fw-bold mb-3 fs-6">Информация о документах</h5>
                         <p class="text-muted small mb-4">
                             Все документы клиники соответствуют требованиям законодательства РФ 
                             и регулярно обновляются в соответствии с изменениями в нормативных актах.
                         </p>
                         
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item px-0 border-0">
+                        <div class="list-group list-group-flush mb-4">
+                            <div class="list-group-item px-0 border-0 py-2">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle-fill text-primary me-2"></i>
-                                    <span>Все лицензии действительны</span>
+                                    <span class="small">Все лицензии действительны</span>
                                 </div>
                             </div>
-                            <div class="list-group-item px-0 border-0">
+                            <div class="list-group-item px-0 border-0 py-2">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle-fill text-primary me-2"></i>
-                                    <span>Документы обновляются ежегодно</span>
+                                    <span class="small">Документы обновляются ежегодно</span>
                                 </div>
                             </div>
-                            <div class="list-group-item px-0 border-0">
+                            <div class="list-group-item px-0 border-0 py-2">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle-fill text-primary me-2"></i>
-                                    <span>Доступны для ознакомления</span>
+                                    <span class="small">Доступны для ознакомления</span>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="mt-4">
-                            <a href="/contacts" class="btn btn-primary w-100">
+                            <a href="/contacts" class="btn btn-primary w-100 touch-target">
                                 <i class="bi bi-question-circle me-2"></i>Задать вопрос
                             </a>
                         </div>
@@ -137,3 +149,66 @@
         </div>
     </div>
 </section>
+
+<style>
+/* CSS для чередования цветов и анимаций */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .fade-in-up {
+        animation: fadeInUp 0.4s ease forwards;
+    }
+    
+    .card-hover:hover {
+        transform: none;
+    }
+}
+
+/* Стили для карточек документов */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Touch улучшения */
+@media (hover: none) and (pointer: coarse) {
+    .card-hover:hover {
+        transform: none;
+    }
+}
+
+/* Улучшенные кнопки для мобильных */
+.btn-sm {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Компактные карточки на мобильных */
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .d-flex.gap-2 {
+        gap: 0.5rem !important;
+    }
+}
+</style>

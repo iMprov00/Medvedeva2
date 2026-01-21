@@ -1,60 +1,42 @@
-<!-- views/dynamic/_doctor_card.erb -->
 <% 
-  # Получаем индекс врача
   doctor_index = defined?(index) ? index : 0
   bg_class = "bg-doctor-#{doctor_index % 2}"
 %>
 
 <div class="card doctor-card shadow-sm border-0 h-100" data-doctor-index="<%= doctor_index %>">
     <div class="position-relative doctor-photo-container <%= bg_class %> overflow-hidden">
-        <div class="doctor-photo-wrapper" style="
-            height: 300px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            position: relative;
-        ">
+        <div class="doctor-photo-wrapper d-flex align-items-end justify-content-center position-relative">
             <% if doctor.photo_path && !doctor.photo_path.empty? %>
                 <!-- Фоновый цвет -->
-                <div class="position-absolute top-0 left-0 w-100 h-100 <%= bg_class %>"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100 <%= bg_class %>"></div>
                 
                 <!-- Маска для скругления краев фото -->
-                <div style="
-                    position: relative;
-                    width: 280px;
-                    height: 280px;
-                    margin-bottom: -20px;
-                    overflow: hidden;
-                    border-radius: 20px 20px 0 0;
-                ">
+                <div class="doctor-photo-mask">
                     <img src="<%= doctor.photo_path %>" 
-                         class="position-absolute top-0 left-0 w-100 h-100" 
+                         class="position-absolute top-0 start-0 w-100 h-100 doctor-photo-img" 
                          alt="Доктор <%= doctor.full_name %>"
-                         style="
-                             object-fit: cover;
-                             object-position: center top;
-                         ">
+                         loading="lazy">
                 </div>
             <% else %>
-                <i class="bi bi-person-circle display-1 text-white position-absolute"
+                <i class="bi bi-person-circle display-1 text-white position-absolute doctor-photo-placeholder"
                    style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
             <% end %>
         </div>
         
         <% if doctor.experience_years && doctor.experience_years > 0 %>
-            <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary rounded-pill shadow-sm">
+            <span class="position-absolute top-0 end-0 m-2 m-md-3 badge bg-white text-primary rounded-pill shadow-sm experience-badge">
                 Опыт <%= doctor.experience_text %>
             </span>
         <% end %>
     </div>
     
-    <div class="card-body d-flex flex-column">
-        <h5 class="card-title fw-bold mb-2"><%= doctor.full_name %></h5>
+    <div class="card-body d-flex flex-column p-3 p-md-4">
+        <h5 class="card-title fw-bold mb-2 fs-6 fs-md-5"><%= doctor.full_name %></h5>
         
         <div class="mb-3">
             <% if doctor.specialties.any? %>
                 <% doctor.specialties.each do |specialty| %>
-                    <span class="badge bg-secondary-light text-primary mb-2 me-1">
+                    <span class="badge bg-secondary-light text-primary mb-2 me-1 specialty-badge">
                         <%= specialty.name %>
                     </span>
                 <% end %>
@@ -65,14 +47,14 @@
             <% end %>
         </div>
         
-        <p class="card-text text-muted flex-grow-1 mb-4">
+        <p class="card-text text-muted flex-grow-1 mb-4 fs-6 fs-md-initial doctor-bio">
             <%= doctor.bio.to_s.truncate(120) %>
         </p>
         
         <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center">
                 <a href="#" 
-                   class="btn btn-primary btn-sm btn-appointment" 
+                   class="btn btn-primary btn-appointment w-100 touch-target" 
                    data-doctor-id="<%= doctor.id %>" 
                    data-doctor-name="<%= doctor.full_name %>">
                   <i class="bi bi-calendar-check me-1"></i>Запись

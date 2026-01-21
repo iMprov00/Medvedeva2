@@ -1,38 +1,44 @@
 <!-- Герой секция -->
 <section class="hero-section bg-secondary-light">
     <div class="container">
-        <div class="row align-items-center min-vh-75 py-5">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4 fade-in-up">
+        <div class="row align-items-center py-4 py-lg-5">
+            <div class="col-12 col-lg-6 order-2 order-lg-1 mt-4 mt-lg-0">
+                <h1 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.75rem, 4vw, 2.5rem); line-height: 1.2;">
                     Клиника доказательной медицины<br>
                     <span class="text-primary">доктора Медведевой</span>
                 </h1>
-                <p class="lead text-muted mb-4 fade-in-up" style="animation-delay: 0.1s">
-                    Здоровье вашего ребенка, основанное на фактах. Забота, основанная на доверии. Современная педиатрия по международным стандартам.
+                <p class="text-muted mb-4 fade-in-up" style="animation-delay: 0.1s; font-size: clamp(1rem, 2vw, 1.25rem);">
+                    Здоровье вашего ребенка, основанное на фактах. Забота, основанная на доверии.
                 </p>
-                <div class="d-flex flex-wrap gap-3 fade-in-up" style="animation-delay: 0.2s">
-                    <a href="/doctors" class="btn btn-primary btn-lg px-4">
+                <div class="d-grid gap-2 d-md-flex fade-in-up" style="animation-delay: 0.2s">
+                    <a href="/doctors" class="btn btn-primary px-4 py-3 w-100 w-md-auto touch-target">
                         <i class="bi bi-calendar-check me-2"></i>Записаться на прием
                     </a>
-                    <a href="/doctors" class="btn btn-outline-primary btn-lg px-4">
+                    <a href="/doctors" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto mt-2 mt-md-0 ms-md-2 touch-target">
                         Наши врачи
                     </a>
                 </div>
-                <div class="mt-4 fade-in-up" style="animation-delay: 0.3s">
-                    <small class="text-muted">
-                        <i class="bi bi-check-circle-fill text-accent me-1"></i>
-                        Специализируемся на детях от 0 до 18 лет
-                        <i class="bi bi-check-circle-fill text-accent mx-2"></i>
-                        Доказательный подход к лечению
-                    </small>
+                <div class="mt-3 mt-lg-4 fade-in-up" style="animation-delay: 0.3s">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-accent me-1"></i>
+                            <small class="text-muted">Специализируемся на детях от 0 до 18 лет</small>
+                        </span>
+                        <span class="d-none d-md-inline mx-2">•</span>
+                        <span class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-accent me-1"></i>
+                            <small class="text-muted">Доказательный подход к лечению</small>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6 mt-5 mt-lg-0">
+            <div class="col-12 col-lg-6 order-1 order-lg-2">
                 <div class="position-relative fade-in-up" style="animation-delay: 0.4s">
-                    <div class="ratio" style="--bs-aspect-ratio: 75%;">
+                    <div class="ratio ratio-4x3 rounded-3 rounded-lg-4 overflow-hidden shadow">
                         <img src="/images/logo_index.jpg" 
-                             class="img-fluid object-fit-cover rounded-4" 
-                             alt="Детская клиника доктора Медведевой">
+                             class="img-fluid object-fit-cover" 
+                             alt="Детская клиника доктора Медведевой"
+                             loading="lazy">
                     </div>
                 </div>
             </div>
@@ -41,64 +47,66 @@
 </section>
 
 <!-- Преимущества -->
-<section class="section-padding">
+<section class="section-padding py-4 py-lg-5">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3 fade-in-up">Наши принципы</h2>
-            <p class="text-muted lead fade-in-up" style="animation-delay: 0.1s">Основа нашего подхода к лечению и заботе о пациентах</p>
+        <div class="text-center mb-4 mb-lg-5">
+            <h2 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.5rem, 3vw, 2rem);">Наши принципы</h2>
+            <p class="text-muted fade-in-up" style="animation-delay: 0.1s; font-size: clamp(0.9rem, 1.5vw, 1.1rem);">
+                Основа нашего подхода к лечению и заботе о пациентах
+            </p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3 fade-in-up" style="animation-delay: 0.2s">
+        <div class="row g-3 g-lg-4">
+            <div class="col-12 col-sm-6 col-lg-3 fade-in-up" style="animation-delay: 0.2s">
                 <div class="card border-0 shadow-sm h-100 card-hover">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper icon-wrapper-primary mb-4">
-                            <i class="bi bi-clipboard-data fs-2"></i>
+                    <div class="card-body p-3 p-lg-4">
+                        <div class="icon-wrapper icon-wrapper-primary mb-3">
+                            <i class="bi bi-clipboard-data fs-3"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">Доказательная педиатрия</h4>
-                        <p class="text-muted mb-0">
+                        <h4 class="fw-bold mb-2 fs-5">Доказательная педиатрия</h4>
+                        <p class="text-muted mb-0 small">
                             Диагнозы и назначения — только по современным международным протоколам. Никакого лишнего лечения.
                         </p>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-6 col-lg-3 fade-in-up" style="animation-delay: 0.3s">
+            <div class="col-12 col-sm-6 col-lg-3 fade-in-up" style="animation-delay: 0.3s">
                 <div class="card border-0 shadow-sm h-100 card-hover">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper icon-wrapper-secondary mb-4">
-                            <i class="bi bi-person-badge fs-2"></i>
+                    <div class="card-body p-3 p-lg-4">
+                        <div class="icon-wrapper icon-wrapper-secondary mb-3">
+                            <i class="bi bi-person-badge fs-3"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">Опытные педиатры</h4>
-                        <p class="text-muted mb-0">
+                        <h4 class="fw-bold mb-2 fs-5">Опытные педиатры</h4>
+                        <p class="text-muted mb-0 small">
                             Врачи, которые говорят с родителями на одном языке и знают, как работать с детьми.
                         </p>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-6 col-lg-3 fade-in-up" style="animation-delay: 0.4s">
+            <div class="col-12 col-sm-6 col-lg-3 fade-in-up" style="animation-delay: 0.4s">
                 <div class="card border-0 shadow-sm h-100 card-hover">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper icon-wrapper-primary mb-4">
-                            <i class="bi bi-chat-dots fs-2"></i>
+                    <div class="card-body p-3 p-lg-4">
+                        <div class="icon-wrapper icon-wrapper-primary mb-3">
+                            <i class="bi bi-chat-dots fs-3"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">Честность и время</h4>
-                        <p class="text-muted mb-0">
+                        <h4 class="fw-bold mb-2 fs-5">Честность и время</h4>
+                        <p class="text-muted mb-0 small">
                             Подробно объясняем, отвечаем на все вопросы. Прием длится столько, сколько нужно вам и ребенку.
                         </p>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-6 col-lg-3 fade-in-up" style="animation-delay: 0.5s">
+            <div class="col-12 col-sm-6 col-lg-3 fade-in-up" style="animation-delay: 0.5s">
                 <div class="card border-0 shadow-sm h-100 card-hover">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper icon-wrapper-secondary mb-4">
-                            <i class="bi bi-heart fs-2"></i>
+                    <div class="card-body p-3 p-lg-4">
+                        <div class="icon-wrapper icon-wrapper-secondary mb-3">
+                            <i class="bi bi-heart fs-3"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">Без страха и стресса</h4>
-                        <p class="text-muted mb-0">
+                        <h4 class="fw-bold mb-2 fs-5">Без страха и стресса</h4>
+                        <p class="text-muted mb-0 small">
                             Создаем комфортную атмосферу для маленьких пациентов. Лечим, не пугая.
                         </p>
                     </div>
@@ -109,68 +117,68 @@
 </section>
 
 <!-- О клинике -->
-<section class="bg-light section-padding">
+<section class="bg-light py-4 py-lg-5">
     <div class="container">
         <div class="row align-items-center">
-            <!-- Текстовый блок (теперь идет первым) -->
-            <div class="col-lg-6 order-lg-1">
-                <h2 class="display-6 fw-bold mb-4 fade-in-up">Первая в городе детская клиника доказательной медицины</h2>
-                <p class="text-muted mb-4 fade-in-up" style="animation-delay: 0.1s">
+            <!-- Текстовый блок -->
+            <div class="col-12 col-lg-6 order-2 order-lg-1 mt-4 mt-lg-0">
+                <h2 class="fw-bold mb-3 fade-in-up" style="font-size: clamp(1.5rem, 3vw, 2rem);">
+                    Первая в городе детская клиника доказательной медицины
+                </h2>
+                <p class="text-muted mb-3 fade-in-up" style="animation-delay: 0.1s;">
                     Наша клиника открылась в декабре 2025 года с простой и важной миссией: привнести в Барнаул современную, понятную и безопасную педиатрию, основанную на международных клинических рекомендациях и научных данных.
                 </p>
-                <p class="text-muted mb-4 fade-in-up" style="animation-delay: 0.2s">
+                <p class="text-muted mb-4 fade-in-up" style="animation-delay: 0.2s;">
                     Мы создали пространство, где врачи и родители — одна команда. Где каждое назначение имеет доказательную базу, а забота о ребенке строится на уважении, доверии и индивидуальном подходе.
                 </p>
                 
-                <!-- Блоки с преимуществами -->
-                <div class="row mb-4 g-3">
-                    <div class="col-sm-6 fade-in-up" style="animation-delay: 0.3s">
-                        <div class="card h-100 border-0 bg-white shadow-sm p-3">
+<%#                 <!-- Блоки с преимуществами -->
+                <div class="row mb-4 g-2">
+                    <div class="col-12 col-sm-6 fade-in-up" style="animation-delay: 0.3s">
+                        <div class="card h-100 border-0 bg-white shadow-sm p-2 p-sm-3">
                             <div class="d-flex align-items-center">
-                                <div class="icon-wrapper icon-wrapper-primary flex-shrink-0 me-3">
-                                    <i class="bi bi-bandaid fs-3"></i>
+                                <div class="icon-wrapper icon-wrapper-primary flex-shrink-0 me-2 me-sm-3">
+                                    <i class="bi bi-bandaid fs-4"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-bold text-primary mb-1">Без лишних назначений</div>
+                                    <div class="fw-bold text-primary mb-1 small">Без лишних назначений</div>
                                     <div class="text-muted small">Лечим причину, а не анализы</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 fade-in-up" style="animation-delay: 0.4s">
-                        <div class="card h-100 border-0 bg-white shadow-sm p-3">
+                    <div class="col-12 col-sm-6 fade-in-up" style="animation-delay: 0.4s">
+                        <div class="card h-100 border-0 bg-white shadow-sm p-2 p-sm-3">
                             <div class="d-flex align-items-center">
-                                <div class="icon-wrapper icon-wrapper-primary flex-shrink-0 me-3">
-                                    <i class="bi bi-clock-history fs-3"></i>
+                                <div class="icon-wrapper icon-wrapper-primary flex-shrink-0 me-2 me-sm-3">
+                                    <i class="bi bi-clock-history fs-4"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-bold text-primary mb-1">Прием от 30 минут</div>
+                                    <div class="fw-bold text-primary mb-1 small">Прием от 30 минут</div>
                                     <div class="text-muted small">Успеваем все обсудить</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> %>
                 
                 <!-- Кнопка -->
-                <div class="d-flex justify-content-lg-start justify-content-center fade-in-up" style="animation-delay: 0.5s">
-                    <a href="/about" class="btn btn-outline-primary btn-lg px-5">
+                <div class="d-grid gap-2 d-md-flex fade-in-up" style="animation-delay: 0.5s">
+                    <a href="/about" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto touch-target">
                         Узнать нашу историю
                     </a>
                 </div>
             </div>
             
-            <!-- Изображение (теперь идет вторым) -->
-            <div class="col-lg-6 order-lg-2 mt-5 mt-lg-0">
+            <!-- Изображение -->
+            <div class="col-12 col-lg-6 order-1 order-lg-2">
                 <div class="position-relative fade-in-up" style="animation-delay: 0.6s">
-                    <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-lg">
+                    <div class="ratio ratio-4x3 rounded-3 rounded-lg-4 overflow-hidden shadow-lg">
                         <img src="/images/door.jpg" 
                              class="img-fluid object-fit-cover" 
-                             alt="Интерьер детской клиники доктора Медведевой">
+                             alt="Интерьер детской клиники доктора Медведевой"
+                             loading="lazy">
                     </div>
-                    <!-- Декоративный элемент -->
-                    <div class="position-absolute top-0 start-0 w-100 h-100 border border-4 border-white rounded-4" 
-                         style="transform: translate(15px, 15px); z-index: -1;"></div>
                 </div>
             </div>
         </div>
@@ -178,21 +186,25 @@
 </section>
 
 <!-- Призыв к действию -->
-<section class="section-padding">
+<section class="py-4 py-lg-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="p-5 bg-secondary-light rounded-4 fade-in-up">
-                    <h2 class="display-6 fw-bold mb-4">Готовы позаботиться о здоровье вашего ребенка?</h2>
-                    <p class="lead text-muted mb-4">Запишитесь на прием к нашим педиатрам в современной и доброжелательной клинике</p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="/contacts" class="btn btn-primary btn-lg px-5">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="p-3 p-lg-5 bg-secondary-light rounded-3 rounded-lg-4 fade-in-up">
+                    <h2 class="fw-bold mb-3 text-center" style="font-size: clamp(1.5rem, 3vw, 1.75rem);">
+                        Готовы позаботиться о здоровье вашего ребенка?
+                    </h2>
+                    <p class="text-muted mb-4 text-center" style="font-size: clamp(1rem, 1.5vw, 1.1rem);">
+                        Запишитесь на прием к нашим педиатрам в современной и доброжелательной клинике
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-center">
+                        <a href="/doctors" class="btn btn-primary px-4 py-3 w-100 w-md-auto touch-target">
                             <i class="bi bi-calendar-check me-2"></i>Записаться на прием
                         </a>
-                        <a href="tel:+79991234567" class="btn btn-outline-primary btn-lg px-5">
+                        <a href="tel:+79133650464" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto mt-2 mt-md-0 ms-md-2 touch-target">
                             <i class="bi bi-telephone me-2"></i>+7 (913) 365-04-64
                         </a>
-                        <a href="tel:+79991234567" class="btn btn-outline-primary btn-lg px-5">
+                        <a href="tel:+73852256575" class="btn btn-outline-primary px-4 py-3 w-100 w-md-auto mt-2 mt-md-0 ms-md-2 touch-target">
                             <i class="bi bi-telephone me-2"></i>+7 (385) 225-65-75
                         </a>
                     </div>
@@ -221,6 +233,27 @@
 @media (max-width: 768px) {
     .fade-in-up {
         animation: fadeInUp 0.4s ease forwards;
+    }
+    
+    .hero-section {
+        background-position: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-padding {
+        padding: 2rem 0;
+    }
+}
+
+/* Mobile touch improvements */
+@media (hover: none) and (pointer: coarse) {
+    .card-hover:hover {
+        transform: none;
+    }
+    
+    .btn:hover {
+        opacity: 1;
     }
 }
 </style>
