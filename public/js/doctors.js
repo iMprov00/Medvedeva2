@@ -174,6 +174,7 @@ function initAppointmentModal() {
     const appointmentDoctorId = document.getElementById('appointmentDoctorId');
     const appointmentDoctorName = document.getElementById('doctorName');
     const specialtiesSelect = document.getElementById('specialtiesSelect');
+    const submitBtn = document.getElementById('submitAppointment');
     
     // Обработчик клика на кнопки записи
     document.addEventListener('click', function(e) {
@@ -193,6 +194,101 @@ function initAppointmentModal() {
         }
     });
     
+    // Обработчик нажатия кнопки "Отправить запись"
+    if (submitBtn) {
+        submitBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            // Собираем данные формы
+            const form = document.getElementById('appointmentForm');
+            const formData = new FormData(form);
+            
+            // Проверяем обязательные поля
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('Пожалуйста, заполните все обязательные поля', 'warning');
+                return;
+            }
+            
+            // Проверяем чекбокс согласия
+            const privacyCheckbox = document.getElementById('privacyAccepted');
+            if (!privacyCheckbox.checked) {
+                privacyCheckbox.classList.add('is-invalid');
+                showNotification('Необходимо согласиться с политикой конфиденциальности', 'warning');
+                return;
+            }
+            
+            // Блокируем кнопку на время отправки
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Отправка...';
+            
+            try {
+                // Отправляем данные на сервер
+                const response = await fetch('/appointments', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Показываем успешное сообщение
+                    showNotification(result.message, 'success');
+                    
+                    // Закрываем модальное окно
+                    modal.hide();
+                    
+                    // Сбрасываем форму
+                    form.reset();
+                    
+                    // Сбрасываем специальности
+                    specialtiesSelect.innerHTML = '<option value="">Выберите специальность</option>';
+                    
+                    // Убираем ID врача
+                    appointmentDoctorId.value = '';
+                    appointmentDoctorName.value = '';
+                    
+                } else {
+                    // Показываем ошибки
+                    const errorMessage = result.errors ? result.errors.join(', ') : result.error;
+                    showNotification(errorMessage || 'Произошла ошибка при отправке', 'danger');
+                    
+                    // Помечаем невалидные поля
+                    if (result.errors) {
+                        result.errors.forEach(error => {
+                            // Можно добавить логику для выделения конкретных полей
+                            console.error('Ошибка валидации:', error);
+                        });
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Ошибка при отправке формы:', error);
+                showNotification('Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.', 'danger');
+            } finally {
+                // Восстанавливаем кнопку
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+    }
+    
     // Загрузка специальностей врача
     async function loadDoctorSpecialties(doctorId) {
         try {
@@ -208,6 +304,7 @@ function initAppointmentModal() {
             });
         } catch (error) {
             console.error('Ошибка загрузки специальностей:', error);
+            // Загрузка всех специальностей как fallback
             loadAllSpecialties();
         }
     }
