@@ -224,39 +224,43 @@ function initReviewForm() {
     const form = document.getElementById('newReviewForm');
     if (!form) return;
     
+    // Определяем переменные здесь, чтобы они были доступны во всей функции
+    const ratingInput = document.getElementById('rating');
+    const ratingTextElement = document.getElementById('ratingText');
+    
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const authorName = document.getElementById('authorName').value.trim();
         const content = document.getElementById('content').value.trim();
-        const rating = document.getElementById('rating').value;
+        const rating = ratingInput ? ratingInput.value : '';
         const privacyCheckbox = document.getElementById('privacyReview');
         
-        // Валидация
+        // Валидация с использованием showNotification вместо alert
         if (!authorName) {
-            alert('Пожалуйста, введите ваше имя');
+            showNotification('Пожалуйста, введите ваше имя', 'warning');
             return;
         }
         
         if (!content) {
-            alert('Пожалуйста, напишите текст отзыва');
+            showNotification('Пожалуйста, напишите текст отзыва', 'warning');
             return;
         }
         
         const ratingNum = parseInt(rating);
         if (!ratingNum || ratingNum < 1 || ratingNum > 5) {
-            alert('Пожалуйста, поставьте оценку от 1 до 5 звезд');
+            showNotification('Пожалуйста, поставьте оценку от 1 до 5 звезд', 'warning');
             return;
         }
         
         if (!privacyCheckbox || !privacyCheckbox.checked) {
-            alert('Пожалуйста, подтвердите согласие с политикой конфиденциальности');
+            showNotification('Пожалуйста, подтвердите согласие с политикой конфиденциальности', 'warning');
             return;
         }
         
         // Блокируем кнопку
         const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+        const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Отправка...';
         
@@ -277,22 +281,26 @@ function initReviewForm() {
             const result = await response.json();
             
             if (result.success) {
-                alert(result.message);
+                showNotification(result.message, 'success');
                 form.reset();
-                ratingInput.value = '';
+                
+                // Сбрасываем рейтинг
+                if (ratingInput) ratingInput.value = '';
+                if (ratingTextElement) ratingTextElement.textContent = 'Выберите оценку';
+                
                 highlightRatingStars(0);
-                document.getElementById('ratingText').textContent = 'Выберите оценку';
                 loadReviews(); // Перезагружаем отзывы
             } else {
-                throw new Error(result.errors ? result.errors.join(', ') : result.error);
+                const errorMessage = result.errors ? result.errors.join(', ') : result.error;
+                showNotification(errorMessage || 'Произошла ошибка при отправке отзыва', 'danger');
             }
         } catch (error) {
             console.error('Ошибка отправки отзыва:', error);
-            alert(`Ошибка: ${error.message}`);
+            showNotification('Произошла ошибка при отправке отзыва. Пожалуйста, попробуйте еще раз.', 'danger');
         } finally {
             // Разблокируем кнопку
             submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+            submitBtn.innerHTML = originalText;
         }
     });
 }

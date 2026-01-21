@@ -410,3 +410,4 @@ async function submitForm(form, endpoint, options = {}) {
         submitBtn.innerHTML = originalText;
     }
 }
+
