@@ -568,47 +568,39 @@
     }); %>
 </script>
 
+<!-- JavaScript для виджета MedFlex -->
+<!-- Альтернатива виджету MedFlex -->
 <script>
-// Инициализация мобильного виджета MedFlex
 document.addEventListener('DOMContentLoaded', function() {
-    // Проверка и инициализация мобильного виджета
-    setTimeout(function() {
-        const mobileWidgetContainer = document.getElementById('medflexMedtochkaWidgetButtonMobile');
+    // Заменяем контейнеры на iframe
+    const widgetContainers = document.querySelectorAll('[id^="medflexMedtochkaWidgetButton"]');
+    
+    widgetContainers.forEach(container => {
+        const isMobile = container.id.includes('Mobile');
         
-        if (mobileWidgetContainer && typeof window.MedFlexWidget === 'undefined') {
-            console.warn('Creating fallback mobile MedFlex button');
-            
-            const backupButton = document.createElement('a');
-            backupButton.href = 'https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6';
-            backupButton.target = '_blank';
-            backupButton.className = 'btn btn-primary w-100 touch-target';
-            backupButton.style.cssText = 'min-height: 48px; display: flex; align-items: center; justify-content: center;';
-            backupButton.innerHTML = '<i class="bi bi-person-circle me-2"></i>Личный кабинет пациента';
-            
-            mobileWidgetContainer.innerHTML = '';
-            mobileWidgetContainer.appendChild(backupButton);
+        // Очищаем контейнер
+        container.innerHTML = '';
+        
+        if (isMobile) {
+            // Мобильная версия - кнопка
+            const button = document.createElement('a');
+            button.href = 'https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6';
+            button.target = '_blank';
+            button.className = 'btn btn-primary w-100 py-3 touch-target';
+            button.style.cssText = 'min-height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 500;';
+            button.innerHTML = '<i class="bi bi-person-circle me-2"></i>Личный кабинет пациента';
+            container.appendChild(button);
+        } else {
+            // Десктоп версия - кнопка
+            const button = document.createElement('a');
+            button.href = 'https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6';
+            button.target = '_blank';
+            button.className = 'btn btn-primary btn-sm px-3 touch-target';
+            button.style.cssText = 'min-width: 160px; font-weight: 500;';
+            button.innerHTML = '<i class="bi bi-person-circle me-1"></i>Личный кабинет';
+            container.appendChild(button);
         }
-    }, 2000);
-    
-    // Переинициализация виджета для мобильного контейнера
-    function initMobileWidget() {
-        if (typeof window.MedFlexWidget !== 'undefined' && window.MedFlexWidget.init) {
-            const mobileContainer = document.getElementById('medflexMedtochkaWidgetButtonMobile');
-            if (mobileContainer) {
-                try {
-                    window.MedFlexWidget.init({
-                        containerId: 'medflexMedtochkaWidgetButtonMobile',
-                        src: 'https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6'
-                    });
-                } catch (e) {
-                    console.log('MedFlex widget already initialized or error:', e);
-                }
-            }
-        }
-    }
-    
-    // Пробуем инициализировать через 3 секунды
-    setTimeout(initMobileWidget, 3000);
+    });
 });
 </script>
     
