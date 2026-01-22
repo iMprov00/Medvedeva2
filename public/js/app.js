@@ -64,44 +64,25 @@ function detectDeviceType() {
 /**
  * Инициализация мобильного меню с улучшениями
  */
+/**
+ * Инициализация мобильного меню с улучшениями
+ */
 function initMobileMenu() {
     const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarCollapse = document.querySelector('.navbar-collapse');
     const body = document.body;
     
-    if (!navbarToggler || !navbarCollapse) return;
+    if (!navbarToggler) return;
     
-    // Обработчик клика на бургер
-    navbarToggler.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+    navbarToggler.addEventListener('click', function() {
+        // Просто переключаем класс для body
+        body.classList.toggle('mobile-menu-open');
         
-        if (!isExpanded) {
-            // Открываем меню
-            body.style.overflow = 'hidden';
-            body.classList.add('mobile-menu-open');
-            
-            // Добавляем затемнение под меню
-            const backdrop = document.createElement('div');
-            backdrop.className = 'mobile-menu-backdrop';
-            backdrop.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0,0,0,0.5);
-                z-index: 1040;
-                display: none;
-            `;
-            body.appendChild(backdrop);
-            
-            setTimeout(() => {
-                backdrop.style.display = 'block';
-                backdrop.addEventListener('click', closeMobileMenu);
-            }, 10);
-        } else {
-            closeMobileMenu();
+        // Если закрываем меню - убираем backdrop
+        if (!body.classList.contains('mobile-menu-open')) {
+            const backdrop = document.querySelector('.mobile-menu-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
         }
     });
     
@@ -116,9 +97,17 @@ function initMobileMenu() {
     }
     
     // Закрытие по клику на ссылку (только на мобильных)
+    // НЕ закрываем при клике на dropdown-toggle и элементы внутри dropdown
     if (window.innerWidth <= MOBILE_CONFIG.breakpoints.tablet) {
-        document.querySelectorAll('.nav-link, .dropdown-item').forEach(link => {
+        document.querySelectorAll('.nav-link:not(.dropdown-toggle), .dropdown-item').forEach(link => {
             link.addEventListener('click', function(e) {
+                // Не закрываем если это элемент внутри открытого dropdown
+                const parentDropdown = this.closest('.dropdown-menu');
+                if (parentDropdown && parentDropdown.classList.contains('show')) {
+                    // Это элемент внутри открытого dropdown - закрываем только dropdown
+                    return;
+                }
+                
                 if (navbarCollapse.classList.contains('show')) {
                     closeMobileMenu();
                     navbarToggler.click(); // Закрывает Bootstrap меню
@@ -127,11 +116,16 @@ function initMobileMenu() {
         });
     }
     
-    // Закрытие по клавише Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && body.classList.contains('mobile-menu-open')) {
-            closeMobileMenu();
-            navbarToggler.click();
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('mobile-menu-backdrop')) {
+            body.classList.remove('mobile-menu-open');
+            e.target.remove();
+            
+            // Закрываем Bootstrap меню
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                navbarToggler.click();
+            }
         }
     });
     
@@ -140,6 +134,63 @@ function initMobileMenu() {
         if (body.classList.contains('mobile-menu-open')) {
             closeMobileMenu();
             navbarToggler.click();
+        }
+    });
+    
+    // Специальная обработка для dropdown-toggle на мобильных
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            if (window.innerWidth <= MOBILE_CONFIG.breakpoints.tablet) {
+                // На мобильных даем Bootstrap обработать клик
+                e.stopPropagation();
+                
+                // Если меню открыто, не закрываем его полностью
+                if (navbarCollapse.classList.contains('show')) {
+                    // Только переключаем dropdown
+                    return;
+                }
+            }
+        });
+    });
+}
+
+
+/**
+ * Делегирование событий для корректной работы dropdown на мобильных
+ */
+function initMobileDropdowns() {
+    // Отслеживаем клики на dropdown-toggle
+    document.addEventListener('click', function(e) {
+        const target = e.target;
+        const dropdownToggle = target.closest('.dropdown-toggle');
+        
+        if (dropdownToggle && window.innerWidth <= MOBILE_CONFIG.breakpoints.tablet) {
+            // На мобильных устройствах
+            const dropdownMenu = dropdownToggle.nextElementSibling;
+            
+            // Если dropdown уже открыт, не даем закрыть навбар
+            if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                // Даем Bootstrap обработать toggle
+                setTimeout(() => {
+                    const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownToggle);
+                    if (dropdownInstance) {
+                        dropdownInstance.toggle();
+                    }
+                }, 10);
+            }
+        }
+    });
+    
+    // Предотвращаем закрытие навбара при клике внутри dropdown
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= MOBILE_CONFIG.breakpoints.tablet) {
+            const isInsideDropdown = e.target.closest('.dropdown-menu');
+            if (isInsideDropdown) {
+                e.stopPropagation();
+            }
         }
     });
 }
@@ -465,17 +516,15 @@ function initTouchOptimizations() {
         });
     }
     
-    // Улучшение работы dropdown на touch
     document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
         toggle.addEventListener('touchstart', function(e) {
-            if (window.innerWidth <= MOBILE_CONFIG.breakpoints.tablet) {
-                e.preventDefault();
-                const dropdown = bootstrap.Dropdown.getInstance(this);
-                if (dropdown) {
-                    dropdown.toggle();
-                }
-            }
-        });
+            // На мобильных устройствах Bootstrap и так работает нормально
+            // Удаляем preventDefault чтобы не мешать
+            // e.preventDefault(); // УДАЛИТЕ ЭТУ СТРОКУ
+            
+            // Только для дебага
+            console.log('Dropdown touched', this);
+        }, { passive: true }); // Используйте passive: true
     });
 }
 
@@ -759,6 +808,11 @@ window.addEventListener('load', function() {
             preloader.style.display = 'none';
         }, 300);
     }
+});
+
+// Вызовите эту функцию в DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    initMobileDropdowns();
 });
 
 

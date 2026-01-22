@@ -1146,3 +1146,52 @@ footer #medflexMedtochkaWidgetButton button:hover {
     content: '👤 ';
     margin-right: 5px;
 }
+
+
+/* ==========================================================================
+   NAVBAR FONT SIZE FIXES
+   ========================================================================== */
+
+/* Устанавливаем одинаковый размер шрифта для всех элементов навбара */
+.navbar-nav .nav-link,
+.navbar-nav .dropdown-toggle,
+.navbar-nav .dropdown-item {
+    font-size: 1rem !important;
+    font-weight: 500;
+}
+
+/* Особенности для мобильных */
+@media (max-width: 991.98px) {
+    .navbar-nav .nav-link,
+    .navbar-nav .dropdown-toggle,
+    .navbar-nav .dropdown-item {
+        font-size: 1.1rem !important; /* Чуть больше на мобильных для удобства */
+        padding: 12px 16px !important;
+    }
+    
+    /* Убираем отступы у выпадающих элементов на мобильных */
+    .navbar-collapse .dropdown-menu .dropdown-item {
+        padding-left: 32px !important; /* Отступ для вложенности */
+        font-size: 1.05rem !important; /* Чуть меньше чем основной пункт */
+    }
+}
+
+/* Десктопные стили */
+@media (min-width: 992px) {
+    .navbar-nav .nav-link,
+    .navbar-nav .dropdown-toggle {
+        font-size: 1rem !important;
+        padding: 0.5rem 1rem !important;
+    }
+    
+    .dropdown-menu .dropdown-item {
+        font-size: 1rem !important;
+        padding: 0.5rem 1.25rem !important;
+    }
+}
+
+/* Фикс для активного состояния */
+.nav-link.active,
+.dropdown-item.active {
+    font-weight: 600 !important;
+}

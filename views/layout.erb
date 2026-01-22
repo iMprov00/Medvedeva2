@@ -398,6 +398,7 @@
     <script src="/js/contacts.js"></script>
     <script src="/js/doctors.js"></script>
     <script src="/js/prices.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
     <script defer src="https://booking.medflex.ru/components/medtochka-button/medtochka-widget-button.js" charset="utf-8"></script>
     
     <!-- JavaScript для выделения активного пункта в выпадающем меню -->
@@ -436,7 +437,7 @@
                     document.body.classList.toggle('mobile-menu-open');
                 });
                 
-                // Закрытие меню при клике на ссылку на мобильных
+<%#                 // Закрытие меню при клике на ссылку на мобильных
                 if (window.innerWidth <= 991) {
                     document.querySelectorAll('.nav-link, .dropdown-item').forEach(link => {
                         link.addEventListener('click', function() {
@@ -446,8 +447,8 @@
                         });
                     });
                 }
-            }
-            
+            } %>
+              }          
             // Предотвращение зума на iOS при фокусе на инпутах
             if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                 document.addEventListener('focus', function(e) {
@@ -525,7 +526,7 @@
     // Предотвращение зума на iOS при фокусе
     document.addEventListener('touchstart', function() {}, {passive: true});
 
-    // Оптимизация скролла на iOS
+<%#     // Оптимизация скролла на iOS
     document.addEventListener('touchmove', function(e) {
         if (e.target.tagName === 'INPUT' || 
             e.target.tagName === 'TEXTAREA' || 
@@ -534,8 +535,8 @@
         }
         e.preventDefault();
     }, { passive: false });
-
-    // Закрытие меню при клике на ссылку на мобильных
+ %>
+<%#     // Закрытие меню при клике на ссылку на мобильных
     document.addEventListener('DOMContentLoaded', function() {
         const navbarCollapse = document.querySelector('.navbar-collapse');
         const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
@@ -548,7 +549,7 @@
                 }
             });
         });
-    });
+    }); %>
 </script>
     
 </body>
