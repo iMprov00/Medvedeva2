@@ -51,9 +51,11 @@
             </div>
             <div class="col-12 col-lg-6 order-1 order-lg-2 fade-in-up" style="animation-delay: 0.4s">
                 <div class="position-relative">
-                    <div class="ratio ratio-4x3 ratio-lg-16x9 rounded-3 rounded-lg-4 overflow-hidden shadow">
+                    <!-- ratio-1x1 - квадрат, ratio-21x9 - очень широкий -->
+                    <div class="ratio rounded-3 rounded-lg-4 overflow-hidden shadow" style="--bs-aspect-ratio: 66.66%;">
+                        <!-- 66.66% = соотношение 3:2 (высота 66.66% от ширины) -->
                         <img src="/images/about.jpeg"
-                             class="img-fluid object-fit-cover" 
+                             class="img-fluid object-fit-cover w-100 h-100" 
                              alt="Наша философия - счастье детей и родителей"
                              loading="lazy">
                     </div>
@@ -68,15 +70,16 @@
     <div class="container">
         <div class="row g-4 g-lg-5 align-items-center">
             <div class="col-12 col-lg-5 fade-in-up">
-                <div class="position-relative">
+                <div class="position-relative px-lg-4 px-xl-5">
+                    <!-- Добавляем горизонтальные отступы -->
                     <div class="rounded-3 rounded-lg-4 overflow-hidden shadow">
                         <img src="/images/medvedeva3.jpeg" 
-                             class="img-fluid object-fit-cover w-100" 
+                             class="img-fluid w-100 object-fit-cover" 
                              alt="Доктор Медведева, основатель клиники"
                              loading="lazy">
                     </div>
                 </div>
-            </div>
+            </div>    
             <div class="col-12 col-lg-7 mt-4 mt-lg-0">
                 <h2 class="fw-bold mb-3 fade-in-up" style="animation-delay: 0.1s; font-size: clamp(1.5rem, 3vw, 2rem);">
                     Основатель клиники
@@ -136,6 +139,7 @@
 </section>
 
 <!-- Фотогалерея клиники -->
+<!-- Фотогалерея клиники -->
 <section class="py-4 py-lg-5" id="gallery">
     <div class="container">
         <div class="text-center mb-4 mb-lg-5">
@@ -147,18 +151,22 @@
             </p>
         </div>
         
-        <!-- Контейнер для галереи с сеткой Bootstrap -->
-        <div class="row g-2 g-sm-3" id="my-gallery">
+        <!-- Контейнер для галереи -->
+        <div class="row g-3 g-lg-4" id="my-gallery">
             <% if @gallery_images.any? %>
                 <% @gallery_images.each_with_index do |image, index| %>
-                    <div class="col-6 col-md-4 col-lg-3 fade-in-up" style="animation-delay: <%= 0.2 + (index * 0.05) %>s">
+                    <% is_hidden = index >= 8 %>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 fade-in-up gallery-item <%= 'd-none' if is_hidden %>" 
+                         style="animation-delay: <%= 0.2 + (index * 0.05) %>s"
+                         data-index="<%= index %>">
                         <a href="/images/about/<%= image %>" 
-                           class="d-block gallery-item touch-target"
+                           class="gallery-link touch-target text-decoration-none d-block"
                            data-pswp-width="1200"
                            data-pswp-height="800">
-                            <div class="ratio ratio-1x1">
+                            <!-- Контейнер с фиксированным соотношением сторон 4:3 -->
+                            <div class="ratio ratio-4x3 rounded-3 rounded-lg-4 overflow-hidden shadow gallery-image-wrapper">
                                 <img src="/images/about/<%= image %>" 
-                                     class="img-fluid object-fit-cover rounded-2 rounded-sm-3 gallery-thumbnail" 
+                                     class="gallery-img w-100 h-100 object-fit-cover" 
                                      alt="Интерьер детской клиники доктора Медведевой"
                                      loading="lazy">
                             </div>
@@ -175,8 +183,24 @@
                 </div>
             <% end %>
         </div>
+        
+        <!-- Кнопка "Показать еще" -->
+        <% if @gallery_images.any? && @gallery_images.size > 8 %>
+            <div class="text-center mt-4 mt-lg-5 fade-in-up" style="animation-delay: 0.6s">
+                <button id="showMoreGallery" class="btn btn-outline-primary px-4 py-3 touch-target gallery-more-btn">
+                    <i class="bi bi-images me-2"></i>Показать еще фотографии
+                    <span class="badge bg-primary ms-2"><%= @gallery_images.size - 8 %></span>
+                </button>
+                <button id="showLessGallery" class="btn btn-outline-secondary px-4 py-3 touch-target gallery-less-btn d-none mt-3">
+                    <i class="bi bi-chevron-up me-2"></i>Свернуть фотографии
+                </button>
+            </div>
+        <% end %>
     </div>
 </section>
+
+
+
 
 <!-- Отзывы -->
 <section class="py-4 py-lg-5 bg-light" id="reviews">
@@ -388,3 +412,252 @@
     }
 }
 </style>
+
+
+<style>
+/* Галерея с фиксированным соотношением 4:3 */
+.gallery-image-wrapper {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+/* Само изображение */
+.gallery-img {
+    transition: transform 0.4s ease;
+}
+
+/* Эффект при наведении */
+.gallery-link:hover .gallery-image-wrapper {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15) !important;
+}
+
+.gallery-link:hover .gallery-img {
+    transform: scale(1.08);
+}
+
+/* Адаптивная высота для разных экранов */
+@media (max-width: 767.98px) {
+    .ratio-4x3 {
+        --bs-aspect-ratio: 75%; /* 4:3 = 75% */
+    }
+}
+
+@media (min-width: 768px) {
+    .ratio-4x3 {
+        --bs-aspect-ratio: 75%;
+    }
+}
+
+/* Для улучшения отображения вертикальных фото */
+.gallery-img {
+    object-position: center center;
+}
+
+/* Остальные стили */
+.gallery-item.d-none {
+    display: none !important;
+}
+
+.gallery-item.show-animation {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gallery-more-btn, .gallery-less-btn {
+    transition: all 0.3s ease;
+    min-width: 250px;
+}
+
+.gallery-more-btn:hover, .gallery-less-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+@media (max-width: 767px) {
+    .gallery-more-btn, .gallery-less-btn {
+        min-width: 100%;
+    }
+}
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Функция для показа скрытых изображений
+    function showMoreGallery() {
+        const hiddenItems = document.querySelectorAll('#my-gallery .gallery-item.d-none');
+        const showMoreBtn = document.getElementById('showMoreGallery');
+        const showLessBtn = document.getElementById('showLessGallery');
+        
+        if (hiddenItems.length === 0) return;
+        
+        // Показываем все скрытые элементы
+        hiddenItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.remove('d-none');
+                item.classList.add('show-animation');
+                item.style.animationDelay = `${0.1 + (index * 0.05)}s`;
+            }, index * 50); // Небольшая задержка для эффекта каскада
+        });
+        
+        // Прячем кнопку "Показать еще", показываем "Свернуть"
+        if (showMoreBtn) showMoreBtn.classList.add('d-none');
+        if (showLessBtn) showLessBtn.classList.remove('d-none');
+        
+        // Прокручиваем к последнему показанному элементу плавно
+        setTimeout(() => {
+            const lastItem = document.querySelector('#my-gallery .gallery-item:not(.d-none):last-child');
+            if (lastItem) {
+                lastItem.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest'
+                });
+            }
+        }, hiddenItems.length * 50 + 100);
+    }
+    
+    // Функция для скрытия лишних изображений (после первых 8)
+    function showLessGallery() {
+        const allItems = document.querySelectorAll('#my-gallery .gallery-item');
+        const showMoreBtn = document.getElementById('showMoreGallery');
+        const showLessBtn = document.getElementById('showLessGallery');
+        
+        // Скрываем все элементы после 8-го
+        allItems.forEach((item, index) => {
+            if (index >= 8) {
+                item.classList.remove('show-animation');
+                item.classList.add('d-none');
+            }
+        });
+        
+        // Показываем кнопку "Показать еще", прячем "Свернуть"
+        if (showMoreBtn) showMoreBtn.classList.remove('d-none');
+        if (showLessBtn) showLessBtn.classList.add('d-none');
+        
+        // Прокручиваем к галерее
+        const gallerySection = document.getElementById('gallery');
+        if (gallerySection) {
+            gallerySection.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start'
+            });
+        }
+    }
+    
+    // Вешаем обработчики событий
+    const showMoreBtn = document.getElementById('showMoreGallery');
+    const showLessBtn = document.getElementById('showLessGallery');
+    
+    if (showMoreBtn) {
+        showMoreBtn.addEventListener('click', showMoreGallery);
+    }
+    
+    if (showLessBtn) {
+        showLessBtn.addEventListener('click', showLessGallery);
+    }
+    
+    // Адаптивная логика для разных размеров экрана
+    function updateGalleryLayout() {
+        const width = window.innerWidth;
+        const galleryItems = document.querySelectorAll('#my-gallery .gallery-item');
+        const showMoreBtn = document.getElementById('showMoreGallery');
+        const showLessBtn = document.getElementById('showLessGallery');
+        
+        if (!showMoreBtn || galleryItems.length === 0) return;
+        
+        // На мобильных можно показывать меньше фото изначально
+        const initialVisibleCount = width < 768 ? 6 : 8;
+        
+        // Скрываем лишние элементы
+        galleryItems.forEach((item, index) => {
+            const dataIndex = parseInt(item.getAttribute('data-index'));
+            
+            // Показываем только первые N элементов
+            if (dataIndex < initialVisibleCount) {
+                item.classList.remove('d-none');
+            } else {
+                // Если галерея уже раскрыта, не скрываем
+                if (!showMoreBtn.classList.contains('d-none')) {
+                    item.classList.add('d-none');
+                }
+            }
+        });
+        
+        // Скрываем кнопку, если все фото видны или их меньше лимита
+        if (galleryItems.length <= initialVisibleCount) {
+            if (showMoreBtn) showMoreBtn.style.display = 'none';
+            if (showLessBtn) showLessBtn.style.display = 'none';
+        }
+    }
+    
+    // Вызываем при загрузке и изменении размера окна
+    updateGalleryLayout();
+    window.addEventListener('resize', updateGalleryLayout);
+    
+    // Инициализация PhotoSwipe для галереи
+    initGalleryPhotoSwipe();
+});
+
+/**
+ * Инициализация PhotoSwipe для галереи
+ * (только для раскрытой галереи, чтобы не грузить все изображения сразу)
+ */
+function initGalleryPhotoSwipe() {
+    const galleryElement = document.getElementById('my-gallery');
+    if (!galleryElement) return;
+    
+    // Находим все ссылки на изображения в галерее
+    const galleryLinks = galleryElement.querySelectorAll('a[data-pswp-width]');
+    
+    // Инициализируем PhotoSwipe только когда это нужно
+    let pswpInitialized = false;
+    
+    function initPSWP() {
+        if (pswpInitialized) return;
+        
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#my-gallery',
+            children: 'a[data-pswp-width]',
+            pswpModule: PhotoSwipe,
+            showHideAnimationType: 'zoom'
+        });
+        
+        lightbox.init();
+        pswpInitialized = true;
+    }
+    
+    // Инициализируем при клике на любое изображение
+    galleryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Предотвращаем стандартное поведение только для PhotoSwipe
+            if (this.hasAttribute('data-pswp-width')) {
+                e.preventDefault();
+                initPSWP();
+                
+                // Находим индекс этого изображения
+                const allLinks = Array.from(galleryElement.querySelectorAll('a[data-pswp-width]'));
+                const index = allLinks.indexOf(this);
+                
+                // Создаем новый экземпляр для открытия с правильным индексом
+                if (typeof PhotoSwipeLightbox !== 'undefined') {
+                    const tempLightbox = new PhotoSwipeLightbox({
+                        gallery: '#my-gallery',
+                        children: 'a[data-pswp-width]',
+                        pswpModule: PhotoSwipe,
+                        showHideAnimationType: 'zoom',
+                        index: index
+                    });
+                    
+                    tempLightbox.init();
+                    tempLightbox.loadAndOpen(index);
+                }
+            }
+        });
+    });
+}
+</script>
