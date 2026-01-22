@@ -622,6 +622,10 @@ function throttle(func, limit) {
     };
 }
 
+
+
+
+
 /**
  * Показать уведомление
  */
@@ -756,3 +760,5 @@ window.addEventListener('load', function() {
         }, 300);
     }
 });
+
+

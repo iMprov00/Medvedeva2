@@ -1003,3 +1003,146 @@ img {
 .modal-dialog {
     min-height: -webkit-fill-available;
 }
+
+
+/* ==========================================================================
+   MEDFLEX WIDGET STYLES
+   ========================================================================== */
+
+/* Базовые стили для виджета MedFlex */
+#medflexMedtochkaWidgetButton {
+    display: inline-block !important;
+}
+
+/* Стилизация кнопки виджета - под основной дизайн */
+#medflexMedtochkaWidgetButton button {
+    /* Цвета вашего сайта */
+    background-color: var(--bs-secondary) !important;
+    background: linear-gradient(135deg, var(--bs-secondary) 0%, #d18cff 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    min-width: 160px !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    box-shadow: 0 4px 12px rgba(229, 167, 255, 0.3) !important;
+    cursor: pointer !important;
+    position: relative !important;
+    overflow: hidden !important;
+    z-index: 1 !important;
+}
+
+/* Эффект при наведении */
+#medflexMedtochkaWidgetButton button:hover {
+    background: linear-gradient(135deg, #d18cff 0%, var(--bs-secondary) 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(229, 167, 255, 0.4) !important;
+}
+
+/* Эффект при нажатии */
+#medflexMedtochkaWidgetButton button:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(229, 167, 255, 0.3) !important;
+}
+
+/* Иконка на кнопке */
+#medflexMedtochkaWidgetButton button i,
+#medflexMedtochkaWidgetButton button svg {
+    margin-right: 8px !important;
+    font-size: 1.1em !important;
+    vertical-align: middle !important;
+}
+
+/* Стиль для хедера (шапки) */
+.header #medflexMedtochkaWidgetButton button {
+    min-width: 140px !important;
+    padding: 0.6rem 1.25rem !important;
+    font-size: 0.95rem !important;
+}
+
+/* Стиль для футера (подвала) */
+footer #medflexMedtochkaWidgetButton button {
+    background: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 12px !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+footer #medflexMedtochkaWidgetButton button:hover {
+    background: white !important;
+    color: var(--bs-secondary) !important;
+    border-color: white !important;
+}
+
+/* Стиль для мобильной версии в меню */
+.navbar-collapse #medflexMedtochkaWidgetButton button {
+    width: 100% !important;
+    margin-top: 0.5rem !important;
+    justify-content: center !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    #medflexMedtochkaWidgetButton button {
+        min-width: 140px !important;
+        padding: 0.7rem 1.25rem !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .header #medflexMedtochkaWidgetButton button {
+        display: none !important; /* Скрываем в хедере на мобильных */
+    }
+    
+    .navbar-collapse #medflexMedtochkaWidgetButton {
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+}
+
+/* Эффект для touch-устройств */
+@media (hover: none) and (pointer: coarse) {
+    #medflexMedtochkaWidgetButton button:hover {
+        transform: none !important;
+    }
+    
+    #medflexMedtochkaWidgetButton button:active {
+        transform: scale(0.98) !important;
+        opacity: 0.9 !important;
+    }
+}
+
+/* Анимация загрузки */
+#medflexMedtochkaWidgetButton.loading button {
+    position: relative !important;
+    color: transparent !important;
+}
+
+#medflexMedtochkaWidgetButton.loading button::after {
+    content: '';
+    position: absolute !important;
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-top-color: white !important;
+    border-radius: 50% !important;
+    animation: medflexSpin 0.8s linear infinite !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+@keyframes medflexSpin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Вариант с иконкой человека (если виджет не показывает свою) */
+#medflexMedtochkaWidgetButton.no-icon button::before {
+    content: '👤 ';
+    margin-right: 5px;
+}
