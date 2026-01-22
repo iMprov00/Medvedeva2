@@ -24,6 +24,8 @@
     <!-- PhotoSwipe CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css">
     
+
+    
     <!-- Мета-теги -->
     <meta name="description" content="Клиника доказательной медицины доктора Медведевой. Современный подход к лечению, основанный на научных данных и индивидуальном подходе к каждому пациенту.">
     <meta name="keywords" content="клиника, доказательная медицина, врач, лечение, здоровье">
@@ -46,6 +48,43 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Клиника Медведевой">
+    
+    <!-- Стили для виджета MedFlex -->
+    <style>
+        #medflexMedtochkaWidgetButton {
+            display: inline-block !important;
+        }
+        
+        /* Стилизация кнопки виджета */
+        #medflexMedtochkaWidgetButton button {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            border-radius: 0.375rem !important;
+            padding: 0.375rem 0.75rem !important;
+            font-size: 0.875rem !important;
+            color: white !important;
+            font-weight: 500 !important;
+            transition: all 0.2s ease-in-out !important;
+            min-width: 120px !important;
+        }
+        
+        #medflexMedtochkaWidgetButton button:hover {
+            background-color: #0b5ed7 !important;
+            border-color: #0a58ca !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+        }
+        
+        #medflexMedtochkaWidgetButton button:active {
+            transform: translateY(0) !important;
+        }
+        
+        /* Иконка на кнопке */
+        #medflexMedtochkaWidgetButton button i,
+        #medflexMedtochkaWidgetButton button svg {
+            margin-right: 5px !important;
+        }
+    </style>
 </head>
 <body class="safe-area-top safe-area-bottom">
     <% unless request.path.start_with?('/admin') %>
@@ -146,19 +185,25 @@
                                 </a>
                             </div>
                         </div>
-                        <a href="/doctors" class="btn btn-primary btn-sm px-3 touch-target">
-                            <i class="bi bi-calendar-check me-1"></i>Записаться
-                        </a>
+                        <!-- Виджет Личного кабинета пациента -->
+                        <div id="medflexMedtochkaWidgetButton" 
+                             data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"
+                             class="d-inline-block"></div>
                     </div>
                     
-                    <!-- Телефоны для планшетов -->
-                    <div class="d-none d-lg-none d-md-flex flex-column mt-3 mt-md-0">
-                        <a href="tel:+79133650464" class="btn btn-outline-primary mb-2 touch-target">
-                            <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
-                        </a>
-                        <a href="tel:+73852256575" class="btn btn-outline-primary touch-target">
-                            <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
-                        </a>
+                    <!-- Телефоны и кнопка для планшетов/мобильных -->
+                    <div class="d-none d-md-flex d-lg-none flex-column mt-3 mt-md-0">
+                        <div class="mb-3">
+                            <a href="tel:+79133650464" class="btn btn-outline-primary mb-2 w-100 touch-target">
+                                <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
+                            </a>
+                            <a href="tel:+73852256575" class="btn btn-outline-primary w-100 touch-target">
+                                <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
+                            </a>
+                        </div>
+                            <!-- Виджет Личного кабинета пациента -->
+                        <div id="medflexMedtochkaWidgetButton" data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"></div> 
+
                     </div>
                 </div>
             </div>
@@ -230,6 +275,10 @@
                         <p class="mb-2">Пн-Пт: 09:00 - 19:00</p>
                         <p class="mb-2">Сб: 9:15 - 15:00</p>
                         <p class="mb-3">Вс: Выходной</p>
+                        <!-- Дополнительно можно разместить виджет и в подвале -->
+                        <div id="medflexMedtochkaWidgetButton" 
+                             data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"
+                             class="mt-2"></div>
                     </div>
                 </div>
             </div>
@@ -349,6 +398,7 @@
     <script src="/js/contacts.js"></script>
     <script src="/js/doctors.js"></script>
     <script src="/js/prices.js"></script>
+    <script defer src="https://booking.medflex.ru/components/medtochka-button/medtochka-widget-button.js" charset="utf-8"></script>
     
     <!-- JavaScript для выделения активного пункта в выпадающем меню -->
     <script>
@@ -410,6 +460,32 @@
                     document.body.style.fontSize = '';
                 }, true);
             }
+            
+            // Отладочная информация для виджета MedFlex
+            console.log('MedFlex widget initialization...');
+            
+            // Проверка загрузки виджета
+            setTimeout(function() {
+                if (typeof window.MedFlexWidget === 'undefined') {
+                    console.warn('MedFlex widget not loaded. Check the script URL and network tab.');
+                    
+                    // Создаем резервную кнопку
+                    const widgetContainers = document.querySelectorAll('#medflexMedtochkaWidgetButton');
+                    widgetContainers.forEach(container => {
+                        if (!container.querySelector('button')) {
+                            const backupButton = document.createElement('button');
+                            backupButton.className = 'btn btn-primary btn-sm px-3 touch-target';
+                            backupButton.innerHTML = '<i class="bi bi-person-circle me-1"></i>Личный кабинет';
+                            backupButton.onclick = function() {
+                                window.open('https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6', '_blank');
+                            };
+                            container.appendChild(backupButton);
+                        }
+                    });
+                } else {
+                    console.log('MedFlex widget loaded successfully:', window.MedFlexWidget);
+                }
+            }, 3000);
         });
     </script>
 
