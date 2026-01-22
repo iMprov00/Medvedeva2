@@ -1195,3 +1195,257 @@ footer #medflexMedtochkaWidgetButton button:hover {
 .dropdown-item.active {
     font-weight: 600 !important;
 }
+
+/* ==========================================================================
+   MOBILE NAVBAR STYLES
+   ========================================================================== */
+
+/* Уменьшенный логотип для мобильных */
+.navbar-brand .d-md-none img {
+    height: 35px !important;
+    width: 35px !important;
+}
+
+/* Адаптивный текст для мобильных */
+@media (max-width: 767.98px) {
+    .navbar-brand .d-md-none span {
+        font-size: 0.85rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    /* Бургер-кнопка */
+    .navbar-toggler.ms-2 {
+        margin-left: 0.5rem !important;
+        padding: 0.375rem 0.5rem !important;
+    }
+    
+    /* Уменьшаем меню на мобильных */
+    .navbar-collapse .nav-link,
+    .navbar-collapse .dropdown-toggle {
+        font-size: 1rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+    
+    /* Виджет в мобильном меню */
+    #medflexMedtochkaWidgetButtonMobile {
+        width: 100% !important;
+    }
+    
+    #medflexMedtochkaWidgetButtonMobile button {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Телефоны в мобильном меню */
+    .navbar-collapse .border-top {
+        border-color: rgba(0,0,0,0.1) !important;
+    }
+    
+    .navbar-collapse h6 {
+        font-size: 0.9rem;
+    }
+}
+
+/* Планшетная версия */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .navbar-brand .d-md-none span {
+        font-size: 0.9rem !important;
+        line-height: 1.2 !important;
+    }
+}
+
+/* Десктоп - без изменений */
+@media (min-width: 992px) {
+    .navbar-toggler.ms-2 {
+        margin-left: 0 !important;
+    }
+    
+    /* Скрываем мобильный виджет */
+    #medflexMedtochkaWidgetButtonMobile {
+        display: none !important;
+    }
+}
+
+/* Улучшение для очень маленьких экранов */
+@media (max-width: 360px) {
+    .navbar-brand .d-md-none span {
+        font-size: 0.75rem !important;
+    }
+    
+    .navbar-brand .d-md-none img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+}
+
+/* Фикс для высоты навбара на мобильных */
+@media (max-width: 991.98px) {
+    .navbar {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        min-height: 60px;
+    }
+    
+    .navbar-brand {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-right: auto;
+    }
+}
+
+/* Убираем отступы у контейнера на мобильных */
+@media (max-width: 767.98px) {
+    .container-fluid.container-lg {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+}
+
+/* ==========================================================================
+   NAVBAR BRAND MOBILE OPTIMIZATION
+   ========================================================================== */
+
+/* Логотип и текст на одной линии */
+.navbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0;
+    max-width: 70%;
+}
+
+.navbar-brand > div {
+    flex-shrink: 1;
+    min-width: 0; /* Позволяет тексту сжиматься */
+}
+
+/* Текст бренда на мобильных с переносом */
+.navbar-brand .d-md-none span {
+    display: inline-block;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+/* Бургер кнопка справа */
+.navbar-toggler {
+    flex-shrink: 0;
+    order: 2;
+}
+
+/* ==========================================================================
+   MOBILE NAVBAR FIXES
+   ========================================================================== */
+
+/* Фикс для бургер-кнопки */
+@media (max-width: 991.98px) {
+    /* Бургер кнопка - фиксированная позиция справа */
+    .navbar-toggler {
+        position: static !important; /* Убираем абсолютное позиционирование если есть */
+        margin-left: auto !important;
+        order: 2;
+        margin-right: 0 !important;
+    }
+    
+    /* Контейнер навбара */
+    .navbar > .container-fluid {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    /* Логотип занимает доступное пространство */
+    .navbar-brand {
+        flex: 1;
+        min-width: 0; /* Позволяет сжиматься */
+        margin-right: 15px !important;
+    }
+    
+    /* Убираем лишние отступы */
+    .navbar {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+/* Отступы для мобильного меню */
+@media (max-width: 991.98px) {
+    /* Общие отступы для содержимого меню */
+    .navbar-collapse {
+        padding: 15px 0;
+    }
+    
+    /* Отступ для кнопки личного кабинета */
+    #medflexMedtochkaWidgetButtonMobile {
+        margin-bottom: 20px !important;
+        padding: 0 15px;
+    }
+    
+    /* Отступ для списка меню */
+    .navbar-nav {
+        margin-bottom: 20px !important;
+        padding: 0 15px;
+    }
+    
+    /* Отступ для телефонов */
+    .navbar-collapse .border-top {
+        margin-top: 20px !important;
+        padding-top: 20px !important;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Отступы между элементами меню */
+    .navbar-nav .nav-item {
+        margin-bottom: 5px;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 12px 15px !important;
+        border-radius: 8px;
+        margin-bottom: 3px;
+    }
+    
+    /* Отступы для выпадающего меню */
+    .dropdown-menu {
+        margin: 5px 0 5px 15px !important;
+        border-radius: 8px;
+    }
+    
+    .dropdown-item {
+        padding: 10px 20px !important;
+    }
+    
+    /* Кнопки телефонов */
+    .navbar-collapse .btn-outline-primary {
+        margin-bottom: 10px;
+        padding: 12px 15px !important;
+    }
+    
+    /* Заголовок "Контакты" */
+    .navbar-collapse h6 {
+        margin-bottom: 15px !important;
+        padding-left: 5px;
+    }
+}
+
+/* Улучшения для очень маленьких экранов */
+@media (max-width: 360px) {
+    .navbar-collapse {
+        padding: 10px 0;
+    }
+    
+    #medflexMedtochkaWidgetButtonMobile {
+        margin-bottom: 15px !important;
+    }
+    
+    .navbar-nav {
+        margin-bottom: 15px !important;
+    }
+    
+    .navbar-collapse .border-top {
+        margin-top: 15px !important;
+        padding-top: 15px !important;
+    }
+}
+

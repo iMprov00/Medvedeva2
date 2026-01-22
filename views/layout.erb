@@ -89,126 +89,142 @@
 <body class="safe-area-top safe-area-bottom">
     <% unless request.path.start_with?('/admin') %>
     <!-- Шапка -->
-    <header class="header sticky-top bg-white shadow-sm">
-        <nav class="navbar navbar-expand-lg navbar-light py-2 py-lg-3">
-            <div class="container-fluid container-lg">
-                <a class="navbar-brand d-flex align-items-center" href="/">
-                    <div class="me-2 me-lg-3">
-                        <img src="/images/logo.png" 
-                             alt="Логотип клиники доктора Медведевой" 
-                             height="50" width="50" 
-                             class="img-fluid"
-                             loading="eager">
-                    </div>
-                    <div class="d-none d-md-block">
-                        <span class="fw-bold fs-6 fs-lg-5 text-dark">Клиника доктора Медведевой</span>
-                        <small class="text-muted d-block d-lg-inline d-lg-block">Доказательная медицина</small>
-                    </div>
-                    <div class="d-md-none">
-                        <span class="fw-bold fs-6 text-dark">Клиника доктора Медведевой</span>
-                    </div>
-                </a>
-                
-                <!-- Телефоны для мобильных -->
-                <div class="d-flex d-lg-none align-items-center ms-auto me-3">
-                    <a href="tel:+79133650464" class="btn btn-sm btn-outline-primary touch-target">
-                        <i class="bi bi-telephone"></i>
-                    </a>
+<!-- Шапка -->
+<header class="header sticky-top bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light py-2 py-lg-3">
+        <div class="container-fluid container-lg">
+            <!-- Логотип и название -->
+            <a class="navbar-brand d-flex align-items-center me-auto" href="/">
+                <div class="me-2 me-lg-3">
+                    <img src="/images/logo.png" 
+                         alt="Логотип клиники доктора Медведевой" 
+                         height="50" width="50" 
+                         class="img-fluid d-none d-md-block"
+                         loading="eager">
+                    <!-- Уменьшенный логотип для мобильных -->
+                    <img src="/images/logo.png" 
+                         alt="Логотип клиники доктора Медведевой" 
+                         height="40" width="40" 
+                         class="img-fluid d-md-none"
+                         loading="eager">
+                </div>
+                <div class="d-none d-md-block">
+                    <span class="fw-bold fs-6 fs-lg-5 text-dark">Клиника доктора Медведевой</span>
+                    <small class="text-muted d-block d-lg-inline d-lg-block">Доказательная медицина</small>
+                </div>
+                <!-- Уменьшенный текст для мобильных -->
+                <div class="d-md-none">
+                    <span class="fw-bold text-dark" style="font-size: 0.9rem; line-height: 1.2;">
+                        Клиника доктора<br>Медведевой
+                    </span>
+                </div>
+            </a>
+            
+            <!-- Убираем кнопку телефона из мобильного хедера -->
+            
+            <!-- Бургер-меню -->
+            <button class="navbar-toggler touch-target ms-2" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav"
+                    aria-label="Меню"
+                    aria-controls="navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Содержимое меню -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Личный кабинет в начале для мобильных -->
+                <div class="d-lg-none mb-3">
+                    <div id="medflexMedtochkaWidgetButtonMobile" 
+                         data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"
+                         class="d-block mb-3"></div>
                 </div>
                 
-                <button class="navbar-toggler touch-target" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#navbarNav"
-                        aria-label="Меню"
-                        aria-controls="navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <!-- Основное меню -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/' %>" 
+                           href="/">Главная</a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/about' %>" 
+                           href="#" 
+                           role="button" 
+                           data-bs-toggle="dropdown" 
+                           aria-expanded="false">
+                            О клинике
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item py-2 <%= 'active' if request.path == '/about' %>" href="/about">О нас</a></li>
+                            <li><a class="dropdown-item py-2" href="/about#founder">Основатель</a></li>
+                            <li><a class="dropdown-item py-2" href="/about#gallery">Галерея</a></li>
+                            <li><a class="dropdown-item py-2" href="/about#reviews">Отзывы</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/doctors' %>" 
+                           href="/doctors">Врачи</a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/prices' %>" 
+                           href="#" 
+                           role="button" 
+                           data-bs-toggle="dropdown" 
+                           aria-expanded="false">
+                            Услуги и цены
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item py-2 <%= 'active' if request.path == '/prices' %>" href="/prices">Прайс-лист</a></li>
+                            <li><a class="dropdown-item py-2" href="/prices#promotions">Акции</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/contacts' %>" 
+                           href="/contacts">Контакты</a>
+                    </li>
+                </ul>
                 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/' %>" 
-                               href="/">Главная</a>
-                        </li>
-                        
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/about' %>" 
-                               href="#" 
-                               role="button" 
-                               data-bs-toggle="dropdown" 
-                               aria-expanded="false">
-                                О клинике
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item py-2 <%= 'active' if request.path == '/about' %>" href="/about">О нас</a></li>
-                                <li><a class="dropdown-item py-2" href="/about#founder">Основатель</a></li>
-                                <li><a class="dropdown-item py-2" href="/about#gallery">Галерея</a></li>
-                                <li><a class="dropdown-item py-2" href="/about#reviews">Отзывы</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/doctors' %>" 
-                               href="/doctors">Врачи</a>
-                        </li>
-                        
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/prices' %>" 
-                               href="#" 
-                               role="button" 
-                               data-bs-toggle="dropdown" 
-                               aria-expanded="false">
-                                Услуги и цены
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item py-2 <%= 'active' if request.path == '/prices' %>" href="/prices">Прайс-лист</a></li>
-                                <li><a class="dropdown-item py-2" href="/prices#promotions">Акции</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link py-2 py-lg-3 <%= 'active fw-bold' if request.path == '/contacts' %>" 
-                               href="/contacts">Контакты</a>
-                        </li>
-                    </ul>
-                    
-                    <!-- Телефоны для десктопа -->
-                    <div class="d-none d-lg-flex align-items-center ms-lg-4">
-                        <div class="me-4">
-                            <div class="d-flex flex-column">
-                                <a href="tel:+79133650464" class="text-decoration-none text-dark fw-semibold small mb-1">
-                                    <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
-                                </a>
-                                <a href="tel:+73852256575" class="text-decoration-none text-dark fw-semibold small">
-                                    <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
-                                </a>
-                            </div>
-                        </div>
-                        <!-- Виджет Личного кабинета пациента -->
-                        <div id="medflexMedtochkaWidgetButton" 
-                             data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"
-                             class="d-inline-block"></div>
-                    </div>
-                    
-                    <!-- Телефоны и кнопка для планшетов/мобильных -->
-                    <div class="d-none d-md-flex d-lg-none flex-column mt-3 mt-md-0">
-                        <div class="mb-3">
-                            <a href="tel:+79133650464" class="btn btn-outline-primary mb-2 w-100 touch-target">
+                <!-- Телефоны для десктопа -->
+                <div class="d-none d-lg-flex align-items-center ms-lg-4">
+                    <div class="me-4">
+                        <div class="d-flex flex-column">
+                            <a href="tel:+79133650464" class="text-decoration-none text-dark fw-semibold small mb-1">
                                 <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
                             </a>
-                            <a href="tel:+73852256575" class="btn btn-outline-primary w-100 touch-target">
+                            <a href="tel:+73852256575" class="text-decoration-none text-dark fw-semibold small">
                                 <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
                             </a>
                         </div>
-                            <!-- Виджет Личного кабинета пациента -->
-                        <div id="medflexMedtochkaWidgetButton" data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"></div> 
-
+                    </div>
+                    <!-- Виджет Личного кабинета пациента -->
+                    <div id="medflexMedtochkaWidgetButton" 
+                         data-src="https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6"
+                         class="d-inline-block"></div>
+                </div>
+                
+                <!-- Телефоны для мобильных (в конце меню) -->
+                <div class="d-lg-none mt-3 pt-3 border-top">
+                    <h6 class="fw-bold mb-2 text-muted small">Телефон:</h6>
+                    <div class="mb-2">
+                        <a href="tel:+79133650464" class="btn btn-outline-primary w-100 touch-target">
+                            <i class="bi bi-telephone me-1"></i>+7 (913) 365-04-64
+                        </a>
+                    </div>
+                    <div>
+                        <a href="tel:+73852256575" class="btn btn-outline-primary w-100 touch-target">
+                            <i class="bi bi-telephone me-1"></i>+7 (385) 225-65-75
+                        </a>
                     </div>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
     <!-- Основное содержимое -->
     <main class="min-vh-50">
@@ -550,6 +566,50 @@
             });
         });
     }); %>
+</script>
+
+<script>
+// Инициализация мобильного виджета MedFlex
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверка и инициализация мобильного виджета
+    setTimeout(function() {
+        const mobileWidgetContainer = document.getElementById('medflexMedtochkaWidgetButtonMobile');
+        
+        if (mobileWidgetContainer && typeof window.MedFlexWidget === 'undefined') {
+            console.warn('Creating fallback mobile MedFlex button');
+            
+            const backupButton = document.createElement('a');
+            backupButton.href = 'https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6';
+            backupButton.target = '_blank';
+            backupButton.className = 'btn btn-primary w-100 touch-target';
+            backupButton.style.cssText = 'min-height: 48px; display: flex; align-items: center; justify-content: center;';
+            backupButton.innerHTML = '<i class="bi bi-person-circle me-2"></i>Личный кабинет пациента';
+            
+            mobileWidgetContainer.innerHTML = '';
+            mobileWidgetContainer.appendChild(backupButton);
+        }
+    }, 2000);
+    
+    // Переинициализация виджета для мобильного контейнера
+    function initMobileWidget() {
+        if (typeof window.MedFlexWidget !== 'undefined' && window.MedFlexWidget.init) {
+            const mobileContainer = document.getElementById('medflexMedtochkaWidgetButtonMobile');
+            if (mobileContainer) {
+                try {
+                    window.MedFlexWidget.init({
+                        containerId: 'medflexMedtochkaWidgetButtonMobile',
+                        src: 'https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6'
+                    });
+                } catch (e) {
+                    console.log('MedFlex widget already initialized or error:', e);
+                }
+            }
+        }
+    }
+    
+    // Пробуем инициализировать через 3 секунды
+    setTimeout(initMobileWidget, 3000);
+});
 </script>
     
 </body>
