@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /test
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.pdf$
+
+Sitemap: https://medvedeva-clinic.ru/sitemap.xml
+
+User-agent: Yandex
+Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign /doctors/
+Clean-param: ref /
+
+User-agent: Googlebot
+Allow: /

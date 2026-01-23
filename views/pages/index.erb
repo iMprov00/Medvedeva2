@@ -214,6 +214,32 @@
     </div>
 </section>
 
+<!-- В самом низу index.erb, перед закрывающим </section> -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "<%= full_page_title %>",
+  "description": "<%= page_description %>",
+  "url": "<%= canonical_url %>",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://medvedeva-clinic.ru"
+    }]
+  },
+  "mainEntity": {
+    "@type": "MedicalOrganization",
+    "name": "Клиника доктора Медведевой",
+    "medicalSpecialty": ["Pediatrics", "Evidence-based medicine"],
+    "description": "Клиника доказательной медицины доктора Медведевой в Барнауле"
+  }
+}
+</script>
+
 <style>
 /* CSS для чередования цветов и анимаций */
 .fade-in-up {

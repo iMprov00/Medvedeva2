@@ -113,6 +113,52 @@ helpers do
     result
   end
 
+  # Определение title страницы
+  def page_title
+    @page_title || default_title
+  end
+  
+  def default_title
+    "Клиника доказательной медицины доктора Медведевой в Барнауле"
+  end
+  
+  # Установка title
+  def set_title(title)
+    @page_title = title
+  end
+  
+  # Метод для формирования полного title (с суффиксом)
+  def full_page_title
+    if @page_title && @page_title != default_title
+      "#{@page_title} | Клиника доктора Медведевой в Барнауле"
+    else
+      default_title
+    end
+  end
+  
+  # Метод для SEO описания
+  def page_description
+    @page_description || default_description
+  end
+  
+  def default_description
+    "Клиника доказательной медицины доктора Медведевой в Барнауле. Современный подход к лечению детей от 0 до 18 лет, основанный на международных протоколах и научных данных."
+  end
+  
+  def set_description(description)
+    @page_description = description
+  end
+  
+  # Метод для канонических URL
+  def canonical_url
+    @canonical_url || request.url
+  end
+  
+  def set_canonical_url(url)
+    @canonical_url = url
+  end
+
+
 end
 
 # =============================================
@@ -121,11 +167,20 @@ end
 
 # Главная страница
 get '/' do
+
+  set_title("Клиника доказательной медицины доктора Медведевой - Главная")
+  set_description("Rлиника доказательной медицины в Барнауле. Лечение детей от 0 до 18 лет по международным протоколам. Запись на прием онлайн.")
+
   erb :'pages/index'
 end
 
 # О клинике
 get '/about' do
+
+
+  set_title("О клинике доктора Медведевой")
+  set_description("Первая клиника доказательной медицины в Барнауле. Современное оборудование, опытные врачи, индивидуальный подход к каждому пациенту.")
+
   gallery_path = File.join(settings.public_folder, 'images', 'about')
   
   if Dir.exist?(gallery_path)
@@ -141,11 +196,22 @@ end
 
 # Контакты
 get '/contacts' do
+
+  set_title("Контакты клиники доктора Медведевой")
+  set_description("Адрес, телефоны, схема проезда и часы работы клиники доктора Медведевой в Барнауле. Запись на прием по телефону +7 (913) 365-04-64")
+  set_canonical_url("https://medvedeva-clinic.ru/contacts")
+
   erb :'pages/contacts'
 end
 
 # Врачи
 get '/doctors' do
+
+
+  set_title("Врачи клиники доктора Медведевой")
+  set_description("Наши врачи - специалисты по доказательной медицине для детей от 0 до 18 лет. Высокая квалификация, опыт работы, отзывы пациентов.")
+  set_canonical_url("https://medvedeva-clinic.ru/doctors")
+
   @doctors = Doctor.all.order(:last_name, :first_name)
   @specialties = Doctor.unique_specialties
   erb :'dynamic/doctors'
@@ -153,17 +219,30 @@ end
 
 # Услуги и цены
 get '/prices' do
+
+  set_title("Услуги и цены клиники доктора Медведевой")
+  set_description("Прайс-лист на медицинские услуги для детей. Педиатрия, консультации специалистов, диагностика. Прозрачные цены, без скрытых платежей.")
+  set_canonical_url("https://medvedeva-clinic.ru/prices")
+
   @service_categories = ServiceCategory.includes(:services).order(:position).all
   erb :'pages/prices'
 end
 
 # Документы
 get '/docs' do
+
+  set_title("Документы и лицензии клиники доктора Медведевой")
+  set_description("Официальные документы, лицензии, свидетельства клиники доказательной медицины доктора Медведевой в Барнауле.")
+
   erb :'pages/docs'
 end
 
 # Политика конфиденциальности
 get '/privacy' do
+
+  set_title("Политика конфиденциальности")
+  set_description("Политика обработки персональных данных в клинике доктора Медведевой.")
+
   erb :'pages/privacy'
 end
 
@@ -845,3 +924,32 @@ error ActiveRecord::RecordNotFound do
   end
 end
 
+# Генерация sitemap.xml для поисковиков
+get '/sitemap.xml' do
+  content_type 'application/xml'
+  
+  @base_url = "https://medvedeva-clinic.ru"
+  @pages = [
+    { url: "/", changefreq: "daily", priority: "1.0" },
+    { url: "/about", changefreq: "weekly", priority: "0.8" },
+    { url: "/doctors", changefreq: "weekly", priority: "0.9" },
+    { url: "/prices", changefreq: "monthly", priority: "0.7" },
+    { url: "/contacts", changefreq: "monthly", priority: "0.8" },
+    { url: "/docs", changefreq: "monthly", priority: "0.5" },
+    { url: "/privacy", changefreq: "yearly", priority: "0.3" }
+  ]
+  
+  # Добавляем динамические страницы врачей
+  @doctors = Doctor.all
+  @doctors.each do |doctor|
+    page_data = {
+      url: "/doctors/#{doctor.id}",
+      changefreq: "monthly",
+      priority: "0.6"
+    }
+    page_data[:lastmod] = doctor.updated_at.strftime("%Y-%m-%d") if doctor.updated_at
+    @pages << page_data
+  end
+  
+  erb :'seo/sitemap', layout: false
+end
