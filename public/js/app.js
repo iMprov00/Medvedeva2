@@ -810,9 +810,98 @@ window.addEventListener('load', function() {
     }
 });
 
+
+function initScrollToTop() {
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+    if (!scrollBtn) return;
+    
+    // Показать/скрыть кнопку при скролле
+    function toggleScrollButton() {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('visible');
+        } else {
+            scrollBtn.classList.remove('visible');
+        }
+    }
+    
+    // Прокрутка наверх
+    function scrollToTop() {
+        // Используем плавную прокрутку если поддерживается
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            // Fallback для старых браузеров
+            const scrollStep = -window.scrollY / (500 / 15);
+            const scrollInterval = setInterval(function() {
+                if (window.scrollY !== 0) {
+                    window.scrollBy(0, scrollStep);
+                } else {
+                    clearInterval(scrollInterval);
+                }
+            }, 15);
+        }
+        
+        // Для мобильных устройств - дополнительная анимация
+        if (MOBILE_CONFIG.isMobile) {
+            scrollBtn.classList.add('active');
+            setTimeout(() => {
+                scrollBtn.classList.remove('active');
+            }, 300);
+        }
+    }
+    
+    // Обработчики событий
+    window.addEventListener('scroll', toggleScrollButton);
+    scrollBtn.addEventListener('click', scrollToTop);
+    
+    // Touch-оптимизация для мобильных
+    if (MOBILE_CONFIG.isTouch) {
+        scrollBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+        }, { passive: false });
+        
+        scrollBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            this.style.transform = '';
+            scrollToTop();
+        }, { passive: false });
+    }
+    
+    // Инициализация
+    toggleScrollButton();
+}
+
+
 // Вызовите эту функцию в DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-    initMobileDropdowns();
+    console.log('App.js инициализирован для мобильных устройств');
+    
+    // Определяем тип устройства
+    detectDeviceType();
+    
+    // Инициализируем все функции
+    initMobileMenu();
+    initSmoothScroll();
+    initHeaderScroll();
+    initTooltips();
+    initFormsValidation();
+    initAnimations();
+    initPhoneMask();
+    initTouchOptimizations();
+    initImageLoading();
+    initModalOptimizations();
+    
+    // Кнопка "Наверх" - добавьте эту строку!
+    initScrollToTop();
+    
+    // iOS специфичные фиксы
+    if (MOBILE_CONFIG.isIOS) {
+        initIOSFixes();
+    }
 });
 
 

@@ -1449,3 +1449,126 @@ footer #medflexMedtochkaWidgetButton button:hover {
     }
 }
 
+/* По умолчанию обе кнопки скрыты */
+#medflexMedtochkaWidgetButton {
+    display: none !important;
+}
+
+/* Десктопная версия - показываем только на больших экранах */
+.desktop-medflex-widget #medflexMedtochkaWidgetButton {
+    display: inline-block !important;
+}
+
+/* Мобильная версия - показываем только на маленьких экранах */
+.mobile-medflex-widget #medflexMedtochkaWidgetButton {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Медиа-запросы для Bootstrap-совместимости */
+@media (min-width: 992px) {
+    .mobile-medflex-widget {
+        display: none !important;
+    }
+    
+    .desktop-medflex-widget #medflexMedtochkaWidgetButton {
+        min-width: 140px !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .desktop-medflex-widget {
+        display: none !important;
+    }
+    
+    .mobile-medflex-widget #medflexMedtochkaWidgetButton {
+        margin-bottom: 20px !important;
+    }
+    
+    .mobile-medflex-widget #medflexMedtochkaWidgetButton button {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+/* ==========================================================================
+   MEDFLEX WIDGET ADAPTIVE SOLUTION
+   ========================================================================== */
+
+/* Контейнер виджета - скрыт по умолчанию */
+.medflex-widget-container {
+    display: none !important;
+}
+
+/* Десктопная версия - показываем в хедере */
+@media (min-width: 992px) {
+    /* Только для хедера (вне мобильного меню) */
+    .d-none.d-lg-flex .medflex-widget-container {
+        display: inline-block !important;
+        min-width: 140px !important;
+    }
+}
+
+/* Мобильная версия - показываем в мобильном меню */
+@media (max-width: 991.98px) {
+    /* Только когда меню открыто */
+    .navbar-collapse.show .medflex-widget-container {
+        display: block !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Фикс для стилей скрипта MedFlex */
+#medflexMedtochkaWidgetButton {
+    display: inline-block !important;
+}
+
+#medflexMedtochkaWidgetButton button {
+    background-color: var(--bs-secondary) !important;
+    background: linear-gradient(135deg, var(--bs-secondary) 0%, #d18cff 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    min-width: 160px !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    box-shadow: 0 4px 12px rgba(229, 167, 255, 0.3) !important;
+    cursor: pointer !important;
+    position: relative !important;
+    overflow: hidden !important;
+    z-index: 1 !important;
+}
+
+#medflexMedtochkaWidgetButton button:hover {
+    background: linear-gradient(135deg, #d18cff 0%, var(--bs-secondary) 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(229, 167, 255, 0.4) !important;
+}
+
+#medflexMedtochkaWidgetButton button:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(229, 167, 255, 0.3) !important;
+}
+
+/* Мобильные стили */
+@media (max-width: 991.98px) {
+    .navbar-collapse.show #medflexMedtochkaWidgetButton button {
+        width: 100% !important;
+        justify-content: center !important;
+        min-width: 100% !important;
+    }
+}
+
+/* Десктопные стили */
+@media (min-width: 992px) {
+    #medflexMedtochkaWidgetButton button {
+        min-width: 140px !important;
+        padding: 0.6rem 1.25rem !important;
+        font-size: 0.95rem !important;
+    }
+}
