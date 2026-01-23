@@ -60,39 +60,25 @@
                     <% @doctors.each_with_index do |doctor, index| %>
                         <div class="col-12 col-sm-6 col-lg-4 fade-in-up">
                             <div class="card doctor-card shadow-sm border-0 h-100" data-doctor-index="<%= index %>">
-                                <div class="position-relative doctor-photo-container overflow-hidden <%= index.even? ? 'bg-doctor-0' : 'bg-doctor-1' %>">
+                                <!-- Замените этот блок (строки ~40-70) в doctors.erb -->
+                                <div class="position-relative doctor-photo-container overflow-hidden">
                                     <div class="doctor-photo-wrapper">
                                         <% if doctor.photo_path && !doctor.photo_path.empty? %>
-                                            <div class="position-absolute top-0 left-0 w-100 h-100 <%= index.even? ? 'bg-doctor-0' : 'bg-doctor-1' %>"></div>
-                                            
-                                            <div style="
-                                                position: relative;
-                                                width: 100%;
-                                                max-width: 280px;
-                                                height: 240px;
-                                                margin: 0 auto;
-                                                overflow: hidden;
-                                                border-radius: 20px 20px 0 0;
-                                            ">
-                                                <img src="<%= doctor.photo_path %>" 
-                                                     class="position-absolute top-0 left-0 w-100 h-100" 
-                                                     alt="Доктор <%= doctor.full_name %>"
-                                                     style="
-                                                         object-fit: cover;
-                                                         object-position: center top;
-                                                     "
-                                                     loading="lazy">
-                                            </div>
+                                            <!-- Убрали фоновый цвет -->
+                                            <img src="<%= doctor.photo_path %>" 
+                                                 class="doctor-photo" 
+                                                 alt="Доктор <%= doctor.full_name %>"
+                                                 loading="lazy">
                                         <% else %>
-                                            <div class="position-absolute top-50 start-50 translate-middle">
-                                                <i class="bi bi-person-circle display-1 text-white opacity-50"></i>
+                                            <div class="text-center">
+                                                <i class="bi bi-person-circle display-1 text-muted opacity-25"></i>
                                             </div>
                                         <% end %>
                                     </div>
                                     
                                     <% if doctor.experience_years && doctor.experience_years > 0 %>
                                         <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary rounded-pill shadow-sm small">
-                                            Опыт <%= doctor.experience_text %>
+                                            <i class="bi bi-award me-1"></i><%= doctor.experience_text %>
                                         </span>
                                     <% end %>
                                 </div>
@@ -153,7 +139,9 @@
     }
 }
 
-/* Чередование цветов фона для контейнеров с фото */
+
+
+<%# /* Чередование цветов фона для контейнеров с фото */
 .bg-doctor-0 {
     background-color: #77e0b2;
 }
@@ -240,5 +228,6 @@
         font-size: 1rem;
         padding: 0.75rem 2.25rem 0.75rem 1rem;
     }
-}
+} %>
 </style>
+

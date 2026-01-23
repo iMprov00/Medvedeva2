@@ -227,24 +227,14 @@
    ВРАЧИ И ФОТО
    ========================================================================== */
 
-/* Сетка врачей */
-.doctors-grid .col-md-6 {
-    margin-bottom: 2rem;
-}
+/* components.css - Обновленные стили для врачей */
 
-/* Чередование цветов фона для врачей */
-.doctor-card:nth-child(odd) .doctor-photo-container {
-    background-color: #77e0b2;
-}
-
-.doctor-card:nth-child(even) .doctor-photo-container {
-    background-color: #e5a8e0;
-}
-
+/* Контейнер для фото врача */
 .doctor-photo-container {
     position: relative;
     overflow: hidden;
     min-height: 280px;
+    background-color: transparent !important; /* Убираем фоновый цвет */
 }
 
 .doctor-photo-wrapper {
@@ -254,18 +244,85 @@
     justify-content: center;
     height: 280px;
     padding: 20px;
+    background-color: transparent; /* Прозрачный фон */
 }
 
+/* Фото врача - увеличиваем размер */
 .doctor-photo {
-    max-height: 100%;
-    max-width: 100%;
+    max-height: 250px; /* Увеличиваем высоту фото */
+    max-width: 85%;    /* Увеличиваем ширину фото */
     object-fit: contain;
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
     transition: transform 0.3s ease;
+    border-radius: 12px; /* Добавляем скругление */
 }
 
 .doctor-photo:hover {
     transform: scale(1.05);
+}
+
+/* Чередование цветов фона теперь только для четных/нечетных врачей */
+.doctor-card:nth-child(odd) .doctor-photo-wrapper {
+    background-color: rgba(119, 224, 178, 0.15); /* Легкий зеленый фон */
+}
+
+.doctor-card:nth-child(even) .doctor-photo-wrapper {
+    background-color: rgba(229, 167, 255, 0.15); /* Легкий фиолетовый фон */
+}
+
+/* На мобильных убираем эффект hover */
+@media (hover: none) and (pointer: coarse) {
+    .doctor-photo:hover {
+        transform: none;
+    }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .doctor-photo-container {
+        min-height: 220px; /* Уменьшаем высоту на мобильных */
+    }
+    
+    .doctor-photo-wrapper {
+        height: 220px;
+        padding: 15px;
+    }
+    
+    .doctor-photo {
+        max-height: 190px; /* Увеличиваем фото на мобильных */
+        max-width: 90%;
+    }
+    
+    /* Добавляем отступы между карточками на мобильных */
+    .doctors-grid .col-12 {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .doctor-card {
+        border: 1px solid rgba(0, 0, 0, 0.1); /* Добавляем границу для разделения */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Легкая тень */
+    }
+}
+
+@media (max-width: 576px) {
+    .doctor-photo-container {
+        min-height: 200px;
+    }
+    
+    .doctor-photo-wrapper {
+        height: 200px;
+        padding: 12px;
+    }
+    
+    .doctor-photo {
+        max-height: 170px;
+        max-width: 92%;
+    }
+    
+    /* Увеличиваем отступы между карточками */
+    .doctors-grid .col-12 {
+        margin-bottom: 2rem !important;
+    }
 }
 
 /* ==========================================================================
@@ -1570,5 +1627,72 @@ footer #medflexMedtochkaWidgetButton button:hover {
         min-width: 140px !important;
         padding: 0.6rem 1.25rem !important;
         font-size: 0.95rem !important;
+    }
+}
+
+/* components.css - Добавьте в конец файла */
+
+/* ==========================================================================
+   DOCTORS PHOTO OPTIMIZATION
+   ========================================================================== */
+
+/* Увеличенные фото для десктопов */
+@media (min-width: 992px) {
+    .doctor-photo-wrapper {
+        height: 320px; /* Увеличиваем высоту */
+        padding: 25px;
+    }
+    
+    .doctor-photo {
+        max-height: 280px; /* Увеличиваем фото */
+        max-width: 88%;
+    }
+}
+
+/* Планшеты */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .doctor-photo-wrapper {
+        height: 280px;
+        padding: 20px;
+    }
+    
+    .doctor-photo {
+        max-height: 240px;
+        max-width: 85%;
+    }
+}
+
+/* Мобильные */
+@media (max-width: 767.98px) {
+    .doctor-photo-wrapper {
+        height: 240px;
+        padding: 15px;
+    }
+    
+    .doctor-photo {
+        max-height: 200px;
+        max-width: 90%;
+        border-radius: 10px;
+    }
+    
+    /* Улучшенное разделение карточек */
+    .doctor-card {
+        margin-bottom: 1.5rem;
+        border: 1px solid #e9ecef !important;
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 576px) {
+    .doctor-photo-wrapper {
+        height: 220px;
+        padding: 12px;
+    }
+    
+    .doctor-photo {
+        max-height: 180px;
+        max-width: 92%;
     }
 }
