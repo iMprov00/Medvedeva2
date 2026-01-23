@@ -1,7 +1,7 @@
 # models/doctor.rb
 class Doctor < ActiveRecord::Base
   has_and_belongs_to_many :specialties
-  has_many :appointments
+  has_many :appointments, dependent: :destroy  # Добавьте это!
   
   validates :last_name, :first_name, :bio, presence: true
   validates :experience_years, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
