@@ -17,52 +17,39 @@
 <section class="py-4 py-lg-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-lg-10 text-center">
-                <!-- Контейнер с overflow-hidden для контроля -->
-                <div class="widget-center-helper" style="overflow: hidden; width: 100%;">
+            <!-- Ограничиваем ширину для виджета -->
+            <div class="col-12 col-lg-8 text-center" style="max-width: 800px;">
+                <!-- Контейнер для виджета с центрированием -->
+                <div class="widget-wrapper" style="width: 100%; max-width: 742px; margin: 0 auto;">
                     <div id="medflexPricesWidgetData" data-src="https://booking.medflex.ru?user=83de76a588b26ad9b729c20d4b1ffbf6"></div>
                 </div>
                 <script defer src="https://booking.medflex.ru/components/prices/prices_widget.js" charset="utf-8"></script>
                 
                 <script>
-                // Центрирование виджета после загрузки
+                // Ждем загрузки виджета и настраиваем его
                 window.addEventListener('load', function() {
                     setTimeout(function() {
-                        const widget = document.querySelector('#medflexPricesWidgetData + div');
-                        if (widget) {
-                            // Принудительно центрируем
-                            widget.style.cssText = `
-                                margin: 0 auto !important;
-                                text-align: center !important;
-                                float: none !important;
-                                display: block !important;
-                                width: 100% !important;
-                                max-width: 100% !important;
-                            `;
+                        const iframe = document.querySelector('#prices');
+                        if (iframe) {
+                            // Устанавливаем ширину iframe
+                            iframe.style.width = '100%';
+                            iframe.style.maxWidth = '742px';
+                            iframe.style.margin = '0 auto';
+                            iframe.style.display = 'block';
                             
-                            // Центрируем все дочерние элементы
-                            const centerAll = (element) => {
-                                element.style.marginLeft = 'auto !important';
-                                element.style.marginRight = 'auto !important';
-                                element.style.textAlign = 'center !important';
-                                element.style.float = 'none !important';
-                            };
-                            
-                            // Рекурсивно обрабатываем все элементы
-                            function processElement(el) {
-                                centerAll(el);
-                                for (let child of el.children) {
-                                    processElement(child);
-                                }
+                            // Находим родительский контейнер
+                            const widgetContainer = iframe.closest('.medflex-prices-widget');
+                            if (widgetContainer) {
+                                widgetContainer.style.width = '100%';
+                                widgetContainer.style.maxWidth = '742px';
+                                widgetContainer.style.margin = '0 auto';
                             }
-                            
-                            processElement(widget);
                         }
-                    }, 1000); // Даем виджету время на загрузку
+                    }, 1500); // Даем больше времени на загрузку
                 });
                 </script>
                 
->
+
             </div>
         </div>
     </div>
@@ -527,64 +514,39 @@
 }
 
 
-/* АГРЕССИВНОЕ ЦЕНТРИРОВАНИЕ ВИДЖЕТА МЕДФЛЕКС */
-/* Цель: любой div сразу после #medflexPricesWidgetData */
-#medflexPricesWidgetData + div {
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-    float: none !important;
+/* Стили для виджета МедФлекс */
+.medflex-prices-widget {
     width: 100% !important;
-    max-width: 100% !important;
-    position: relative !important;
-    left: 0 !important;
-    right: 0 !important;
-}
-
-/* Все внутренние элементы виджета */
-#medflexPricesWidgetData + div * {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-    float: none !important;
+    max-width: 742px !important;
+    margin: 0 auto !important;
     display: block !important;
 }
 
-/* Особенно для таблиц */
-#medflexPricesWidgetData + div table,
-#medflexPricesWidgetData + div > table {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    float: none !important;
-    display: table !important;
+#prices {
+    width: 100% !important;
+    max-width: 742px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    border: none !important;
 }
 
-/* Для контейнеров */
-#medflexPricesWidgetData + div div,
-#medflexPricesWidgetData + div > div {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    float: none !important;
-}
-
-/* Для заголовков */
-#medflexPricesWidgetData + div h1,
-#medflexPricesWidgetData + div h2,
-#medflexPricesWidgetData + div h3,
-#medflexPricesWidgetData + div h4 {
-    text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-/* Для мобильных */
+/* Адаптивность */
 @media (max-width: 768px) {
-    #medflexPricesWidgetData + div {
-        transform: none !important;
-        left: 0 !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
+    .medflex-prices-widget {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    #prices {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Для очень широких экранов */
+@media (min-width: 1200px) {
+    .widget-wrapper {
+        max-width: 742px !important;
     }
 }
 </style>
