@@ -47,9 +47,11 @@
             <% end %>
         </div>
         
-        <p class="card-text text-muted flex-grow-1 mb-4 fs-6 fs-md-initial doctor-bio">
+    <div class="doctor-bio-container mb-4">
+        <p class="card-text text-muted doctor-bio">
             <%= doctor.bio.to_s.truncate(220) %>
         </p>
+    </div>
         
         <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center">

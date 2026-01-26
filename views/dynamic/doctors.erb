@@ -116,9 +116,9 @@
                                         <% end %>
                                     </div>
                                     
-                                    <p class="card-text text-muted flex-grow-1 mb-3 small">
-                                        <%= doctor.bio.to_s.truncate(100) %>
-                                    </p>
+                                <p class="card-text text-muted flex-grow-1 mb-3 small">
+    <%= doctor.bio.to_s.truncate(250) %> <!-- Увеличили с 100 до 180 -->
+</p>
                                     
                                     <div class="mt-auto">
                                         <div class="d-grid">
@@ -156,7 +156,17 @@
 }
 
 
+/* Замените существующие стили для .card-body */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto; /* Занимает доступное пространство */
+}
 
+.doctor-bio {
+    line-height: 1.5;
+    min-height: 80px;
+}
 <%# /* Чередование цветов фона для контейнеров с фото */
 .bg-doctor-0 {
     background-color: #77e0b2;
