@@ -1,3 +1,4 @@
+
 <!-- Заголовок страницы -->
 <section class="py-4 py-lg-5 bg-light">
     <div class="container">
@@ -12,10 +13,47 @@
     </div>
 </section>
 
-<!-- ВИДЖЕТ MEDROCKET -->
-<div id="medflexPricesWidgetData" data-src="https://booking.medflex.ru?user=83de76a588b26ad9b729c20d4b1ffbf6"></div>
-<script defer src="https://booking.medflex.ru/components/prices/prices_widget.js" charset="utf-8"></script>
+<!-- Контейнер для виджета MedRocket -->
+<section class="py-4 py-lg-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <!-- Карточка для виджета с тенью и скруглениями -->
+                <div class="card border-0 shadow-sm rounded-3 mb-4 mb-lg-5 overflow-hidden">
+                    <div class="card-body p-0">
+                        <!-- Описание перед виджетом -->
+                        <div class="p-3 p-lg-4 border-bottom bg-light">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-wrapper icon-wrapper-primary flex-shrink-0">
+                                    <i class="bi bi-cash-stack"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1 fs-5">Актуальные цены на услуги</h5>
+                                    <p class="text-muted mb-0 small">Актуальные цены обновляются в реальном времени.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Виджет MedRocket с дополнительными обертками -->
+                        <div class="p-3 p-lg-4">
+                            <div class="widget-wrapper" style="width: 100%; overflow: hidden;">
+                                <div class="medrocket-widget-container" style="width: 100% !important; max-width: 100% !important; display: flex !important; justify-content: center !important;">
+                                    <div id="medflexPricesWidgetData" 
+                                         data-src="https://booking.medflex.ru?user=83de76a588b26ad9b729c20d4b1ffbf6"
+                                         style="width: 100% !important; max-width: 100% !important;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
 
+<script defer src="https://booking.medflex.ru/components/prices/prices_widget.js" charset="utf-8"></script>
 
 <!-- Цены и условия -->
 <section class="py-4 py-lg-5 bg-light">
@@ -475,3 +513,246 @@
     }
 }
 </style>
+<style>
+/* Добавьте эти стили в секцию <style> внизу файла */
+
+/* Стили для виджета MedRocket */
+.medrocket-widget-container {
+    width: 100%;
+    min-height: 600px;
+    position: relative;
+}
+
+/* Улучшение внешнего вида виджета */
+#medflexPricesWidgetData {
+    width: 100%;
+}
+
+/* Адаптивность виджета */
+@media (max-width: 768px) {
+    .medrocket-widget-container {
+        min-height: 500px;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .medrocket-widget-container {
+        min-height: 400px;
+    }
+    
+    .card-body {
+        padding: 0.75rem !important;
+    }
+}
+
+/* Анимация появления */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Иконки */
+.icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.icon-wrapper-primary {
+    background-color: rgba(229, 167, 255, 0.1);
+    color: #e5a7ff;
+}
+
+.icon-wrapper-secondary {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+/* Стили для виджета MedRocket - ОБНОВЛЕННЫЕ */
+.widget-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.medrocket-widget-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+#medflexPricesWidgetData {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: block !important;
+}
+
+/* Стиль для iframe, который может создать виджет */
+#medflexPricesWidgetData iframe,
+.medrocket-widget-container iframe {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    border: none !important;
+    min-height: 600px !important;
+}
+
+/* Стиль для div контейнеров, которые может создать виджет */
+#medflexPricesWidgetData > div,
+.medrocket-widget-container > div {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: block !important;
+}
+
+/* Адаптивность виджета */
+@media (max-width: 1200px) {
+    .medrocket-widget-container,
+    #medflexPricesWidgetData,
+    #medflexPricesWidgetData iframe,
+    #medflexPricesWidgetData > div {
+        max-width: 100% !important;
+        padding: 0 15px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #medflexPricesWidgetData iframe,
+    .medrocket-widget-container iframe {
+        min-height: 500px !important;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #medflexPricesWidgetData iframe,
+    .medrocket-widget-container iframe {
+        min-height: 400px !important;
+    }
+    
+    .card-body {
+        padding: 0.75rem !important;
+    }
+}
+
+/* Анимация появления */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Иконки */
+.icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.icon-wrapper-primary {
+    background-color: rgba(229, 167, 255, 0.1);
+    color: #e5a7ff;
+}
+
+.icon-wrapper-secondary {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Ждем загрузки виджета
+    setTimeout(function() {
+        centerMedRocketWidget();
+        
+        // Добавляем обработчик для ресайза окна
+        window.addEventListener('resize', centerMedRocketWidget);
+        
+        // Периодически проверяем и центрируем (на случай динамической загрузки)
+        let checkInterval = setInterval(function() {
+            if (document.querySelector('#medflexPricesWidgetData iframe, #medflexPricesWidgetData > div')) {
+                centerMedRocketWidget();
+                clearInterval(checkInterval);
+            }
+        }, 500);
+        
+        // Последняя проверка через 5 секунд
+        setTimeout(function() {
+            clearInterval(checkInterval);
+        }, 5000);
+    }, 1000);
+    
+    function centerMedRocketWidget() {
+        // Находим все элементы, которые может создать виджет
+        const widgetElements = document.querySelectorAll('#medflexPricesWidgetData iframe, #medflexPricesWidgetData > div, .medrocket-widget-container iframe, .medrocket-widget-container > div');
+        
+        widgetElements.forEach(function(element) {
+            // Применяем стили центрирования
+            element.style.width = '100% !important';
+            element.style.maxWidth = '100% !important';
+            element.style.margin = '0 auto !important';
+            element.style.display = 'block !important';
+            
+            // Если это iframe, устанавливаем ширину 100%
+            if (element.tagName === 'IFRAME') {
+                element.style.width = '100% !important';
+                element.style.maxWidth = '1200px !important';
+                element.style.margin = '0 auto !important';
+                element.style.display = 'block !important';
+            }
+        });
+        
+        // Также обрабатываем родительские контейнеры
+        const containers = document.querySelectorAll('#medflexPricesWidgetData, .medrocket-widget-container, .widget-wrapper');
+        containers.forEach(function(container) {
+            container.style.width = '100% !important';
+            container.style.maxWidth = '100% !important';
+            container.style.margin = '0 auto !important';
+            container.style.display = 'block !important';
+        });
+    }
+});
+</script>
