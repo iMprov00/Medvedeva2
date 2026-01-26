@@ -12,39 +12,61 @@
     </div>
 </section>
 
-<!-- Виджет MedRocket - без контейнера с заголовком -->
-<section class="py-4 py-lg-5 bg-white">
-    <div class="container-fluid px-0">
-        <div class="widget-wrapper" style="width: 100%; overflow: hidden;">
-            <div class="medrocket-widget-container" style="width: 100% !important; max-width: 100% !important; margin: 0 auto !important;">
-                <div id="medflexPricesWidgetData" 
-                     data-src="https://booking.medflex.ru?user=83de76a588b26ad9b729c20d4b1ffbf6"
-                     style="width: 100% !important; max-width: 100% !important; margin: 0 auto !important;">
+<!-- Виджет прайс-листа от МедФлекс -->
+<!-- Виджет прайс-листа от МедФлекс -->
+<section class="py-4 py-lg-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 text-center">
+                <!-- Контейнер с overflow-hidden для контроля -->
+                <div class="widget-center-helper" style="overflow: hidden; width: 100%;">
+                    <div id="medflexPricesWidgetData" data-src="https://booking.medflex.ru?user=83de76a588b26ad9b729c20d4b1ffbf6"></div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Пояснение под виджетом (необязательно, можно убрать) -->
-        <div class="container mt-4">
-            <div class="row justify-content-center">
-                <div class="col-12 col-lg-10">
-                    <div class="alert alert-info border-0 mb-0 fade-in-up" style="animation-delay: 0.2s">
-                        <div class="d-flex align-items-start">
-                            <i class="bi bi-info-circle me-2 mt-1 flex-shrink-0"></i>
-                            <div>
-                                <p class="mb-0 small">
-                                    <strong>Актуальные цены на услуги</strong> обновляются в реальном времени.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <script defer src="https://booking.medflex.ru/components/prices/prices_widget.js" charset="utf-8"></script>
+                
+                <script>
+                // Центрирование виджета после загрузки
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        const widget = document.querySelector('#medflexPricesWidgetData + div');
+                        if (widget) {
+                            // Принудительно центрируем
+                            widget.style.cssText = `
+                                margin: 0 auto !important;
+                                text-align: center !important;
+                                float: none !important;
+                                display: block !important;
+                                width: 100% !important;
+                                max-width: 100% !important;
+                            `;
+                            
+                            // Центрируем все дочерние элементы
+                            const centerAll = (element) => {
+                                element.style.marginLeft = 'auto !important';
+                                element.style.marginRight = 'auto !important';
+                                element.style.textAlign = 'center !important';
+                                element.style.float = 'none !important';
+                            };
+                            
+                            // Рекурсивно обрабатываем все элементы
+                            function processElement(el) {
+                                centerAll(el);
+                                for (let child of el.children) {
+                                    processElement(child);
+                                }
+                            }
+                            
+                            processElement(widget);
+                        }
+                    }, 1000); // Даем виджету время на загрузку
+                });
+                </script>
+                
+>
             </div>
         </div>
     </div>
 </section>
-
-<script defer src="https://booking.medflex.ru/components/prices/prices_widget.js" charset="utf-8"></script>
 
 <!-- Цены и условия -->
 <section class="py-4 py-lg-5 bg-light">
@@ -503,144 +525,66 @@
         margin-right: 0.5rem;
     }
 }
-</style>
-<style>
-* Стили для виджета MedRocket - БЕЗ КОНТЕЙНЕРА */
-.widget-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-}
 
-.medrocket-widget-container {
+
+/* АГРЕССИВНОЕ ЦЕНТРИРОВАНИЕ ВИДЖЕТА МЕДФЛЕКС */
+/* Цель: любой div сразу после #medflexPricesWidgetData */
+#medflexPricesWidgetData + div {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    float: none !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+}
+
+/* Все внутренние элементы виджета */
+#medflexPricesWidgetData + div * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    float: none !important;
     display: block !important;
 }
 
-#medflexPricesWidgetData {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    display: block !important;
+/* Особенно для таблиц */
+#medflexPricesWidgetData + div table,
+#medflexPricesWidgetData + div > table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    display: table !important;
 }
 
-/* Стиль для iframe, который может создать виджет */
-#medflexPricesWidgetData iframe,
-.medrocket-widget-container iframe {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    display: block !important;
-    border: none !important;
-    min-height: 600px !important;
+/* Для контейнеров */
+#medflexPricesWidgetData + div div,
+#medflexPricesWidgetData + div > div {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
 }
 
-/* Стиль для div контейнеров, которые может создать виджет */
-#medflexPricesWidgetData > div,
-.medrocket-widget-container > div {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    display: block !important;
+/* Для заголовков */
+#medflexPricesWidgetData + div h1,
+#medflexPricesWidgetData + div h2,
+#medflexPricesWidgetData + div h3,
+#medflexPricesWidgetData + div h4 {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
-/* Адаптивность виджета */
+/* Для мобильных */
 @media (max-width: 768px) {
-    #medflexPricesWidgetData iframe,
-    .medrocket-widget-container iframe {
-        min-height: 500px !important;
+    #medflexPricesWidgetData + div {
+        transform: none !important;
+        left: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
-}
-
-@media (max-width: 576px) {
-    #medflexPricesWidgetData iframe,
-    .medrocket-widget-container iframe {
-        min-height: 400px !important;
-    }
-}
-
-/* Убрать все отступы и padding для контейнера виджета */
-.container-fluid.px-0 {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
 }
 </style>
-
-<!-- Дополнительный скрипт для центрирования виджета -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Ждем загрузки виджета
-    setTimeout(function() {
-        centerMedRocketWidget();
-        
-        // Добавляем обработчик для ресайза окна
-        window.addEventListener('resize', centerMedRocketWidget);
-        
-        // Периодически проверяем и центрируем (на случай динамической загрузки)
-        let checkInterval = setInterval(function() {
-            if (document.querySelector('#medflexPricesWidgetData iframe, #medflexPricesWidgetData > div')) {
-                centerMedRocketWidget();
-                clearInterval(checkInterval);
-            }
-        }, 500);
-        
-        // Последняя проверка через 5 секунд
-        setTimeout(function() {
-            clearInterval(checkInterval);
-        }, 5000);
-    }, 1000);
-    
-    function centerMedRocketWidget() {
-        // Находим все элементы, которые может создать виджет
-        const widgetElements = document.querySelectorAll('#medflexPricesWidgetData iframe, #medflexPricesWidgetData > div, .medrocket-widget-container iframe, .medrocket-widget-container > div');
-        
-        widgetElements.forEach(function(element) {
-            // Применяем стили центрирования
-            element.style.width = '100% !important';
-            element.style.maxWidth = '100% !important';
-            element.style.margin = '0 auto !important';
-            element.style.display = 'block !important';
-            
-            // Убираем все возможные ограничения по ширине
-            element.style.minWidth = '0 !important';
-            element.style.boxSizing = 'border-box !important';
-            
-            // Если это iframe
-            if (element.tagName === 'IFRAME') {
-                element.style.width = '100% !important';
-                element.style.maxWidth = '100% !important';
-                element.style.margin = '0 auto !important';
-                element.style.display = 'block !important';
-                element.style.border = 'none !important';
-            }
-        });
-        
-        // Также обрабатываем родительские контейнеры
-        const containers = document.querySelectorAll('#medflexPricesWidgetData, .medrocket-widget-container, .widget-wrapper');
-        containers.forEach(function(container) {
-            container.style.width = '100% !important';
-            container.style.maxWidth = '100% !important';
-            container.style.margin = '0 auto !important';
-            container.style.display = 'block !important';
-            container.style.paddingLeft = '0 !important';
-            container.style.paddingRight = '0 !important';
-        });
-        
-        // Обрабатываем body внутри iframe (если доступно)
-        try {
-            const iframes = document.querySelectorAll('#medflexPricesWidgetData iframe');
-            iframes.forEach(function(iframe) {
-                if (iframe.contentDocument && iframe.contentDocument.body) {
-                    iframe.contentDocument.body.style.width = '100% !important';
-                    iframe.contentDocument.body.style.maxWidth = '100% !important';
-                    iframe.contentDocument.body.style.margin = '0 auto !important';
-                }
-            });
-        } catch (e) {
-            // Игнорируем ошибки CORS
-        }
-    }
-});
-</script>
