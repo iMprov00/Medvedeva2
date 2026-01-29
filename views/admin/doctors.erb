@@ -69,6 +69,21 @@
                                 </div>
                                 
                                 <div class="col-12 mt-3">
+                                    <label for="booking_link" class="form-label">Ссылка для записи на прием</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-link-45deg"></i>
+                                        </span>
+                                        <input type="url" 
+                                               class="form-control" 
+                                               id="booking_link" 
+                                               name="doctor[booking_link]"
+                                               placeholder="https://example.com/booking или ссылка на ворк-плейс"
+                                               pattern="https?://.+">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-3">
                                     <label for="photo" class="form-label">Фотография врача (PNG)</label>
                                     <div class="file-upload-container">
                                         <div class="file-upload-preview mb-3 text-center">
@@ -252,6 +267,21 @@
                   <input type="number" class="form-control" id="edit_experience_years" 
                          name="doctor[experience_years]" min="0" max="60">
                 </div>
+
+                <div class="col-12">
+                        <label for="edit_booking_link" class="form-label">Ссылка для записи на прием</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-link-45deg"></i>
+                            </span>
+                            <input type="url" 
+                                   class="form-control" 
+                                   id="edit_booking_link" 
+                                   name="doctor[booking_link]"
+                                   placeholder="https://example.com/booking"
+                                   pattern="https?://.+">
+                        </div>
+                    </div>
                 
                 <div class="col-12 mt-3">
                   <label for="edit_photo" class="form-label">Фотография врача</label>
@@ -358,53 +388,68 @@
     }
     
     // Редактирование врача
-    async function editDoctor(doctorId) {
-        try {
-            // Показываем загрузку
-            document.getElementById('save-changes-btn').disabled = true;
-            document.getElementById('save-changes-btn').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка...';
-            
-            // Загружаем данные врача
-            const response = await fetch(`/admin/doctors/${doctorId}/edit`);
-            if (!response.ok) throw new Error('Ошибка загрузки данных');
-            
-            const doctor = await response.json();
-            
-            // Заполняем форму
-            document.getElementById('edit_doctor_id').value = doctor.id;
-            document.getElementById('edit_last_name').value = doctor.last_name;
-            document.getElementById('edit_first_name').value = doctor.first_name;
-            document.getElementById('edit_middle_name').value = doctor.middle_name || '';
-            document.getElementById('edit_experience_years').value = doctor.experience_years || '';
-            document.getElementById('edit_bio').value = doctor.bio;
-            document.getElementById('edit_photo_path').value = doctor.photo_path || '';
-            document.getElementById('current_photo_path').value = doctor.photo_path || '';
-            
-            // Загружаем специальности
-            await loadSpecialtiesForEdit(doctor.specialties || []);
-            
-            // Загружаем текущее фото
-            if (doctor.photo_path) {
-                document.getElementById('edit_photo_preview').src = doctor.photo_path;
-            }
-            
-            // Настраиваем форму для отправки
-            editDoctorForm.action = `/admin/doctors/${doctorId}/update`;
-            
-            // Сбрасываем состояние кнопки
-            document.getElementById('save-changes-btn').disabled = false;
-            document.getElementById('save-changes-btn').innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
-            
-            // Показываем модальное окно
-            editDoctorModal.show();
-            
-        } catch (error) {
-            console.error('Ошибка загрузки данных врача:', error);
-            alert('Ошибка загрузки данных врача. Пожалуйста, попробуйте еще раз.');
-            document.getElementById('save-changes-btn').disabled = false;
-            document.getElementById('save-changes-btn').innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
+async function editDoctor(doctorId) {
+    try {
+        console.log(`🚀 Начало редактирования врача ID: ${doctorId}`);
+        
+        // Показываем загрузку
+        document.getElementById('save-changes-btn').disabled = true;
+        document.getElementById('save-changes-btn').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Загрузка...';
+        
+        // Загружаем данные врача
+        console.log(`📡 Запрос данных врача ${doctorId}...`);
+        const response = await fetch(`/admin/doctors/${doctorId}/edit`);
+        
+        console.log(`📥 Ответ получен: ${response.status} ${response.statusText}`);
+        
+        if (!response.ok) {
+            throw new Error(`Ошибка загрузки данных: ${response.status}`);
         }
+        
+        const doctor = await response.json();
+        console.log(`✅ Данные врача получены:`, doctor);
+        console.log(`🔗 Ссылка из JSON: '${doctor.booking_link}'`);
+        
+        // Заполняем форму
+        document.getElementById('edit_doctor_id').value = doctor.id;
+        document.getElementById('edit_last_name').value = doctor.last_name;
+        document.getElementById('edit_first_name').value = doctor.first_name;
+        document.getElementById('edit_middle_name').value = doctor.middle_name || '';
+        document.getElementById('edit_experience_years').value = doctor.experience_years || '';
+        document.getElementById('edit_bio').value = doctor.bio;
+        document.getElementById('edit_photo_path').value = doctor.photo_path || '';
+        document.getElementById('edit_booking_link').value = doctor.booking_link || ''; // Добавляем эту строку!
+        document.getElementById('current_photo_path').value = doctor.photo_path || '';
+        
+        console.log(`📝 Форма заполнена. Ссылка в поле: '${document.getElementById('edit_booking_link').value}'`);
+        
+        // Загружаем специальности
+        await loadSpecialtiesForEdit(doctor.specialties || []);
+        
+        // Загружаем текущее фото
+        if (doctor.photo_path) {
+            document.getElementById('edit_photo_preview').src = doctor.photo_path;
+        }
+        
+        // Настраиваем форму для отправки
+        editDoctorForm.action = `/admin/doctors/${doctorId}/update`;
+        
+        // Сбрасываем состояние кнопки
+        document.getElementById('save-changes-btn').disabled = false;
+        document.getElementById('save-changes-btn').innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
+        
+        console.log(`✅ Форма готова к редактированию`);
+        
+        // Показываем модальное окно
+        editDoctorModal.show();
+        
+    } catch (error) {
+        console.error('❌ Ошибка загрузки данных врача:', error);
+        alert('Ошибка загрузки данных врача. Пожалуйста, попробуйте еще раз.');
+        document.getElementById('save-changes-btn').disabled = false;
+        document.getElementById('save-changes-btn').innerHTML = '<i class="bi bi-save me-2"></i>Сохранить изменения';
     }
+}
     
     // Загрузка специальностей для редактирования
     async function loadSpecialtiesForEdit(doctorSpecialties) {

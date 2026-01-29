@@ -73,6 +73,7 @@ helpers do
     else
       return many
     end
+
   end
   
   # Проверка, является ли запрос админским
@@ -84,6 +85,42 @@ helpers do
   def layout_for_request
     @layout || :layout
   end
+
+
+
+ # Проверка валидности URL
+  def valid_url?(url)
+    uri = URI.parse(url)
+    uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+  rescue URI::InvalidURIError
+    false
+  end
+  
+  # Отображение иконки для типа ссылки
+  def booking_link_icon(url)
+    if url.include?('workplace') || url.include?('yclients')
+      'bi bi-briefcase'
+    elsif url.include?('google.') || url.include?('calendar')
+      'bi bi-google'
+    else
+      'bi bi-link-45deg'
+    end
+  end
+  
+  # Отображение названия сервиса
+  def booking_service_name(url)
+    if url.include?('workplace') 
+      'WorkPlace'
+    elsif url.include?('yclients')
+      'YCLIENTS'
+    elsif url.include?('google.')
+      'Google Calendar'
+    else
+      'Онлайн запись'
+    end
+  end
+
+  
 
   # Методы для работы с content_for (добавьте после других helpers)
   def content_for(key, content = nil, &block)
@@ -592,8 +629,15 @@ get '/admin/doctors/:id/edit' do
   content_type :json
   doctor = Doctor.find(params[:id])
   
+  puts "=" * 80
+  puts "ЗАПРОС ДАННЫХ ВРАЧА ДЛЯ РЕДАКТИРОВАНИЯ"
+  puts "ID врача: #{params[:id]}"
+  puts "Имя врача: #{doctor.full_name}"
+  puts "Ссылка для записи в БД: '#{doctor.booking_link}'"
+  puts "=" * 80
+  
   doctor.to_json(
-    only: [:id, :last_name, :first_name, :middle_name, :experience_years, :bio, :photo_path],
+    only: [:id, :last_name, :first_name, :middle_name, :experience_years, :bio, :photo_path, :booking_link],
     include: { specialties: { only: [:id, :name] } }
   )
 end
@@ -604,20 +648,32 @@ get '/admin/specialties/list' do
   Specialty.all.to_json(only: [:id, :name])
 end
 
-# Добавление врача
+# Обновленный обработчик добавления врача
 post '/admin/doctors' do
   begin
+    puts "=" * 80
+    puts "ДОБАВЛЕНИЕ ВРАЧА - НАЧАЛО"
+    puts "Полученные параметры: #{params.inspect}"
+    puts "Параметры врача: #{params[:doctor].inspect}"
+    
     doctor = Doctor.new(
       last_name: params[:doctor][:last_name],
       first_name: params[:doctor][:first_name],
       middle_name: params[:doctor][:middle_name],
       experience_years: params[:doctor][:experience_years],
       bio: params[:doctor][:bio],
+      booking_link: params[:doctor][:booking_link],  # Добавляем ссылку
       photo_path: params[:doctor][:photo_path]
     )
     
+    puts "Данные врача перед сохранением:"
+    puts "  Имя: #{doctor.first_name} #{doctor.last_name}"
+    puts "  Ссылка для записи: '#{doctor.booking_link}'"
+    puts "  Длина ссылки: #{doctor.booking_link.to_s.length}"
+    
     # Добавляем специальности
     if params[:doctor][:specialty_ids]
+      puts "  Специальности: #{params[:doctor][:specialty_ids]}"
       params[:doctor][:specialty_ids].each do |specialty_id|
         specialty = Specialty.find(specialty_id)
         doctor.specialties << specialty
@@ -625,8 +681,12 @@ post '/admin/doctors' do
     end
     
     if doctor.save
+      puts "  ✅ Врач успешно сохранен! ID: #{doctor.id}"
+      puts "  Сохраненная ссылка: '#{doctor.reload.booking_link}'"
+      
       # Обработка загрузки фотографии
       if params[:photo] && params[:photo][:tempfile]
+        puts "  📸 Обработка загрузки фото..."
         photo = params[:photo]
         photo_path = params[:doctor][:photo_path] || "/images/doctors/doctor_#{doctor.id}.jpg"
         
@@ -639,40 +699,71 @@ post '/admin/doctors' do
         doctor.update(photo_path: photo_path)
       end
       
+      puts "ДОБАВЛЕНИЕ ВРАЧА - УСПЕШНО"
+      puts "=" * 80
       redirect '/admin/doctors'
     else
+      puts "  ❌ Ошибки при сохранении врача: #{doctor.errors.full_messages}"
+      puts "ДОБАВЛЕНИЕ ВРАЧА - ОШИБКА"
+      puts "=" * 80
       redirect '/admin/doctors'
     end
     
   rescue => e
-    puts "Ошибка при добавлении врача: #{e.message}"
+    puts "  ❌ Исключение при добавлении врача: #{e.message}"
+    puts "  Backtrace: #{e.backtrace.first(5).join("\n")}"
+    puts "=" * 80
     redirect '/admin/doctors'
   end
 end
 
-# Обновление врача
+# Обновленный обработчик обновления врача
 post '/admin/doctors/:id/update' do
   begin
+    puts "=" * 80
+    puts "ОБНОВЛЕНИЕ ВРАЧА - НАЧАЛО"
+    puts "ID врача: #{params[:id]}"
+    puts "Полученные параметры: #{params.inspect}"
+    puts "Параметры врача: #{params[:doctor].inspect}"
+    
     doctor = Doctor.find(params[:id])
     
+    puts "Текущие данные врача:"
+    puts "  Имя: #{doctor.full_name}"
+    puts "  Текущая ссылка: '#{doctor.booking_link}'"
+    puts "  Новая ссылка из формы: '#{params[:doctor][:booking_link]}'"
+    
     # Обновляем основные данные
-    doctor.update(
+    update_data = {
       last_name: params[:doctor][:last_name],
       first_name: params[:doctor][:first_name],
       middle_name: params[:doctor][:middle_name],
       experience_years: params[:doctor][:experience_years],
-      bio: params[:doctor][:bio]
-    )
+      bio: params[:doctor][:bio],
+      booking_link: params[:doctor][:booking_link]  # Добавляем обновление ссылки
+    }
+    
+    puts "Данные для обновления: #{update_data.inspect}"
+    
+    if doctor.update(update_data)
+      puts "  ✅ Основные данные обновлены"
+      puts "  Ссылка после обновления: '#{doctor.reload.booking_link}'"
+    else
+      puts "  ❌ Ошибки при обновлении: #{doctor.errors.full_messages}"
+    end
     
     # Обновляем специальности
     if params[:doctor][:specialty_ids]
+      puts "  Обновление специальностей..."
       doctor.specialties = Specialty.where(id: params[:doctor][:specialty_ids])
+      puts "  Специальности обновлены: #{doctor.specialties.map(&:name)}"
     else
       doctor.specialties = []
     end
     
     # Обработка новой фотографии
     if params[:photo] && params[:photo][:tempfile]
+      puts "  📸 Обработка новой фотографии..."
       photo = params[:photo]
       photo_path = params[:doctor][:photo_path] || "/images/doctors/doctor_#{doctor.id}_#{Time.now.to_i}.png"
       
@@ -688,11 +779,17 @@ post '/admin/doctors/:id/update' do
     end
     
     doctor.save!
+    puts "  ✅ Врач полностью обновлен!"
+    puts "  Финальная ссылка: '#{doctor.booking_link}'"
+    puts "ОБНОВЛЕНИЕ ВРАЧА - УСПЕШНО"
+    puts "=" * 80
     
     redirect '/admin/doctors'
     
   rescue => e
-    puts "Ошибка при обновлении врача: #{e.message}"
+    puts "  ❌ Исключение при обновлении врача: #{e.message}"
+    puts "  Backtrace: #{e.backtrace.first(5).join("\n")}"
+    puts "=" * 80
     redirect '/admin/doctors'
   end
 end

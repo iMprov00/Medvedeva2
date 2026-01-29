@@ -5,6 +5,23 @@ class Doctor < ActiveRecord::Base
   
   validates :last_name, :first_name, :bio, presence: true
   validates :experience_years, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+
+
+    validates :booking_link, format: { 
+    with: URI::regexp(%w[http https]), 
+    message: "должен быть корректным URL", 
+    allow_blank: true 
+  }
+  
+
+  def booking_url
+    if booking_link.present?
+      booking_link
+    else
+      # Если ссылка не указана, переходим на общую форму записи
+      "#"
+    end
+  end
   
   # Метод для поиска врачей
   def self.search(query, specialty_filter = nil)

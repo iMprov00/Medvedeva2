@@ -1,3 +1,6 @@
+
+
+</script>
 <section class="py-4 py-lg-5 bg-light">
     <div class="container">
         <div class="row">
@@ -105,12 +108,22 @@
                                     
                                     <div class="mt-auto">
                                         <div class="d-grid">
-                                            <a href="#" 
-                                               class="btn btn-primary btn-sm btn-appointment touch-target" 
-                                               data-doctor-id="<%= doctor.id %>" 
-                                               data-doctor-name="<%= doctor.full_name %>">
-                                              <i class="bi bi-calendar-check me-1"></i>Записаться
-                                            </a>
+                                            <% if doctor.booking_link.present? %>
+                                                <a href="<%= doctor.booking_link %>" 
+                                                   class="btn btn-primary btn-sm btn-appointment touch-target" 
+                                                   target="_blank"
+                                                   rel="noopener noreferrer">
+                                                    <i class="bi bi-calendar-check me-1"></i>Записаться онлайн
+                                                </a>
+                                            <% else %>
+                                                <button class="btn btn-primary btn-sm btn-appointment touch-target" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#appointmentModal"
+                                                        data-doctor-id="<%= doctor.id %>" 
+                                                        data-doctor-name="<%= doctor.full_name %>">
+                                                    <i class="bi bi-calendar-check me-1"></i>Записаться
+                                                </button>
+                                            <% end %>
                                         </div>
                                     </div>
                                 </div>

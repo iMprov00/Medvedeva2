@@ -19,7 +19,7 @@ const MOBILE_CONFIG = {
  * Инициализация при загрузке страницы
  */
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('App.js инициализирован для мобильных устройств');
+
     
     // Определяем тип устройства
     detectDeviceType();

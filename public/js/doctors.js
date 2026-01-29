@@ -162,7 +162,6 @@ function initDoctorsAnimations() {
         }, idx * 100);
     });
 }
-
 /**
  * Инициализация модального окна записи
  */
@@ -180,10 +179,18 @@ function initAppointmentModal() {
     document.addEventListener('click', function(e) {
         const appointmentBtn = e.target.closest('.btn-appointment');
         if (appointmentBtn) {
-            e.preventDefault();
-            
             const doctorId = appointmentBtn.getAttribute('data-doctor-id');
             const doctorName = appointmentBtn.getAttribute('data-doctor-name');
+            
+            // Проверяем, это ссылка или кнопка?
+            if (appointmentBtn.tagName === 'A' && appointmentBtn.hasAttribute('href')) {
+                // Это ссылка - не предотвращаем поведение по умолчанию
+                console.log(`DOCTORS.JS: Это ссылка на внешний ресурс: ${appointmentBtn.href}`);
+                return; // Позволяем браузеру обработать ссылку
+            }
+            
+            // Если это кнопка (без href) - показываем модальное окно
+            e.preventDefault();
             
             if (doctorId && doctorName) {
                 appointmentDoctorId.value = doctorId;
