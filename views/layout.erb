@@ -457,50 +457,6 @@
                 }, true);
             }
             
-            // Клонирование виджета для мобильной версии
-            setTimeout(function() {
-                const desktopWidget = document.querySelector('#medflexMedtochkaWidgetButton');
-                const mobileContainer = document.querySelector('#medflexMedtochkaWidgetButtonMobile');
-                
-                if (desktopWidget && mobileContainer && desktopWidget.querySelector('button') && !mobileContainer.querySelector('button')) {
-                    // Клонируем кнопку из десктопной версии
-                    const desktopButton = desktopWidget.querySelector('button');
-                    if (desktopButton) {
-                        const clonedButton = desktopButton.cloneNode(true);
-                        mobileContainer.appendChild(clonedButton);
-                        
-                        // Обновляем стили для мобильной версии
-                        clonedButton.style.width = '100%';
-                        clonedButton.style.justifyContent = 'center';
-                        clonedButton.style.margin = '0';
-                        
-                        // Добавляем обработчик на случай, если виджет не работает
-                        clonedButton.addEventListener('click', function(e) {
-                            if (!window.MedFlexWidget) {
-                                e.preventDefault();
-                                window.open('https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6', '_blank');
-                            }
-                        });
-                    }
-                }
-                
-                // Резервная кнопка если виджет не загрузился
-                if (!window.MedFlexWidget) {
-                    console.warn('MedFlex widget not loaded, creating fallback buttons');
-                    
-                    [desktopWidget, mobileContainer].forEach(container => {
-                        if (container && !container.querySelector('button')) {
-                            const fallbackButton = document.createElement('button');
-                            fallbackButton.className = 'btn btn-primary btn-sm px-3 touch-target';
-                            fallbackButton.innerHTML = '<i class="bi bi-person-circle me-1"></i>Личный кабинет';
-                            fallbackButton.onclick = function() {
-                                window.open('https://booking.medflex.ru/?user=83de76a588b26ad9b729c20d4b1ffbf6', '_blank');
-                            };
-                            container.appendChild(fallbackButton);
-                        }
-                    });
-                }
-            }, 2000); // Ждем загрузки виджета
         });
         
         // Фикс для высоты на мобильных
