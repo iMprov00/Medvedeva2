@@ -875,6 +875,53 @@ function initScrollToTop() {
     toggleScrollButton();
 }
 
+/**
+ * Инициализация круглой кнопки MedFlex
+ */
+function initMedFlexRoundWidget() {
+    // Ждем загрузки виджета
+    setTimeout(() => {
+        const roundWidget = document.querySelector('#medflexRoundWidgetData');
+        
+        if (roundWidget) {
+            // Применяем стили к созданному виджету
+            const widgetContainer = roundWidget.nextElementSibling;
+            
+            if (widgetContainer) {
+                widgetContainer.style.cssText = `
+                    position: fixed !important;
+                    bottom: 90px !important;
+                    right: 20px !important;
+                    width: 60px !important;
+                    height: 60px !important;
+                    z-index: 1000 !important;
+                    border-radius: 50% !important;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+                    overflow: hidden !important;
+                `;
+                
+                // Находим кнопку внутри
+                const widgetButton = widgetContainer.querySelector('button, a');
+                if (widgetButton) {
+                    widgetButton.style.cssText = `
+                        width: 100% !important;
+                        height: 100% !important;
+                        border-radius: 50% !important;
+                        background: linear-gradient(135deg, #e5a7ff 0%, #d18cff 100%) !important;
+                        border: none !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        color: white !important;
+                    `;
+                }
+            }
+        }
+    }, 2000); // Ждем 2 секунды для загрузки виджета
+}
+
+
+
 
 // Вызовите эту функцию в DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -894,6 +941,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTouchOptimizations();
     initImageLoading();
     initModalOptimizations();
+    initMedFlexRoundWidget();
     
     // Кнопка "Наверх" - добавьте эту строку!
     initScrollToTop();

@@ -545,8 +545,25 @@
 
     ym(106405134, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
 </script>
+
+<div class="floating-buttons-container">
+    <!-- Кнопка "Наверх" -->
+    <button id="scrollToTopBtn" 
+            class="floating-button scroll-top" 
+            aria-label="Вернуться наверх"
+            title="Наверх">
+        <i class="bi bi-chevron-up"></i>
+    </button>
+    
+    <!-- Контейнер для круглой кнопки MedFlex -->
+    <div id="medflexRoundContainer"></div>
+</div>
+
+<div id="medflexRoundWidgetData" data-src="https://booking.medflex.ru?user=83de76a588b26ad9b729c20d4b1ffbf6&isRoundWidget=true"></div>
+<script defer src="https://booking.medflex.ru/components/round/round_widget_button.js" charset="utf-8"></script>
+
 <noscript><div><img src="https://mc.yandex.ru/watch/106405134" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-    
+
 </body>
 </html>
