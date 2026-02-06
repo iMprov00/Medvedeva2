@@ -1,0 +1,306 @@
+
+<div class="container-fluid">
+    <h1 class="h2 mb-4">Управление документами</h1>
+    
+    <!-- Кнопка добавления -->
+    <div class="mb-4">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDocumentModal">
+            <i class="bi bi-plus-circle me-2"></i>Добавить документ
+        </button>
+    </div>
+    
+    <!-- Таблица документов -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-file-earmark-text me-2"></i>Все документы
+                <span class="badge bg-primary ms-2"><%= @documents.count %></span>
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <% if @documents.empty? %>
+                <div class="p-4 text-center text-muted">
+                    <i class="bi bi-file-earmark display-4 mb-3 d-block"></i>
+                    <p class="mb-0">Документов пока нет. Добавьте первый документ.</p>
+                </div>
+            <% else %>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="60">Поз.</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th width="120">Файл</th>
+                                <th width="80">Иконка</th>
+                                <th width="100">Статус</th>
+                                <th width="200">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @documents.each do |doc| %>
+                                <tr>
+                                    <td><%= doc.position %></td>
+                                    <td><strong><%= doc.title %></strong></td>
+                                    <td>
+                                        <% if doc.description && doc.description.length > 80 %>
+                                            <%= doc.description[0..80] %>...
+                                        <% else %>
+                                            <%= doc.description %>
+                                        <% end %>
+                                    </td>
+                                    <td>
+                                        <% if doc.file_exists? %>
+                                            <a href="<%= doc.file_path %>" target="_blank" class="text-decoration-none">
+                                                <span class="badge bg-info"><%= doc.file_type_label %></span>
+                                            </a>
+                                        <% else %>
+                                            <span class="badge bg-danger">Не найден</span>
+                                        <% end %>
+                                    </td>
+                                    <td>
+                                        <div class="icon-wrapper icon-wrapper-<%= doc.icon_color %>" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                            <i class="bi <%= doc.icon %>"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <% if doc.active %>
+                                            <span class="badge bg-success">Активен</span>
+                                        <% else %>
+                                            <span class="badge bg-secondary">Скрыт</span>
+                                        <% end %>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" 
+                                                    class="btn btn-outline-primary edit-document-btn" 
+                                                    data-id="<%= doc.id %>"
+                                                    title="Редактировать">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <form action="/admin/documents/<%= doc.id %>/delete" method="post" class="d-inline">
+                                                <button type="submit" 
+                                                        class="btn btn-outline-danger" 
+                                                        onclick="return confirm('Удалить документ «<%= doc.title %>»?')" 
+                                                        title="Удалить">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно: Добавление документа -->
+<div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="/admin/documents" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDocumentModalLabel">
+                        <i class="bi bi-plus-circle me-2"></i>Добавить документ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="add_title" class="form-label">Название документа <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_title" name="document[title]" required placeholder="Например: Лицензия на медицинскую деятельность">
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="add_description" class="form-label">Описание</label>
+                            <textarea class="form-control" id="add_description" name="document[description]" rows="2" placeholder="Краткое описание документа"></textarea>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="add_file" class="form-label">Файл документа <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="add_file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.gif">
+                            <div class="form-text">Допустимые форматы: PDF, Word, Excel, изображения. Макс. размер рекомендуется до 10 МБ.</div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="add_icon" class="form-label">Иконка</label>
+                            <select class="form-select" id="add_icon" name="document[icon]">
+                                <option value="bi-file-earmark-text">Документ</option>
+                                <option value="bi-file-text">Текст</option>
+                                <option value="bi-file-earmark-pdf">PDF</option>
+                                <option value="bi-shield-check">Щит (защита)</option>
+                                <option value="bi-award">Награда/Сертификат</option>
+                                <option value="bi-patch-check">Галочка</option>
+                                <option value="bi-clipboard-check">Список</option>
+                                <option value="bi-journal-text">Журнал</option>
+                                <option value="bi-card-list">Прайс-лист</option>
+                                <option value="bi-building">Организация</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="add_icon_color" class="form-label">Цвет иконки</label>
+                            <select class="form-select" id="add_icon_color" name="document[icon_color]">
+                                <option value="primary">Основной (фиолетовый)</option>
+                                <option value="secondary" selected>Вторичный (серый)</option>
+                                <option value="success">Зелёный</option>
+                                <option value="info">Голубой</option>
+                                <option value="warning">Жёлтый</option>
+                                <option value="danger">Красный</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="add_position" class="form-label">Позиция</label>
+                            <input type="number" class="form-control" id="add_position" name="document[position]" value="0" min="0">
+                            <div class="form-text">Чем меньше — тем выше в списке</div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="add_active" name="document[active]" value="1" checked>
+                                <label class="form-check-label" for="add_active">
+                                    Показывать на сайте
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-1"></i>Добавить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно: Редактирование документа -->
+<div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="editDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editDocumentForm" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDocumentModalLabel">
+                        <i class="bi bi-pencil me-2"></i>Редактировать документ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="edit_title" class="form-label">Название документа <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edit_title" name="document[title]" required>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="edit_description" class="form-label">Описание</label>
+                            <textarea class="form-control" id="edit_description" name="document[description]" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="edit_file" class="form-label">Новый файл (необязательно)</label>
+                            <input type="file" class="form-control" id="edit_file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.gif">
+                            <div class="form-text">Оставьте пустым, чтобы сохранить текущий файл. Текущий файл: <span id="edit_current_file" class="fw-bold"></span></div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="edit_icon" class="form-label">Иконка</label>
+                            <select class="form-select" id="edit_icon" name="document[icon]">
+                                <option value="bi-file-earmark-text">Документ</option>
+                                <option value="bi-file-text">Текст</option>
+                                <option value="bi-file-earmark-pdf">PDF</option>
+                                <option value="bi-shield-check">Щит (защита)</option>
+                                <option value="bi-award">Награда/Сертификат</option>
+                                <option value="bi-patch-check">Галочка</option>
+                                <option value="bi-clipboard-check">Список</option>
+                                <option value="bi-journal-text">Журнал</option>
+                                <option value="bi-card-list">Прайс-лист</option>
+                                <option value="bi-building">Организация</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="edit_icon_color" class="form-label">Цвет иконки</label>
+                            <select class="form-select" id="edit_icon_color" name="document[icon_color]">
+                                <option value="primary">Основной (фиолетовый)</option>
+                                <option value="secondary">Вторичный (серый)</option>
+                                <option value="success">Зелёный</option>
+                                <option value="info">Голубой</option>
+                                <option value="warning">Жёлтый</option>
+                                <option value="danger">Красный</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="edit_position" class="form-label">Позиция</label>
+                            <input type="number" class="form-control" id="edit_position" name="document[position]" value="0" min="0">
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="edit_active" name="document[active]" value="1">
+                                <label class="form-check-label" for="edit_active">
+                                    Показывать на сайте
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработка кнопок "Редактировать"
+        document.querySelectorAll('.edit-document-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const docId = this.dataset.id;
+                
+                fetch(`/admin/documents/${docId}/edit`, {
+                    headers: { 'Accept': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Устанавливаем action формы
+                    document.getElementById('editDocumentForm').action = `/admin/documents/${docId}/update`;
+                    
+                    // Заполняем поля
+                    document.getElementById('edit_title').value = data.title || '';
+                    document.getElementById('edit_description').value = data.description || '';
+                    document.getElementById('edit_icon').value = data.icon || 'bi-file-earmark-text';
+                    document.getElementById('edit_icon_color').value = data.icon_color || 'secondary';
+                    document.getElementById('edit_position').value = data.position || 0;
+                    document.getElementById('edit_active').checked = data.active;
+                    document.getElementById('edit_current_file').textContent = data.original_filename || data.file_path || 'не указан';
+                    
+                    // Очищаем input файла
+                    document.getElementById('edit_file').value = '';
+                    
+                    // Открываем модалку
+                    const modal = new bootstrap.Modal(document.getElementById('editDocumentModal'));
+                    modal.show();
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке данных документа:', error);
+                    alert('Ошибка при загрузке данных документа');
+                });
+            });
+        });
+    });
+</script>

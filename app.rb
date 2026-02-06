@@ -271,6 +271,7 @@ get '/docs' do
   set_title("Документы и лицензии клиники доктора Медведевой")
   set_description("Официальные документы, лицензии, свидетельства клиники доказательной медицины доктора Медведевой в Барнауле.")
 
+  @documents = Document.active.ordered
   erb :'pages/docs'
 end
 
@@ -467,7 +468,7 @@ end
 # СКАЧИВАНИЕ ФАЙЛОВ
 # =============================================
 
-# Скачивание лицензии
+# Скачивание лицензии (legacy)
 get '/download/license' do
   file_path = File.join(settings.public_folder, 'images', 'docs', 'lic.pdf')
   
@@ -482,7 +483,7 @@ get '/download/license' do
   end
 end
 
-# Скачивание свидетельства
+# Скачивание свидетельства (legacy)
 get '/download/registration' do
   file_path = File.join(settings.public_folder, 'images', 'docs', 'reg.webp')
   
@@ -494,6 +495,21 @@ get '/download/registration' do
   else
     status 404
     "Файл свидетельства не найден"
+  end
+end
+
+# Скачивание документа по ID
+get '/download/document/:id' do
+  document = Document.find_by(id: params[:id])
+  
+  if document && document.active && document.file_exists?
+    send_file document.full_file_path,
+              filename: document.download_filename,
+              type: document.content_type,
+              disposition: 'attachment'
+  else
+    status 404
+    "Файл не найден"
   end
 end
 
@@ -979,6 +995,133 @@ end
 post '/admin/reviews/:id/delete' do
   Review.find(params[:id]).destroy
   redirect '/admin/reviews'
+end
+
+# -------------------------------------------------
+# УПРАВЛЕНИЕ ДОКУМЕНТАМИ
+# -------------------------------------------------
+
+get '/admin/documents' do
+  @title = "Управление документами"
+  @documents = Document.ordered
+  @breadcrumbs = [{ title: "Документы" }]
+  
+  erb :'admin/documents', layout: :'admin/layout'
+end
+
+# Получение данных документа для редактирования (JSON)
+get '/admin/documents/:id/edit' do
+  content_type :json
+  document = Document.find(params[:id])
+  document.to_json(only: [:id, :title, :description, :file_path, :original_filename, :icon, :icon_color, :position, :active])
+end
+
+# Добавление документа
+post '/admin/documents' do
+  begin
+    document = Document.new(
+      title: params[:document][:title],
+      description: params[:document][:description],
+      icon: params[:document][:icon].presence || 'bi-file-earmark-text',
+      icon_color: params[:document][:icon_color].presence || 'secondary',
+      position: params[:document][:position].to_i,
+      active: params[:document][:active] == '1'
+    )
+
+    # Обработка загрузки файла
+    if params[:file] && params[:file][:tempfile]
+      file = params[:file]
+      original_name = file[:filename]
+      ext = File.extname(original_name)
+      safe_name = "doc_#{Time.now.to_i}#{ext}"
+      
+      FileUtils.mkdir_p('public/images/docs')
+      
+      file_path = "/images/docs/#{safe_name}"
+      File.open("public#{file_path}", 'wb') do |f|
+        f.write(file[:tempfile].read)
+      end
+      
+      document.file_path = file_path
+      document.original_filename = original_name
+    end
+
+    if document.save
+      @flash = { type: 'success', message: 'Документ успешно добавлен!' }
+    else
+      @flash = { type: 'danger', message: "Ошибка: #{document.errors.full_messages.join(', ')}" }
+    end
+    
+    redirect '/admin/documents'
+    
+  rescue => e
+    puts "Ошибка при добавлении документа: #{e.message}"
+    redirect '/admin/documents'
+  end
+end
+
+# Обновление документа
+post '/admin/documents/:id/update' do
+  begin
+    document = Document.find(params[:id])
+    
+    update_data = {
+      title: params[:document][:title],
+      description: params[:document][:description],
+      icon: params[:document][:icon].presence || 'bi-file-earmark-text',
+      icon_color: params[:document][:icon_color].presence || 'secondary',
+      position: params[:document][:position].to_i,
+      active: params[:document][:active] == '1'
+    }
+
+    # Обработка нового файла (если загружен)
+    if params[:file] && params[:file][:tempfile]
+      file = params[:file]
+      original_name = file[:filename]
+      ext = File.extname(original_name)
+      safe_name = "doc_#{Time.now.to_i}#{ext}"
+      
+      FileUtils.mkdir_p('public/images/docs')
+      
+      file_path = "/images/docs/#{safe_name}"
+      File.open("public#{file_path}", 'wb') do |f|
+        f.write(file[:tempfile].read)
+      end
+      
+      # Удаляем старый файл если он существует и отличается
+      if document.file_path && File.exist?("public#{document.file_path}") && document.file_path != file_path
+        File.delete("public#{document.file_path}") rescue nil
+      end
+      
+      update_data[:file_path] = file_path
+      update_data[:original_filename] = original_name
+    end
+
+    if document.update(update_data)
+      @flash = { type: 'success', message: 'Документ успешно обновлён!' }
+    else
+      @flash = { type: 'danger', message: "Ошибка: #{document.errors.full_messages.join(', ')}" }
+    end
+    
+    redirect '/admin/documents'
+    
+  rescue => e
+    puts "Ошибка при обновлении документа: #{e.message}"
+    redirect '/admin/documents'
+  end
+end
+
+# Удаление документа
+post '/admin/documents/:id/delete' do
+  document = Document.find(params[:id])
+  
+  # Удаляем файл с диска
+  if document.file_path && File.exist?("public#{document.file_path}")
+    File.delete("public#{document.file_path}") rescue nil
+  end
+  
+  document.destroy
+  redirect '/admin/documents'
 end
 
 # =============================================
