@@ -10,6 +10,6 @@ gem 'sinatra-contrib'
 gem 'dotenv'
 
 
-group :dev+elopment do
+group :development do
   gem 'pry'
 end
