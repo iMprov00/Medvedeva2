@@ -12,7 +12,7 @@ require 'json'
 
 configure do
   # Общие настройки
-  enable :sessions if development?
+  enable :sessions
   
   # Настройки базы данных
   set :database_file, 'config/database.yml'
@@ -22,7 +22,7 @@ configure do
   set :views, File.dirname(__FILE__) + '/views'
   
   # Настройки защиты
-  set :protection, except: [:remote_token, :frame_options, :json_csrf]
+  set :protection, except: [:remote_token, :authenticity_token, :frame_options, :json_csrf]
 end
 
 configure :production do
@@ -76,6 +76,17 @@ helpers do
 
   end
   
+  # Flash-сообщения через сессию
+  def flash_message(type, message)
+    session[:flash] = { type: type, message: message } if session
+  end
+
+  def get_flash
+    return nil unless session && session[:flash]
+    flash = session.delete(:flash)
+    flash
+  end
+
   # Проверка, является ли запрос админским
   def admin_request?
     request.path.start_with?('/admin')
@@ -1019,6 +1030,11 @@ end
 # Добавление документа
 post '/admin/documents' do
   begin
+    puts "=" * 80
+    puts "ДОБАВЛЕНИЕ ДОКУМЕНТА - НАЧАЛО"
+    puts "Параметры document: #{params[:document].inspect}"
+    puts "Параметры file: #{params[:file].inspect}"
+
     document = Document.new(
       title: params[:document][:title],
       description: params[:document][:description],
@@ -1028,34 +1044,84 @@ post '/admin/documents' do
       active: params[:document][:active] == '1'
     )
 
+    puts "  active param: '#{params[:document][:active]}' => #{document.active}"
+
     # Обработка загрузки файла
-    if params[:file] && params[:file][:tempfile]
-      file = params[:file]
-      original_name = file[:filename]
-      ext = File.extname(original_name)
+    uploaded_file = params[:file]
+    has_file = uploaded_file && (uploaded_file[:tempfile] || uploaded_file['tempfile'])
+    
+    if has_file
+      tempfile = uploaded_file[:tempfile] || uploaded_file['tempfile']
+      original_name = (uploaded_file[:filename] || uploaded_file['filename']).to_s
+      original_name = original_name.encode('UTF-8', invalid: :replace, undef: :replace, replace: '_') rescue original_name
+      ext = File.extname(original_name).downcase
+      # Если расширение пустое, пытаемся определить по content-type
+      if ext.empty?
+        content_type_val = uploaded_file[:type] || uploaded_file['type'] || ''
+        ext = case content_type_val
+              when /pdf/ then '.pdf'
+              when /word|msword/ then '.doc'
+              when /excel|spreadsheet/ then '.xlsx'
+              when /jpeg/ then '.jpg'
+              when /png/ then '.png'
+              when /webp/ then '.webp'
+              else '.bin'
+              end
+      end
       safe_name = "doc_#{Time.now.to_i}#{ext}"
+      
+      puts "  Файл: '#{original_name}', расширение: '#{ext}', safe_name: '#{safe_name}'"
+      puts "  Размер tempfile: #{tempfile.size rescue 'неизвестно'}"
+      puts "  Content-Type: #{uploaded_file[:type] rescue 'неизвестно'}"
       
       FileUtils.mkdir_p('public/images/docs')
       
       file_path = "/images/docs/#{safe_name}"
-      File.open("public#{file_path}", 'wb') do |f|
-        f.write(file[:tempfile].read)
+      full_path = File.join('public', file_path)
+      
+      tempfile.rewind if tempfile.respond_to?(:rewind)
+      File.open(full_path, 'wb') do |f|
+        f.write(tempfile.read)
       end
       
-      document.file_path = file_path
-      document.original_filename = original_name
+      written_size = File.size(full_path) rescue 0
+      puts "  Файл записан: #{full_path} (#{written_size} байт)"
+      
+      if written_size > 0
+        document.file_path = file_path
+        document.original_filename = original_name
+      else
+        puts "  ⚠️ Файл записан, но размер 0 байт!"
+        flash_message('danger', 'Ошибка: файл пуст (0 байт). Попробуйте другой файл.')
+        redirect '/admin/documents'
+        return
+      end
+    else
+      puts "  ⚠️ Файл НЕ загружен! params[:file]=#{params[:file].inspect}"
+      flash_message('danger', 'Ошибка: файл не был загружен. Выберите файл и попробуйте снова.')
+      redirect '/admin/documents'
+      return
     end
 
+    puts "  file_path перед сохранением: '#{document.file_path}'"
+
     if document.save
-      @flash = { type: 'success', message: 'Документ успешно добавлен!' }
+      puts "  ✅ Документ сохранён! ID: #{document.id}"
+      flash_message('success', "Документ «#{document.title}» успешно добавлен!")
     else
-      @flash = { type: 'danger', message: "Ошибка: #{document.errors.full_messages.join(', ')}" }
+      puts "  ❌ Ошибки валидации: #{document.errors.full_messages}"
+      flash_message('danger', "Ошибка сохранения: #{document.errors.full_messages.join(', ')}")
     end
     
+    puts "ДОБАВЛЕНИЕ ДОКУМЕНТА - КОНЕЦ"
+    puts "=" * 80
     redirect '/admin/documents'
     
   rescue => e
-    puts "Ошибка при добавлении документа: #{e.message}"
+    puts "  ❌ ИСКЛЮЧЕНИЕ при добавлении документа: #{e.message}"
+    puts "  Backtrace: #{e.backtrace.first(5).join("\n")}"
+    puts "=" * 80
+    flash_message('danger', "Ошибка: #{e.message}")
     redirect '/admin/documents'
   end
 end
@@ -1063,6 +1129,11 @@ end
 # Обновление документа
 post '/admin/documents/:id/update' do
   begin
+    puts "=" * 80
+    puts "ОБНОВЛЕНИЕ ДОКУМЕНТА - НАЧАЛО (ID: #{params[:id]})"
+    puts "Параметры document: #{params[:document].inspect}"
+    puts "Параметры file: #{params[:file].inspect}"
+    
     document = Document.find(params[:id])
     
     update_data = {
@@ -1075,38 +1146,72 @@ post '/admin/documents/:id/update' do
     }
 
     # Обработка нового файла (если загружен)
-    if params[:file] && params[:file][:tempfile]
-      file = params[:file]
-      original_name = file[:filename]
-      ext = File.extname(original_name)
+    uploaded_file = params[:file]
+    has_file = uploaded_file && (uploaded_file[:tempfile] || uploaded_file['tempfile'])
+    
+    if has_file
+      tempfile = uploaded_file[:tempfile] || uploaded_file['tempfile']
+      original_name = (uploaded_file[:filename] || uploaded_file['filename']).to_s
+      original_name = original_name.encode('UTF-8', invalid: :replace, undef: :replace, replace: '_') rescue original_name
+      ext = File.extname(original_name).downcase
+      if ext.empty?
+        content_type_val = uploaded_file[:type] || uploaded_file['type'] || ''
+        ext = case content_type_val
+              when /pdf/ then '.pdf'
+              when /word|msword/ then '.doc'
+              when /excel|spreadsheet/ then '.xlsx'
+              when /jpeg/ then '.jpg'
+              when /png/ then '.png'
+              when /webp/ then '.webp'
+              else '.bin'
+              end
+      end
       safe_name = "doc_#{Time.now.to_i}#{ext}"
+      
+      puts "  Новый файл: '#{original_name}', расширение: '#{ext}'"
       
       FileUtils.mkdir_p('public/images/docs')
       
       file_path = "/images/docs/#{safe_name}"
-      File.open("public#{file_path}", 'wb') do |f|
-        f.write(file[:tempfile].read)
+      full_path = File.join('public', file_path)
+      
+      tempfile.rewind if tempfile.respond_to?(:rewind)
+      File.open(full_path, 'wb') do |f|
+        f.write(tempfile.read)
       end
       
+      puts "  Файл записан: #{full_path} (#{File.size(full_path) rescue 0} байт)"
+      
       # Удаляем старый файл если он существует и отличается
-      if document.file_path && File.exist?("public#{document.file_path}") && document.file_path != file_path
-        File.delete("public#{document.file_path}") rescue nil
+      old_path = "public#{document.file_path}"
+      if document.file_path && File.exist?(old_path) && document.file_path != file_path
+        File.delete(old_path) rescue nil
+        puts "  Старый файл удалён: #{old_path}"
       end
       
       update_data[:file_path] = file_path
       update_data[:original_filename] = original_name
+    else
+      puts "  Файл не загружен, оставляем текущий: #{document.file_path}"
     end
 
     if document.update(update_data)
-      @flash = { type: 'success', message: 'Документ успешно обновлён!' }
+      puts "  ✅ Документ обновлён!"
+      flash_message('success', "Документ «#{document.title}» успешно обновлён!")
     else
-      @flash = { type: 'danger', message: "Ошибка: #{document.errors.full_messages.join(', ')}" }
+      puts "  ❌ Ошибки: #{document.errors.full_messages}"
+      flash_message('danger', "Ошибка: #{document.errors.full_messages.join(', ')}")
     end
     
+    puts "ОБНОВЛЕНИЕ ДОКУМЕНТА - КОНЕЦ"
+    puts "=" * 80
     redirect '/admin/documents'
     
   rescue => e
-    puts "Ошибка при обновлении документа: #{e.message}"
+    puts "  ❌ ИСКЛЮЧЕНИЕ при обновлении документа: #{e.message}"
+    puts "  Backtrace: #{e.backtrace.first(5).join("\n")}"
+    puts "=" * 80
+    flash_message('danger', "Ошибка: #{e.message}")
     redirect '/admin/documents'
   end
 end
@@ -1114,6 +1219,7 @@ end
 # Удаление документа
 post '/admin/documents/:id/delete' do
   document = Document.find(params[:id])
+  title = document.title
   
   # Удаляем файл с диска
   if document.file_path && File.exist?("public#{document.file_path}")
@@ -1121,6 +1227,7 @@ post '/admin/documents/:id/delete' do
   end
   
   document.destroy
+  flash_message('success', "Документ «#{title}» удалён.")
   redirect '/admin/documents'
 end
 
