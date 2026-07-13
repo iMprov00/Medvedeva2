@@ -1,11 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { gallery } from '../../content/about';
 import { fetchGalleryPhotos } from '../../api/cms';
+import { galleryImage } from '../../content/siteImages';
+import { resolveStaticImage } from '../../content/imageAssets';
 import { Button } from '../ui/Button';
+import { StaticImage, UploadImage } from '../ui/ResponsiveImage';
 import { ImageLightbox } from '../ui/ImageLightbox';
+import { uploadFullUrl } from '../../utils/uploadImage';
 import styles from './GallerySection.module.css';
 
 const INITIAL = 8;
+
+function isUploadUrl(url: string) {
+  return url.startsWith('/uploads/');
+}
 
 export function GallerySection() {
   const [photos, setPhotos] = useState<string[]>([]);
@@ -16,9 +24,11 @@ export function GallerySection() {
     fetchGalleryPhotos()
       .then((items) => setPhotos(items.map((item) => item.imageUrl)))
       .catch(() => {
-        setPhotos(gallery.images.map((image) => `/images/about/${image}`));
+        setPhotos(gallery.images.map((image) => galleryImage(image).src));
       });
   }, []);
+
+  const lightboxImages = useMemo(() => photos.map((url) => uploadFullUrl(url)), [photos]);
 
   const visibleCount = expanded ? photos.length : INITIAL;
   const hasMore = photos.length > INITIAL;
@@ -41,12 +51,19 @@ export function GallerySection() {
               onClick={() => setLightboxIndex(index)}
               aria-label={`Открыть фото ${index + 1}`}
             >
-              <img
-                src={imageUrl}
-                alt="Интерьер клиники доктора Медведевой"
-                className={styles.image}
-                loading="lazy"
-              />
+              {isUploadUrl(imageUrl) ? (
+                <UploadImage
+                  url={imageUrl}
+                  alt="Интерьер клиники доктора Медведевой"
+                  className={styles.image}
+                />
+              ) : (
+                <StaticImage
+                  image={resolveStaticImage(imageUrl)}
+                  alt="Интерьер клиники доктора Медведевой"
+                  className={styles.image}
+                />
+              )}
             </button>
           ))}
         </div>
@@ -71,7 +88,7 @@ export function GallerySection() {
         )}
       </div>
       <ImageLightbox
-        images={photos}
+        images={lightboxImages}
         currentIndex={lightboxIndex}
         onClose={() => setLightboxIndex(null)}
         onChange={setLightboxIndex}

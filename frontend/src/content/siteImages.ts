@@ -1,37 +1,38 @@
-/** Главные фото в корне images/ — true = загружен .jpg, false = пока .svg-заглушка. */
-const ROOT_PHOTOS: Record<string, boolean> = {
-  hero: false,
-  'clinic-entrance': true,
-  certificates: true,
-};
+import { getImageAsset } from './imageAssets';
 
-/** Направления в images/directions/ — slug → загружен .jpg. */
-const DIRECTION_PHOTOS = new Set([
-  'pediatrics',
-  'certificates',
-  'nutrition',
-  'pulmonology',
-  'neurology',
-  'endocrinology',
-  'psychotherapy',
-]);
-
-function rootImage(name: string): string {
-  const ext = ROOT_PHOTOS[name] ? 'jpg' : 'svg';
-  return `/images/${name}.${ext}`;
-}
+const CARD_SIZES = '(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw';
+const HERO_SIZES = '(max-width: 900px) 100vw, 50vw';
+const CONTENT_SIZES = '(max-width: 900px) 100vw, 45vw';
+const PORTRAIT_SIZES = '(max-width: 900px) 100vw, 45vw';
 
 export const siteImages = {
-  hero: rootImage('hero'),
-  aboutHero: '/images/about/about.jpg',
-  clinicEntrance: rootImage('clinic-entrance'),
-  certificates: rootImage('certificates'),
-  founder: '/images/medvedeva3.jpeg',
+  get hero() {
+    return getImageAsset('hero', '/images/hero.svg', HERO_SIZES);
+  },
+  get aboutHero() {
+    return getImageAsset('aboutHero', '/images/about/about.jpg', CONTENT_SIZES);
+  },
+  get clinicEntrance() {
+    return getImageAsset('clinicEntrance', '/images/clinic-entrance.jpg', CONTENT_SIZES);
+  },
+  get certificates() {
+    return getImageAsset('certificates', '/images/certificates.jpg', CARD_SIZES);
+  },
+  get founder() {
+    return getImageAsset('founder', '/images/medvedeva3.jpg', PORTRAIT_SIZES);
+  },
   logo: '/images/logo.png',
 } as const;
 
-/** Карточки направлений и фото в шапке страниц специальностей. */
-export function directionImage(slug: string): string {
-  const ext = DIRECTION_PHOTOS.has(slug) ? 'jpg' : 'svg';
-  return `/images/directions/${slug}.${ext}`;
+export function directionImage(slug: string) {
+  return getImageAsset(`directions.${slug}`, `/images/directions/${slug}.svg`, CARD_SIZES);
+}
+
+export function galleryImage(fileName: string) {
+  const num = fileName.replace(/\D/g, '');
+  return getImageAsset(
+    `about.gallery.${num}`,
+    `/images/about/${fileName}`,
+    '(max-width: 640px) 50vw, 25vw',
+  );
 }

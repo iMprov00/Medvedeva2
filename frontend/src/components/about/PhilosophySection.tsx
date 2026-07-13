@@ -1,6 +1,7 @@
 import { philosophy } from '../../content/about';
 import { siteImages } from '../../content/siteImages';
 import { iconForCardTitle } from '../../content/tildaIcons';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './PhilosophySection.module.css';
 
 export function PhilosophySection() {
@@ -29,8 +30,8 @@ export function PhilosophySection() {
           </div>
         </div>
         <div className={styles.imageWrap}>
-          <img
-            src={siteImages.aboutHero}
+          <StaticImage
+            image={siteImages.aboutHero}
             alt="Семья с ребёнком в уютной обстановке клиники"
             className={styles.image}
           />

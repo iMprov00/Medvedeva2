@@ -37,54 +37,6 @@ export const conditions = {
   ],
 };
 
-export interface PromotionItem {
-  id: string;
-  badge: string;
-  title: string;
-  discount: string;
-  text: string;
-  tags: string[];
-  image: string;
-  accent: string;
-}
-
-export const promotions = {
-  title: 'Акции и специальные предложения',
-  subtitle: 'Выгодные условия для наших пациентов',
-  items: [
-    {
-      id: 'twins-discount',
-      badge: 'Специальное предложение',
-      title: 'Для второго ребенка из двойни',
-      discount: '-30%',
-      text: 'Заботимся о каждой семье! При одновременном лечении двоих детей из двойни, второй ребенок получает скидку 30% на все медицинские услуги.',
-      tags: ['На все услуги', 'Без ограничений'],
-      image: '/images/discounts/kids.png',
-      accent: '#66d9b2',
-    },
-    {
-      id: 'disability-discount',
-      badge: 'Социальная поддержка',
-      title: 'Скидка для людей с инвалидностью',
-      discount: '-30%',
-      text: 'Поддерживаем особенные семьи. Предоставляем скидку 30% на медицинские услуги для детей и взрослых с подтвержденной инвалидностью.',
-      tags: ['Требуется документ', 'На все услуги'],
-      image: '/images/discounts/support.png',
-      accent: '#c9a8e0',
-    },
-    {
-      id: 'tax-deduction',
-      badge: 'Налоговый вычет',
-      title: 'Возврат налогового вычета за лечение',
-      discount: '-13%',
-      text: 'В случае прохождения лечения в нашей клинике, пациенты имеют право воспользоваться налоговым вычетом для частичного возмещения понесённых расходов.',
-      tags: ['Возврат 13%'],
-      image: '/images/discounts/tax.png',
-      accent: '#ff9966',
-    },
-  ] satisfies PromotionItem[],
-};
-
 export const taxInfo = {
   title: 'Как получить справку для налогового вычета',
   intro:

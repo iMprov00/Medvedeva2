@@ -135,7 +135,7 @@ write(
   placeholderSvg({
     title: 'Наталья Васильевна Медведева',
     subtitle: 'Фото основателя на странице «О клинике»',
-    hint: 'Заменить на: medvedeva3.jpeg',
+    hint: 'Заменить на: medvedeva3.jpg',
     width: 600,
     height: 800,
   }),

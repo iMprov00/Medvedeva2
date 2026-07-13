@@ -3,7 +3,7 @@ import path from 'node:path';
 import { randomBytes } from 'node:crypto';
 import type { FastifyInstance } from 'fastify';
 import { requireAdmin } from '../auth/middleware.js';
-import { optimizeUploadedImage, type ImageUploadKind } from '../utils/imageProcessing.js';
+import { optimizeUploadedImages, type ImageUploadKind } from '../utils/imageProcessing.js';
 
 const uploadsDir = path.resolve(process.cwd(), '..', 'uploads');
 
@@ -26,12 +26,24 @@ export async function uploadRoutes(app: FastifyInstance) {
       }
 
       const originalBuffer = await file.toBuffer();
-      const { buffer, ext } = await optimizeUploadedImage(originalBuffer, file.mimetype, kind);
-      const filename = `${Date.now()}-${randomBytes(8).toString('hex')}${ext}`;
-      const filepath = path.join(uploadsDir, filename);
-      await writeFile(filepath, buffer);
+      const { files } = await optimizeUploadedImages(originalBuffer, file.mimetype, kind);
+      const baseName = `${Date.now()}-${randomBytes(8).toString('hex')}`;
 
-      return { url: `/uploads/${filename}` };
+      let primaryUrl = '';
+      for (const variant of files) {
+        const filename = `${baseName}${variant.suffix}${variant.ext}`;
+        await writeFile(path.join(uploadsDir, filename), variant.buffer);
+        if (variant.suffix === '-card' || variant.suffix === '-thumb') {
+          primaryUrl = `/uploads/${filename}`;
+        }
+      }
+
+      if (!primaryUrl) {
+        const fallback = files[0];
+        primaryUrl = `/uploads/${baseName}${fallback.suffix}${fallback.ext}`;
+      }
+
+      return { url: primaryUrl };
     } catch (error) {
       const code = (error as { code?: string }).code;
       if (code === 'FST_REQ_FILE_TOO_LARGE') {

@@ -1,6 +1,7 @@
 import { Button } from '../ui/Button';
 import { siteImages } from '../../content/siteImages';
 import { firstClinicContent } from '../../content/home';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './FirstClinicSection.module.css';
 
 export function FirstClinicSection() {
@@ -19,8 +20,8 @@ export function FirstClinicSection() {
           </Button>
         </div>
         <div className={styles.imageWrap}>
-          <img
-            src={siteImages.clinicEntrance}
+          <StaticImage
+            image={siteImages.clinicEntrance}
             alt="Вход в клинику доказательной медицины"
             className={styles.image}
           />

@@ -2,6 +2,7 @@ import { Button } from '../ui/Button';
 import { siteImages } from '../../content/siteImages';
 import { BOOKING_URL } from '../../content/booking';
 import { heroContent } from '../../content/home';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './HeroSection.module.css';
 
 export function HeroSection() {
@@ -21,10 +22,11 @@ export function HeroSection() {
           <p className={styles.note}>{heroContent.note}</p>
         </div>
         <div className={styles.imageWrap}>
-          <img
-            src={siteImages.hero}
+          <StaticImage
+            image={siteImages.hero}
             alt="Семья в современной клинике"
             className={styles.image}
+            loading="eager"
           />
         </div>
       </div>

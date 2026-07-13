@@ -1,0 +1,245 @@
+{
+  "about.gallery.1": {
+    "src": "/images/about/1-800.jpg",
+    "webpSrcSet": "/images/about/1-400.webp 400w, /images/about/1-800.webp 800w",
+    "jpegSrcSet": "/images/about/1-400.jpg 400w, /images/about/1-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/1.jpeg"
+    ]
+  },
+  "about.gallery.2": {
+    "src": "/images/about/2-800.jpg",
+    "webpSrcSet": "/images/about/2-400.webp 400w, /images/about/2-800.webp 800w",
+    "jpegSrcSet": "/images/about/2-400.jpg 400w, /images/about/2-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/2.jpeg"
+    ]
+  },
+  "about.gallery.3": {
+    "src": "/images/about/3-800.jpg",
+    "webpSrcSet": "/images/about/3-400.webp 400w, /images/about/3-800.webp 800w",
+    "jpegSrcSet": "/images/about/3-400.jpg 400w, /images/about/3-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/3.jpeg"
+    ]
+  },
+  "about.gallery.4": {
+    "src": "/images/about/4-800.jpg",
+    "webpSrcSet": "/images/about/4-400.webp 400w, /images/about/4-800.webp 800w",
+    "jpegSrcSet": "/images/about/4-400.jpg 400w, /images/about/4-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/4.jpeg"
+    ]
+  },
+  "about.gallery.5": {
+    "src": "/images/about/5-800.jpg",
+    "webpSrcSet": "/images/about/5-400.webp 400w, /images/about/5-800.webp 800w",
+    "jpegSrcSet": "/images/about/5-400.jpg 400w, /images/about/5-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/5.jpeg"
+    ]
+  },
+  "about.gallery.6": {
+    "src": "/images/about/6-800.jpg",
+    "webpSrcSet": "/images/about/6-400.webp 400w, /images/about/6-800.webp 800w",
+    "jpegSrcSet": "/images/about/6-400.jpg 400w, /images/about/6-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/6.jpeg"
+    ]
+  },
+  "about.gallery.7": {
+    "src": "/images/about/7-800.jpg",
+    "webpSrcSet": "/images/about/7-400.webp 400w, /images/about/7-800.webp 800w",
+    "jpegSrcSet": "/images/about/7-400.jpg 400w, /images/about/7-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/7.jpeg"
+    ]
+  },
+  "about.gallery.8": {
+    "src": "/images/about/8-800.jpg",
+    "webpSrcSet": "/images/about/8-400.webp 400w, /images/about/8-800.webp 800w",
+    "jpegSrcSet": "/images/about/8-400.jpg 400w, /images/about/8-800.jpg 800w",
+    "sizes": "(max-width: 640px) 50vw, 25vw",
+    "legacyPaths": [
+      "/images/about/8.jpeg"
+    ]
+  },
+  "aboutHero": {
+    "src": "/images/about/about-1200.jpg",
+    "webpSrcSet": "/images/about/about-600.webp 600w, /images/about/about-1200.webp 1200w",
+    "jpegSrcSet": "/images/about/about-600.jpg 600w, /images/about/about-1200.jpg 1200w",
+    "sizes": "(max-width: 900px) 100vw, 45vw",
+    "legacyPaths": [
+      "/images/about/about.jpg"
+    ]
+  },
+  "certificates": {
+    "src": "/images/certificates-800.jpg",
+    "webpSrcSet": "/images/certificates-400.webp 400w, /images/certificates-800.webp 800w",
+    "jpegSrcSet": "/images/certificates-400.jpg 400w, /images/certificates-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/certificates.jpg"
+    ]
+  },
+  "clinicEntrance": {
+    "src": "/images/clinic-entrance-1200.jpg",
+    "webpSrcSet": "/images/clinic-entrance-600.webp 600w, /images/clinic-entrance-1200.webp 1200w",
+    "jpegSrcSet": "/images/clinic-entrance-600.jpg 600w, /images/clinic-entrance-1200.jpg 1200w",
+    "sizes": "(max-width: 900px) 100vw, 45vw",
+    "legacyPaths": [
+      "/images/clinic-entrance.jpg"
+    ]
+  },
+  "directions.certificates": {
+    "src": "/images/directions/certificates-800.jpg",
+    "webpSrcSet": "/images/directions/certificates-400.webp 400w, /images/directions/certificates-800.webp 800w",
+    "jpegSrcSet": "/images/directions/certificates-400.jpg 400w, /images/directions/certificates-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/certificates.jpg"
+    ]
+  },
+  "directions.endocrinology": {
+    "src": "/images/directions/endocrinology-800.jpg",
+    "webpSrcSet": "/images/directions/endocrinology-400.webp 400w, /images/directions/endocrinology-800.webp 800w",
+    "jpegSrcSet": "/images/directions/endocrinology-400.jpg 400w, /images/directions/endocrinology-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/endocrinology.jpg"
+    ]
+  },
+  "directions.epileptology": {
+    "src": "/images/directions/epileptology-800.jpg",
+    "webpSrcSet": "/images/directions/epileptology-400.webp 400w, /images/directions/epileptology-800.webp 800w",
+    "jpegSrcSet": "/images/directions/epileptology-400.jpg 400w, /images/directions/epileptology-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/epileptology.jpg"
+    ]
+  },
+  "directions.gastroenterology": {
+    "src": "/images/directions/gastroenterology-800.jpg",
+    "webpSrcSet": "/images/directions/gastroenterology-400.webp 400w, /images/directions/gastroenterology-800.webp 800w",
+    "jpegSrcSet": "/images/directions/gastroenterology-400.jpg 400w, /images/directions/gastroenterology-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/gastroenterology.jpg"
+    ]
+  },
+  "directions.home-visit": {
+    "src": "/images/directions/home-visit-800.jpg",
+    "webpSrcSet": "/images/directions/home-visit-400.webp 400w, /images/directions/home-visit-800.webp 800w",
+    "jpegSrcSet": "/images/directions/home-visit-400.jpg 400w, /images/directions/home-visit-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/home-visit.jpg"
+    ]
+  },
+  "directions.neurology": {
+    "src": "/images/directions/neurology-800.jpg",
+    "webpSrcSet": "/images/directions/neurology-400.webp 400w, /images/directions/neurology-800.webp 800w",
+    "jpegSrcSet": "/images/directions/neurology-400.jpg 400w, /images/directions/neurology-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/neurology.jpg"
+    ]
+  },
+  "directions.nutrition": {
+    "src": "/images/directions/nutrition-800.jpg",
+    "webpSrcSet": "/images/directions/nutrition-400.webp 400w, /images/directions/nutrition-800.webp 800w",
+    "jpegSrcSet": "/images/directions/nutrition-400.jpg 400w, /images/directions/nutrition-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/nutrition.jpg"
+    ]
+  },
+  "directions.pediatrics": {
+    "src": "/images/directions/pediatrics-800.jpg",
+    "webpSrcSet": "/images/directions/pediatrics-400.webp 400w, /images/directions/pediatrics-800.webp 800w",
+    "jpegSrcSet": "/images/directions/pediatrics-400.jpg 400w, /images/directions/pediatrics-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/pediatrics.jpg"
+    ]
+  },
+  "directions.psychology": {
+    "src": "/images/directions/psychology-800.jpg",
+    "webpSrcSet": "/images/directions/psychology-400.webp 400w, /images/directions/psychology-800.webp 800w",
+    "jpegSrcSet": "/images/directions/psychology-400.jpg 400w, /images/directions/psychology-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/psychology.jpg"
+    ]
+  },
+  "directions.psychotherapy": {
+    "src": "/images/directions/psychotherapy-800.jpg",
+    "webpSrcSet": "/images/directions/psychotherapy-400.webp 400w, /images/directions/psychotherapy-800.webp 800w",
+    "jpegSrcSet": "/images/directions/psychotherapy-400.jpg 400w, /images/directions/psychotherapy-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/psychotherapy.jpg"
+    ]
+  },
+  "directions.pulmonology": {
+    "src": "/images/directions/pulmonology-800.jpg",
+    "webpSrcSet": "/images/directions/pulmonology-400.webp 400w, /images/directions/pulmonology-800.webp 800w",
+    "jpegSrcSet": "/images/directions/pulmonology-400.jpg 400w, /images/directions/pulmonology-800.jpg 800w",
+    "sizes": "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw",
+    "legacyPaths": [
+      "/images/directions/pulmonology.jpg"
+    ]
+  },
+  "discounts.kids": {
+    "src": "/images/discounts/kids-600.jpg",
+    "webpSrcSet": "/images/discounts/kids-400.webp 400w, /images/discounts/kids-600.webp 600w",
+    "jpegSrcSet": "/images/discounts/kids-400.jpg 400w, /images/discounts/kids-600.jpg 600w",
+    "sizes": "120px",
+    "legacyPaths": [
+      "/images/discounts/kids.png"
+    ]
+  },
+  "discounts.support": {
+    "src": "/images/discounts/support-600.jpg",
+    "webpSrcSet": "/images/discounts/support-400.webp 400w, /images/discounts/support-600.webp 600w",
+    "jpegSrcSet": "/images/discounts/support-400.jpg 400w, /images/discounts/support-600.jpg 600w",
+    "sizes": "120px",
+    "legacyPaths": [
+      "/images/discounts/support.png"
+    ]
+  },
+  "discounts.tax": {
+    "src": "/images/discounts/tax-600.jpg",
+    "webpSrcSet": "/images/discounts/tax-400.webp 400w, /images/discounts/tax-600.webp 600w",
+    "jpegSrcSet": "/images/discounts/tax-400.jpg 400w, /images/discounts/tax-600.jpg 600w",
+    "sizes": "120px",
+    "legacyPaths": [
+      "/images/discounts/tax.png"
+    ]
+  },
+  "hero": {
+    "src": "/images/hero-1200.jpg",
+    "webpSrcSet": "/images/hero-600.webp 600w, /images/hero-1200.webp 1200w",
+    "jpegSrcSet": "/images/hero-600.jpg 600w, /images/hero-1200.jpg 1200w",
+    "sizes": "(max-width: 900px) 100vw, 50vw",
+    "legacyPaths": [
+      "/images/hero.jpg"
+    ]
+  },
+  "founder": {
+    "src": "/images/medvedeva3-800.jpg",
+    "webpSrcSet": "/images/medvedeva3-400.webp 400w, /images/medvedeva3-800.webp 800w",
+    "jpegSrcSet": "/images/medvedeva3-400.jpg 400w, /images/medvedeva3-800.jpg 800w",
+    "sizes": "(max-width: 900px) 100vw, 45vw",
+    "legacyPaths": [
+      "/images/medvedeva3.jpg"
+    ]
+  }
+}

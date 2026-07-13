@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
 import type { Doctor } from '../../types/cms';
+import { UploadImage } from '../ui/ResponsiveImage';
 import styles from './SpecialtyDoctors.module.css';
 
 interface SpecialtyDoctorsProps {
@@ -16,12 +17,11 @@ function DoctorPhoto({ doctor }: { doctor: Doctor }) {
   }
 
   return (
-    <img
-      src={doctor.photoUrl}
+    <UploadImage
+      url={doctor.photoUrl}
       alt={doctor.fullName}
       className={styles.photo}
       loading="lazy"
-      decoding="async"
       onError={() => setBroken(true)}
     />
   );

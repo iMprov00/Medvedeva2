@@ -1,6 +1,7 @@
 import { Button } from '../ui/Button';
 import { BOOKING_URL } from '../../content/booking';
 import type { SpecialtyPageDefinition } from '../../content/specialtyPages';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './SpecialtyHero.module.css';
 
 interface SpecialtyHeroProps {
@@ -9,7 +10,7 @@ interface SpecialtyHeroProps {
 
 export function SpecialtyHero({ page }: SpecialtyHeroProps) {
   const hero = page.pageContent.hero ?? {};
-  const imageUrl = hero.imageUrl || page.cardImageUrl;
+  const image = page.cardImageUrl;
   const bookingUrl = page.bookingUrl || BOOKING_URL;
 
   return (
@@ -35,7 +36,7 @@ export function SpecialtyHero({ page }: SpecialtyHeroProps) {
           </Button>
         </div>
         <div className={styles.imageWrap}>
-          <img src={imageUrl} alt={page.title} className={styles.image} />
+          <StaticImage image={image} alt={page.title} className={styles.image} />
         </div>
       </div>
     </section>

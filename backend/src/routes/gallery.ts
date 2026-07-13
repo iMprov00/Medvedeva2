@@ -11,10 +11,29 @@ import { uploadsDir } from './upload.js';
 async function deleteUploadedFile(imageUrl: string) {
   if (!imageUrl.startsWith('/uploads/')) return;
   const filename = path.basename(imageUrl);
-  try {
-    await unlink(path.join(uploadsDir, filename));
-  } catch {
-    // file may already be removed
+  const baseName = filename
+    .replace(/-card\.jpg$/i, '')
+    .replace(/-thumb\.jpg$/i, '')
+    .replace(/-full\.jpg$/i, '')
+    .replace(/\.(jpe?g|png|webp)$/i, '');
+
+  const variants = [
+    filename,
+    `${baseName}-card.jpg`,
+    `${baseName}-thumb.jpg`,
+    `${baseName}-full.jpg`,
+    `${baseName}.jpg`,
+    `${baseName}.jpeg`,
+    `${baseName}.png`,
+    `${baseName}.webp`,
+  ];
+
+  for (const name of new Set(variants)) {
+    try {
+      await unlink(path.join(uploadsDir, name));
+    } catch {
+      // file may already be removed
+    }
   }
 }
 

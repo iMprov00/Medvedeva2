@@ -1,10 +1,11 @@
+import type { ImageAsset } from '../../content/imageAssets.types';
 import type { SpecialtyPageContent, SpecialtyTemplate } from '../../types/cms';
 
 export interface SpecialtyPageDefinition {
   slug: string;
   title: string;
   cardDescription: string;
-  cardImageUrl: string;
+  cardImageUrl: ImageAsset;
   template: SpecialtyTemplate;
   bookingUrl?: string;
   pageContent: SpecialtyPageContent;

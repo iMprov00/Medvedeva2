@@ -1,6 +1,7 @@
 import { Button } from '../ui/Button';
 import { SectionTitle } from '../ui/SectionTitle';
 import { directions } from '../../content/directions';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './DirectionsSection.module.css';
 
 export function DirectionsSection() {
@@ -13,7 +14,7 @@ export function DirectionsSection() {
             <article key={item.path} className={styles.cardWrap}>
               <div className={styles.card}>
                 <div className={styles.imageWrap}>
-                  <img src={item.image} alt={item.title} className={styles.image} />
+                  <StaticImage image={item.image} alt={item.title} className={styles.image} />
                 </div>
                 <h3 className={styles.cardTitle}>{item.title}</h3>
                 <p className={styles.description}>{item.description}</p>

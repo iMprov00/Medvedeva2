@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { fetchPromotions } from '../../api/cms';
+import { resolveStaticImage } from '../../content/imageAssets';
 import type { Promotion } from '../../types/cms';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './PromotionsSection.module.css';
 
 export function PromotionsSection() {
@@ -21,7 +23,11 @@ export function PromotionsSection() {
           {promotions.map((item) => (
             <article key={item.id} className={styles.card}>
               <div className={styles.cardHeader} style={{ backgroundColor: item.accentColor }}>
-                <img src={item.imageUrl} alt="" className={styles.image} />
+                <StaticImage
+                  image={resolveStaticImage(item.imageUrl)}
+                  alt=""
+                  className={styles.image}
+                />
                 <span className={styles.discount}>{item.discount}</span>
               </div>
               <div className={styles.cardBody}>

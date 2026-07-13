@@ -2,6 +2,7 @@ import { Button } from '../ui/Button';
 import { siteImages } from '../../content/siteImages';
 import { BOOKING_URL } from '../../content/booking';
 import { certificatesContent } from '../../content/home';
+import { StaticImage } from '../ui/ResponsiveImage';
 import styles from './CertificatesSection.module.css';
 
 export function CertificatesSection() {
@@ -21,8 +22,8 @@ export function CertificatesSection() {
           </Button>
         </div>
         <div className={styles.imageWrap}>
-          <img
-            src={siteImages.certificates}
+          <StaticImage
+            image={siteImages.certificates}
             alt="Медицинская справка на столе врача"
             className={styles.image}
           />

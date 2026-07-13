@@ -1,10 +1,11 @@
+import type { ImageAsset } from './imageAssets.types';
 import { directionImage } from './siteImages';
 
 export interface DirectionCard {
   title: string;
   description: string;
   path: string;
-  image: string;
+  image: ImageAsset;
 }
 
 export const directions: DirectionCard[] = [
