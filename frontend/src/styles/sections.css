@@ -1,0 +1,7 @@
+.sectionToneWhite {
+  background: var(--color-white);
+}
+
+.sectionToneMuted {
+  background: var(--color-bg);
+}

@@ -1,0 +1,45 @@
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.widgetWrap {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.widget {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  max-width: 100%;
+}
+
+.widget :global(#pd_widget_big_content) {
+  min-height: 120px;
+}
+
+.widget :global(.pd_read_all) {
+  color: #5c3d8f;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .widget {
+    padding: 16px;
+  }
+}

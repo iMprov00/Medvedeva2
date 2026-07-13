@@ -1,0 +1,24 @@
+.map {
+  width: 100%;
+  min-height: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #e8e0d4;
+}
+
+.map :global(iframe) {
+  display: block;
+  width: 100%;
+  min-height: 280px;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .map {
+    min-height: 250px;
+  }
+
+  .map :global(iframe) {
+    min-height: 250px;
+  }
+}

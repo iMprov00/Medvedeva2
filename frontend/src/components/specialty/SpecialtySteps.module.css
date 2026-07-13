@@ -1,0 +1,45 @@
+.sectionTitle {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-text);
+}
+
+.stepsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step {
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-text);
+}
+
+.stepNumber {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #b88de0;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.stepTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.stepText {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 900px) {
+  .stepsRow {
+    grid-template-columns: 1fr;
+  }
+}

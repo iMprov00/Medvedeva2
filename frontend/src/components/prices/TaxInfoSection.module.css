@@ -1,0 +1,155 @@
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+}
+
+.card {
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+}
+
+.cardHeading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.headingIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f3ebfa;
+  color: #8b6bb8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 700;
+}
+
+.intro {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.method {
+  border: 1px solid var(--color-primary-light);
+  border-radius: 12px;
+  padding: 18px;
+  background: var(--color-bg);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.methodIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--color-white);
+  color: #b88de0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.methodTitle {
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.methodText {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.emailBlock,
+.notes {
+  background: var(--color-primary-light);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+}
+
+.blockTitle {
+  font-weight: 700;
+  color: #5c3d8f;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.blockTitleIcon {
+  color: #8b6bb8;
+  flex-shrink: 0;
+}
+
+.emailList,
+.notes ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+.emailList li,
+.notes li {
+  margin-bottom: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 24px;
+  }
+
+  .methods {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions a,
+  .actions button {
+    width: 100%;
+  }
+}

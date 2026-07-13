@@ -1,0 +1,66 @@
+.desktop,
+.mobile {
+  display: inline-block;
+  min-width: 0;
+}
+
+.desktop :global(button),
+.mobile :global(button) {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #d18cff 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 0.5rem 0.9rem !important;
+  font-family: inherit !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(201, 160, 232, 0.35) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+  min-width: 0 !important;
+  max-width: 150px !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1.2 !important;
+}
+
+.desktop :global(button:hover),
+.mobile :global(button:hover) {
+  background: linear-gradient(135deg, #d18cff 0%, var(--color-primary) 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(201, 160, 232, 0.45) !important;
+}
+
+.desktop :global(button:active),
+.mobile :global(button:active) {
+  transform: translateY(0) !important;
+}
+
+@media (min-width: 1280px) {
+  .desktop :global(button) {
+    padding: 0.55rem 1rem !important;
+    font-size: 0.875rem !important;
+    max-width: 170px !important;
+  }
+}
+
+.mobile {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.mobile :global(button) {
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .desktop :global(button:hover),
+  .mobile :global(button:hover) {
+    transform: none !important;
+  }
+}

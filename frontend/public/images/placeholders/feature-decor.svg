@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" fill="none">
+  <rect width="200" height="200" rx="24" fill="#F3F2FA"/>
+  <rect x="24" y="24" width="152" height="152" rx="16" stroke="#C9A0E8" stroke-width="3" stroke-dasharray="8 8"/>
+  <path d="M100 52v96M52 100h96" stroke="#C9A0E8" stroke-width="4" stroke-linecap="round"/>
+  <text x="100" y="178" text-anchor="middle" fill="#9A8BB8" font-family="Inter, sans-serif" font-size="12">5:>@</text>
+</svg>

@@ -1,0 +1,26 @@
+:root {
+  --color-primary: #c9a0e8;
+  --color-primary-hover: #b88de0;
+  --color-primary-light: #e8d4f8;
+  --color-primary-border: #d4b5f0;
+  --color-text: #1a1a1a;
+  --color-text-muted: #4a4a4a;
+  --color-bg: #f9f9f9;
+  --color-white: #ffffff;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --radius-card: 24px;
+  --radius-button: 12px;
+  --radius-pill: 999px;
+  --radius-hero-image: 100px 0 100px 0;
+  --container-max: 1200px;
+  --section-padding-y: 80px;
+  --section-padding-x: 24px;
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-padding-y: 48px;
+    --section-padding-x: 16px;
+  }
+}

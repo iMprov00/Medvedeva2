@@ -1,8 +1,28 @@
+# Dependencies
+node_modules/
 
-db/development.sqlite3
-public/images/doctors
-Gemfile.lock
+# Environment & secrets
 .env
 
-db/development.sqlite3-shm
-db/development.sqlite3-wal
+# Logs & local artifacts
+*.log
+app.log
+report.html
+
+# Build outputs
+frontend/dist/
+backend/dist/
+
+# SQLite (runtime data)
+db/*.sqlite3
+db/*.sqlite3-shm
+db/*.sqlite3-wal
+
+# User uploads (doctor photos, gallery)
+uploads/
+
+# Local scripts & temp
+show_db.rb
+test_models.rb
+tz-temp.zip
+tz-docx/

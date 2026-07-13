@@ -1,0 +1,387 @@
+.adminPage {
+  min-height: 100vh;
+  background: #f4f4f4;
+  font-family: var(--font-sans);
+}
+
+.adminHeader {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.adminNav {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.adminNav a {
+  color: #333;
+  font-weight: 500;
+}
+
+.adminNav a.active {
+  color: #5c3d8f;
+  font-weight: 700;
+}
+
+.adminBody {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.adminCard {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.adminTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.formGroup {
+  margin-bottom: 14px;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.adminHint {
+  font-size: 0.8125rem;
+  color: #666;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.formGroup input:not([type='checkbox']):not([type='radio']):not([type='file']),
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.formGroup input[type='file'] {
+  margin-top: 8px;
+  font-size: 0.875rem;
+}
+
+.formGroup input[type='checkbox'],
+.formGroup input[type='radio'] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: #7b5cad;
+}
+
+.formGroup textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.adminTable th,
+.adminTable td {
+  border: 1px solid #ddd;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.adminBtn {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #c9a0e8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.adminBtnSecondary {
+  background: #eee;
+  color: #333;
+}
+
+.adminBtnDanger {
+  background: #e55;
+}
+
+.adminActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.listItemRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: start;
+}
+
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.checkboxGroup label,
+.toggleField {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.specialtyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.specialtyToggle {
+  display: block;
+  cursor: pointer;
+}
+
+.specialtyToggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.specialtyToggleBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  min-height: 100%;
+}
+
+.specialtyToggleBox::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  flex-shrink: 0;
+  border: 2px solid #bbb;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.specialtyToggle input:checked + .specialtyToggleBox {
+  border-color: #9b7bc7;
+  background: #f3eef9;
+  box-shadow: inset 0 0 0 1px #9b7bc7;
+}
+
+.specialtyToggle input:checked + .specialtyToggleBox::before {
+  border-color: #7b5cad;
+  background: #7b5cad;
+  box-shadow: inset 0 0 0 3px #f3eef9;
+}
+
+.specialtyToggle input:focus-visible + .specialtyToggleBox {
+  outline: 2px solid #9b7bc7;
+  outline-offset: 2px;
+}
+
+.specialtyToggleTitle {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: #333;
+}
+
+.adminBackLink {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #5c3d8f;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.adminBackLink:hover {
+  text-decoration: underline;
+}
+
+.formSection {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.formSectionTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.photoPreview {
+  margin-top: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+}
+
+.photoPreviewPlaceholder {
+  margin-top: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #888;
+  text-align: center;
+  padding: 8px;
+}
+
+.photoSaveNotice {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f3eef9;
+  border: 1px solid #c5b8d8;
+  color: #4a3d66;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.adminBtnHighlight {
+  box-shadow: 0 0 0 3px rgba(123, 92, 173, 0.45);
+}
+
+.photoStatusOk {
+  color: #1a7f37;
+}
+
+.photoStatusBroken {
+  color: #c00;
+}
+
+.photoStatusMissing {
+  color: #888;
+}
+
+.formFooter {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.toggleField {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  margin: 0;
+}
+
+.loginWrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f4f4;
+}
+
+.loginCard {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 32px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.error {
+  color: #c00;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+}
+
+.adminGalleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.adminGalleryCard {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.adminGalleryImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.adminGalleryDelete {
+  width: 100%;
+  border-radius: 0;
+}
+
+@media (max-width: 640px) {
+  .formRow,
+  .listItemRow,
+  .checkboxGroup,
+  .specialtyGrid {
+    grid-template-columns: 1fr;
+  }
+}

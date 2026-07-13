@@ -1,0 +1,293 @@
+.title {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+  color: var(--color-text);
+}
+
+.subtitle {
+  margin: 0 0 2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 720px;
+}
+
+.masonry4 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.masonry4Compact {
+  align-items: start;
+}
+
+.masonry4Flex {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.leftStack {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.centerCol {
+  flex: 1.15 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.rightStack {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.slot0 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.slot1 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.slot2 {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.slot3 {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.decorSlot {
+  grid-column: 3;
+  grid-row: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: 16px;
+  overflow: hidden;
+}
+
+.masonry4Flex .decorSlot {
+  flex: 1;
+  min-height: 0;
+  padding-top: 16px;
+  grid-column: auto;
+  grid-row: auto;
+  overflow: hidden;
+}
+
+.decorImage {
+  width: 100%;
+  max-width: 170px;
+  max-height: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.grid .card,
+.grid2 .card {
+  height: 100%;
+}
+
+.card {
+  background: #f3f2fa;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardStretch {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.35;
+  padding-top: 4px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.cardText {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.bullets li {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.bullets li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 960px) {
+  .masonry4 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: start;
+  }
+
+  .masonry4Flex {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .leftStack {
+    grid-column: 1;
+    flex: none;
+  }
+
+  .centerCol {
+    grid-column: 2;
+    grid-row: 1;
+    height: auto !important;
+    flex: none;
+  }
+
+  .rightStack {
+    grid-column: 2;
+    grid-row: 2;
+    height: auto !important;
+    flex: none;
+  }
+
+  .slot0,
+  .slot1,
+  .slot2,
+  .slot3,
+  .decorSlot {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .slot0 {
+    grid-column: 1;
+  }
+
+  .slot1 {
+    grid-column: 1;
+  }
+
+  .slot2 {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .slot3 {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .decorSlot {
+    grid-column: 1 / span 2;
+    flex: none;
+    align-items: center;
+    padding-top: 4px;
+  }
+
+  .cardStretch {
+    height: auto;
+    flex: none;
+  }
+
+  .grid,
+  .grid2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .masonry4,
+  .masonry4Flex,
+  .grid,
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .leftStack,
+  .centerCol,
+  .rightStack,
+  .slot0,
+  .slot1,
+  .slot2,
+  .slot3,
+  .decorSlot {
+    grid-column: 1;
+    grid-row: auto;
+    height: auto !important;
+  }
+
+  .decorImage {
+    max-width: 150px;
+  }
+}

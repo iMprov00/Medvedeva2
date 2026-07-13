@@ -1,0 +1,89 @@
+.section {
+  /* background set via sectionToneMuted on parent */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.imageWrap {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #5c3d8f;
+  margin-bottom: 0.5rem;
+}
+
+.role {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-bottom: 1.25rem;
+}
+
+.quote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+  margin: 0 0 1.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.highlight {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.highlightIcon {
+  color: #b88de0;
+  flex-shrink: 0;
+}
+
+.note {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .highlights {
+    grid-template-columns: 1fr;
+  }
+}
