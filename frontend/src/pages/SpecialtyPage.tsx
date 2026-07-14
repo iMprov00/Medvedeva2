@@ -12,7 +12,7 @@ import { SpecialtyPromotion } from '../components/specialty/SpecialtyPromotion';
 import { SpecialtyDoctors } from '../components/specialty/SpecialtyDoctors';
 import { FinalCtaSection } from '../components/home/FinalCtaSection';
 import { ContactsSection } from '../components/home/ContactsSection';
-import { PageStub } from '../components/layout/PageStub';
+import { NotFoundPage } from './NotFoundPage';
 
 export function SpecialtyPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -33,7 +33,7 @@ export function SpecialtyPage() {
   }, [slug, page]);
 
   if (!page) {
-    return <PageStub title="Страница не найдена" />;
+    return <NotFoundPage />;
   }
 
   if (loading) {

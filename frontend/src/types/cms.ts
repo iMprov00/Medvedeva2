@@ -94,6 +94,7 @@ export interface Doctor {
   fullName: string;
   photoUrl: string | null;
   bookingUrl: string;
+  noBookingLink: boolean;
   published: boolean;
   sortOrder: number;
   specialtySlugs: string[];

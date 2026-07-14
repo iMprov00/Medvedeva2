@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>500 — Ошибка сервера | Клиника доктора Медведевой</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-primary: #c9a0e8;
+        --color-primary-hover: #b88de0;
+        --color-primary-light: #e8d4f8;
+        --color-text: #1a1a1a;
+        --color-text-muted: #4a4a4a;
+        --color-bg: #f9f9f9;
+        --color-white: #ffffff;
+        --font-sans: 'Inter', system-ui, sans-serif;
+        --radius-button: 12px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--font-sans);
+        color: var(--color-text);
+        background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-bg) 55%);
+        display: flex;
+        align-items: center;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        width: min(640px, 100%);
+        margin: 0 auto;
+        padding: 48px 24px;
+      }
+      .code {
+        margin: 0 0 8px;
+        font-size: clamp(4rem, 12vw, 7rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--color-primary);
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        line-height: 1.2;
+      }
+      p {
+        margin: 0 0 2rem;
+        font-size: 1.125rem;
+        color: var(--color-text-muted);
+        max-width: 34rem;
+        line-height: 1.6;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: var(--radius-button);
+        background: var(--color-primary);
+        color: var(--color-white);
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: 2px solid var(--color-primary);
+      }
+      .btn:hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+      .link {
+        font-weight: 600;
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .link:hover { color: var(--color-primary-hover); }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <p class="code" aria-hidden="true">500</p>
+      <h1>Что-то пошло не так</h1>
+      <p>
+        На сервере произошла ошибка. Попробуйте открыть страницу позже или свяжитесь с клиникой
+        по телефону.
+      </p>
+      <div class="actions">
+        <a class="btn" href="/">На главную</a>
+        <a class="link" href="/contacts">Контакты</a>
+      </div>
+    </main>
+  </body>
+</html>

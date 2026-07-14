@@ -179,6 +179,9 @@ export async function adminUpload(file: File, kind: UploadKind = 'default'): Pro
     body: form,
   });
   if (!response.ok) {
+    if (response.status === 413) {
+      throw new Error('Файл слишком большой. Максимум 30 МБ. Уменьшите изображение и попробуйте снова.');
+    }
     const err = await response.json().catch(() => ({ error: 'Не удалось загрузить файл' }));
     throw new Error((err as { error?: string }).error ?? 'Не удалось загрузить файл');
   }

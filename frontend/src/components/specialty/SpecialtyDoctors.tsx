@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Button } from '../ui/Button';
 import type { Doctor } from '../../types/cms';
 import { UploadImage } from '../ui/ResponsiveImage';
+import { useSiteSettings } from '../../context/SiteSettingsContext';
+import { phoneToTel } from '../../api/client';
 import styles from './SpecialtyDoctors.module.css';
 
 interface SpecialtyDoctorsProps {
@@ -27,6 +29,45 @@ function DoctorPhoto({ doctor }: { doctor: Doctor }) {
   );
 }
 
+function DoctorBookingCta({ doctor }: { doctor: Doctor }) {
+  const { settings } = useSiteSettings();
+  const [phonesOpen, setPhonesOpen] = useState(false);
+  const showPhones = doctor.noBookingLink || !doctor.bookingUrl?.trim();
+
+  if (!showPhones) {
+    return (
+      <Button href={doctor.bookingUrl} className={styles.cta} target="_blank" rel="noopener noreferrer">
+        Записаться на прием
+      </Button>
+    );
+  }
+
+  return (
+    <div className={styles.ctaWrap}>
+      <Button
+        type="button"
+        className={styles.cta}
+        onClick={() => setPhonesOpen((open) => !open)}
+        aria-expanded={phonesOpen}
+      >
+        Записаться на прием
+      </Button>
+      {phonesOpen && (
+        <div className={styles.phonesBox} role="region" aria-label="Телефоны клиники">
+          <p className={styles.phonesHint}>Запись по телефону:</p>
+          <div className={styles.phonesList}>
+            {settings.phones.map((phone) => (
+              <a key={phone} href={phoneToTel(phone)} className={styles.phoneLink}>
+                {phone}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function SpecialtyDoctors({ title, doctors }: SpecialtyDoctorsProps) {
   if (!doctors.length) return null;
 
@@ -44,9 +85,7 @@ export function SpecialtyDoctors({ title, doctors }: SpecialtyDoctorsProps) {
                 <h3 className={styles.name}>{doctor.fullName}</h3>
                 {doctor.role && <p className={styles.role}>{doctor.role}</p>}
               </article>
-              <Button href={doctor.bookingUrl} className={styles.cta}>
-                Записаться на прием
-              </Button>
+              <DoctorBookingCta doctor={doctor} />
             </div>
           ))}
         </div>

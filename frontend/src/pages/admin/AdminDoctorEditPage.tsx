@@ -31,6 +31,7 @@ export function AdminDoctorEditPage() {
   const [role, setRole] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [bookingUrl, setBookingUrl] = useState('');
+  const [noBookingLink, setNoBookingLink] = useState(false);
   const [published, setPublished] = useState(false);
   const [sortOrder, setSortOrder] = useState(0);
   const [specialtySlugs, setSpecialtySlugs] = useState<string[]>([]);
@@ -66,6 +67,7 @@ export function AdminDoctorEditPage() {
         setPhotoUrl(loadedPhotoUrl);
         setSavedPhotoUrl(loadedPhotoUrl);
         setBookingUrl(data.bookingUrl);
+        setNoBookingLink(Boolean(data.noBookingLink));
         setPublished(data.published);
         setSortOrder(data.sortOrder);
         setSpecialtySlugs(data.specialtySlugs);
@@ -117,7 +119,8 @@ export function AdminDoctorEditPage() {
         middleName: middleName || null,
         role: role || null,
         photoUrl: photoUrl || null,
-        bookingUrl,
+        bookingUrl: noBookingLink ? '' : bookingUrl.trim(),
+        noBookingLink,
         published,
         sortOrder,
         specialtySlugs,
@@ -289,12 +292,30 @@ export function AdminDoctorEditPage() {
         </div>
 
         <div className="formGroup">
+          <label className="toggleField" htmlFor="doctor-no-booking-link">
+            <input
+              id="doctor-no-booking-link"
+              type="checkbox"
+              checked={noBookingLink}
+              onChange={(e) => setNoBookingLink(e.target.checked)}
+            />
+            Нет ссылки
+          </label>
+          <p className="adminHint">
+            Если отмечено, на сайте при нажатии «Записаться» покажутся телефоны клиники вместо
+            онлайн-записи.
+          </p>
+        </div>
+
+        <div className="formGroup">
           <label htmlFor="doctor-booking-url">Ссылка на запись</label>
           <input
             id="doctor-booking-url"
             value={bookingUrl}
             onChange={(e) => setBookingUrl(e.target.value)}
-            required
+            required={!noBookingLink}
+            disabled={noBookingLink}
+            placeholder={noBookingLink ? 'Не используется' : 'https://...'}
           />
         </div>
 

@@ -1,0 +1,44 @@
+services:
+  api:
+    build:
+      context: .
+      target: api
+    image: medvedeva-api:latest
+    container_name: medvedeva-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3001"
+      DATABASE_PATH: /app/db/production.sqlite3
+    ports:
+      - "127.0.0.1:3001:3001"
+    volumes:
+      - ./db:/app/db
+      - ./uploads:/app/uploads
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  migrate:
+    profiles: ["migrate"]
+    build:
+      context: .
+      target: build
+    image: medvedeva-build:latest
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_PATH: /app/db/production.sqlite3
+    volumes:
+      - ./db:/app/db
+      - ./uploads:/app/uploads
+    working_dir: /app
+    command: sh -c "npm run db:migrate && npm run db:seed"
+    mem_limit: 512m

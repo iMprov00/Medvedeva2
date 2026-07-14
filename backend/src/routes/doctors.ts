@@ -58,18 +58,24 @@ export async function doctorsAdminRoutes(app: FastifyInstance) {
     return serializeDoctor(row, getSpecialtySlugsForDoctor(row.id));
   });
 
-  app.post('/api/admin/doctors', { preHandler: requireAdmin }, async (request) => {
+  app.post('/api/admin/doctors', { preHandler: requireAdmin }, async (request, reply) => {
     const body = request.body as {
       lastName: string;
       firstName: string;
       middleName?: string | null;
       role?: string | null;
       photoUrl?: string | null;
-      bookingUrl: string;
+      bookingUrl?: string;
+      noBookingLink?: boolean;
       published?: boolean;
       sortOrder?: number;
       specialtySlugs?: string[];
     };
+    const noBookingLink = Boolean(body.noBookingLink);
+    const bookingUrl = noBookingLink ? '' : (body.bookingUrl ?? '').trim();
+    if (!noBookingLink && !bookingUrl) {
+      return reply.status(400).send({ error: 'Укажите ссылку на запись или отметьте «Нет ссылки»' });
+    }
     const now = nowIso();
     const result = db
       .insert(doctors)
@@ -79,7 +85,8 @@ export async function doctorsAdminRoutes(app: FastifyInstance) {
         middleName: body.middleName ?? null,
         role: body.role ?? null,
         photoUrl: body.photoUrl ?? null,
-        bookingUrl: body.bookingUrl,
+        bookingUrl,
+        noBookingLink,
         published: body.published ?? false,
         sortOrder: body.sortOrder ?? 0,
         createdAt: now,
@@ -99,13 +106,20 @@ export async function doctorsAdminRoutes(app: FastifyInstance) {
       middleName?: string | null;
       role?: string | null;
       photoUrl?: string | null;
-      bookingUrl: string;
+      bookingUrl?: string;
+      noBookingLink?: boolean;
       published?: boolean;
       sortOrder?: number;
       specialtySlugs?: string[];
     };
     const existing = db.select().from(doctors).where(eq(doctors.id, Number(id))).get();
     if (!existing) return reply.status(404).send({ error: 'Not found' });
+
+    const noBookingLink = Boolean(body.noBookingLink);
+    const bookingUrl = noBookingLink ? '' : (body.bookingUrl ?? '').trim();
+    if (!noBookingLink && !bookingUrl) {
+      return reply.status(400).send({ error: 'Укажите ссылку на запись или отметьте «Нет ссылки»' });
+    }
 
     const result = db
       .update(doctors)
@@ -115,7 +129,8 @@ export async function doctorsAdminRoutes(app: FastifyInstance) {
         middleName: body.middleName ?? null,
         role: body.role ?? null,
         photoUrl: body.photoUrl ?? null,
-        bookingUrl: body.bookingUrl,
+        bookingUrl,
+        noBookingLink,
         published: body.published ?? false,
         sortOrder: body.sortOrder ?? 0,
         updatedAt: nowIso(),

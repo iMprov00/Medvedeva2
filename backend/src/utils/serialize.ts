@@ -47,6 +47,7 @@ export function serializeDoctor(
     role: string | null;
     photoUrl: string | null;
     bookingUrl: string;
+    noBookingLink?: boolean | null;
     published: boolean | null;
     sortOrder: number;
   },
@@ -62,6 +63,7 @@ export function serializeDoctor(
     fullName: parts.join(' '),
     photoUrl: row.photoUrl,
     bookingUrl: row.bookingUrl,
+    noBookingLink: Boolean(row.noBookingLink),
     published: Boolean(row.published),
     sortOrder: row.sortOrder,
     specialtySlugs,

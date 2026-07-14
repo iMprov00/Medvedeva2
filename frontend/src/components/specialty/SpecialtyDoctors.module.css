@@ -77,6 +77,44 @@
   margin-top: auto;
 }
 
+.ctaWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.phonesBox {
+  background: #fff;
+  border: 1px solid #d8cbe8;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.phonesHint {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #666);
+}
+
+.phonesList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.phoneLink {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-primary, #5c3d8f);
+  text-decoration: none;
+}
+
+.phoneLink:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

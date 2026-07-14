@@ -46,6 +46,7 @@ db.exec(`
     role TEXT,
     photo_url TEXT,
     booking_url TEXT NOT NULL,
+    no_booking_link INTEGER DEFAULT 0,
     published INTEGER DEFAULT 0,
     sort_order INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL,
@@ -143,6 +144,9 @@ if (isLegacyDocuments) {
 const doctorsColumns = hasTable('doctors') ? tableInfo('doctors').map((c) => c.name) : [];
 if (doctorsColumns.length > 0 && !doctorsColumns.includes('role')) {
   db.exec(`ALTER TABLE doctors ADD COLUMN role TEXT`);
+}
+if (doctorsColumns.length > 0 && !doctorsColumns.includes('no_booking_link')) {
+  db.exec(`ALTER TABLE doctors ADD COLUMN no_booking_link INTEGER DEFAULT 0`);
 }
 
 const dsColumns = hasTable('doctor_specialties') ? tableInfo('doctor_specialties').map((c) => c.name) : [];

@@ -24,7 +24,7 @@ export function HeroSection() {
         <div className={styles.imageWrap}>
           <StaticImage
             image={siteImages.hero}
-            alt="Семья в современной клинике"
+            alt="Команда клиники доказательной медицины доктора Медведевой"
             className={styles.image}
             loading="eager"
           />

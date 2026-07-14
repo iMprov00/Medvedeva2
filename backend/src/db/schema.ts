@@ -41,6 +41,7 @@ export const doctors = sqliteTable('doctors', {
   role: text('role'),
   photoUrl: text('photo_url'),
   bookingUrl: text('booking_url').notNull(),
+  noBookingLink: integer('no_booking_link', { mode: 'boolean' }).default(false),
   published: integer('published', { mode: 'boolean' }).default(false),
   sortOrder: integer('sort_order').notNull().default(0),
   createdAt: text('created_at').notNull(),
