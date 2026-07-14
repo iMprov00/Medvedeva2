@@ -6,13 +6,21 @@ import { resolveStaticImage } from '../../content/imageAssets';
 import { Button } from '../ui/Button';
 import { StaticImage, UploadImage } from '../ui/ResponsiveImage';
 import { ImageLightbox } from '../ui/ImageLightbox';
-import { uploadFullUrl } from '../../utils/uploadImage';
+import { normalizeUploadUrl, uploadFullUrl } from '../../utils/uploadImage';
 import styles from './GallerySection.module.css';
 
 const INITIAL = 8;
 
 function isUploadUrl(url: string) {
   return url.startsWith('/uploads/');
+}
+
+/** URL для lightbox: полный upload-вариант или largest static из манифеста. */
+function lightboxSrc(url: string): string {
+  if (isUploadUrl(url)) {
+    return uploadFullUrl(normalizeUploadUrl(url));
+  }
+  return resolveStaticImage(url).src;
 }
 
 export function GallerySection() {
@@ -28,7 +36,7 @@ export function GallerySection() {
       });
   }, []);
 
-  const lightboxImages = useMemo(() => photos.map((url) => uploadFullUrl(url)), [photos]);
+  const lightboxImages = useMemo(() => photos.map((url) => lightboxSrc(url)), [photos]);
 
   const visibleCount = expanded ? photos.length : INITIAL;
   const hasMore = photos.length > INITIAL;
