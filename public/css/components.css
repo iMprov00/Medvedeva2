@@ -1113,11 +1113,17 @@ img {
     vertical-align: middle !important;
 }
 
-/* Стиль для хедера (шапки) */
-.header #medflexMedtochkaWidgetButton button {
-    min-width: 140px !important;
-    padding: 0.6rem 1.25rem !important;
-    font-size: 0.95rem !important;
+/* Стиль для хедера (шапки) — компактная кнопка */
+.header #medflexMedtochkaWidgetButton button,
+.desktop-medflex-widget #medflexMedtochkaWidgetButton button {
+    min-width: 100px !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.8rem !important;
+}
+.desktop-medflex-widget #medflexMedtochkaWidgetButton button i,
+.desktop-medflex-widget #medflexMedtochkaWidgetButton button svg {
+    font-size: 0.9em !important;
+    margin-right: 4px !important;
 }
 
 /* Стиль для футера (подвала) */
@@ -1529,7 +1535,7 @@ footer #medflexMedtochkaWidgetButton button:hover {
     }
     
     .desktop-medflex-widget #medflexMedtochkaWidgetButton {
-        min-width: 140px !important;
+        min-width: 100px !important;
     }
 }
 
@@ -1621,12 +1627,12 @@ footer #medflexMedtochkaWidgetButton button:hover {
     }
 }
 
-/* Десктопные стили */
+/* Десктопные стили — компактная кнопка в шапке */
 @media (min-width: 992px) {
     #medflexMedtochkaWidgetButton button {
-        min-width: 140px !important;
-        padding: 0.6rem 1.25rem !important;
-        font-size: 0.95rem !important;
+        min-width: 100px !important;
+        padding: 0.4rem 0.75rem !important;
+        font-size: 0.8rem !important;
     }
 }
 
@@ -1978,4 +1984,18 @@ footer #medflexMedtochkaWidgetButton button:hover {
 footer {
     position: relative;
     z-index: 1;
+}
+
+/* Бейдж рейтинга ПроДокторов в подвале (компактный прямоугольник) */
+.footer-pd-rating-badge {
+    max-height: 36px;
+    width: auto;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+footer a[aria-label="Рейтинг клиники на ПроДокторов"]:hover .footer-pd-rating-badge {
+    opacity: 0.92;
 }

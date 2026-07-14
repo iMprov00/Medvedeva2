@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_15_023027) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_06_120000) do
   create_table "appointments", force: :cascade do |t|
-    t.date "birth_date", null: false
-    t.datetime "created_at", null: false
-    t.integer "doctor_id"
-    t.string "email", null: false
-    t.text "message"
     t.string "patient_name", null: false
+    t.date "birth_date", null: false
     t.string "phone", null: false
+    t.string "email", null: false
+    t.integer "doctor_id"
+    t.text "message"
     t.boolean "privacy_accepted", default: false, null: false
-    t.boolean "read", default: false, null: false
-    t.integer "specialty_id"
     t.string "status", default: "new", null: false
+    t.boolean "read", default: false, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "specialty_id"
     t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
     t.index ["read"], name: "index_appointments_on_read"
     t.index ["specialty_id"], name: "index_appointments_on_specialty_id"
@@ -40,14 +40,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_023027) do
   end
 
   create_table "doctors", force: :cascade do |t|
-    t.text "bio", null: false
-    t.datetime "created_at", null: false
-    t.integer "experience_years"
-    t.string "first_name", null: false
     t.string "last_name", null: false
+    t.string "first_name", null: false
     t.string "middle_name"
+    t.integer "experience_years"
+    t.text "bio", null: false
     t.string "photo_path"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "booking_link"
     t.index ["last_name", "first_name", "middle_name"], name: "index_doctors_on_last_name_and_first_name_and_middle_name"
   end
 
@@ -58,26 +59,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_023027) do
     t.index ["specialty_id", "doctor_id"], name: "index_doctors_specialties_on_specialty_id_and_doctor_id"
   end
 
-  create_table "messages", force: :cascade do |t|
+  create_table "documents", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "file_path", null: false
+    t.string "original_filename"
+    t.string "icon", default: "bi-file-earmark-text"
+    t.string "icon_color", default: "secondary"
+    t.integer "position", default: 0
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
-    t.string "email", null: false
-    t.text "message", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_documents_on_active"
+    t.index ["position"], name: "index_documents_on_position"
+  end
+
+  create_table "messages", force: :cascade do |t|
     t.string "name", null: false
     t.string "phone", null: false
-    t.boolean "read", default: false
-    t.string "status", default: "new"
+    t.string "email", null: false
     t.string "subject", null: false
+    t.text "message", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "new"
     t.index ["status"], name: "index_messages_on_status"
   end
 
   create_table "reviews", force: :cascade do |t|
-    t.boolean "approved", default: false
     t.string "author_name", null: false
     t.text "content", null: false
-    t.datetime "created_at", null: false
-    t.boolean "featured", default: false
     t.integer "rating", null: false
+    t.boolean "approved", default: false
+    t.boolean "featured", default: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["approved"], name: "index_reviews_on_approved"
     t.index ["featured"], name: "index_reviews_on_featured"
@@ -85,23 +101,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_023027) do
   end
 
   create_table "service_categories", force: :cascade do |t|
-    t.datetime "created_at", null: false
     t.string "name", null: false
     t.integer "position"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_service_categories_on_name", unique: true
   end
 
   create_table "services", force: :cascade do |t|
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.text "description"
-    t.integer "duration_minutes"
-    t.string "name", null: false
-    t.decimal "price", precision: 10, scale: 2, null: false
     t.integer "service_category_id", null: false
-    t.string "service_code"
+    t.string "name", null: false
+    t.text "description"
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.integer "duration_minutes"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "service_code"
+    t.boolean "active", default: true, null: false
     t.index ["name"], name: "index_services_on_name"
     t.index ["price"], name: "index_services_on_price"
     t.index ["service_category_id"], name: "index_services_on_service_category_id"
@@ -109,15 +125,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_023027) do
   end
 
   create_table "specialties", force: :cascade do |t|
-    t.datetime "created_at", null: false
     t.string "name", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_specialties_on_name", unique: true
   end
 
   create_table "tests", force: :cascade do |t|
-    t.datetime "created_at", null: false
     t.string "name"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 

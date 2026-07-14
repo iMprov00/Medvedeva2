@@ -23,6 +23,8 @@ configure do
   
   # Настройки защиты
   set :protection, except: [:remote_token, :authenticity_token, :frame_options, :json_csrf]
+
+  # Кеширование статики отключено — в проде давало 500. Кеш настраивается в nginx (см. shared/nginx_static_cache.conf).
 end
 
 configure :production do
@@ -97,9 +99,7 @@ helpers do
     @layout || :layout
   end
 
-
-
- # Проверка валидности URL
+  # Проверка валидности URL
   def valid_url?(url)
     uri = URI.parse(url)
     uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
@@ -107,6 +107,11 @@ helpers do
     false
   end
   
+  # Определение title страницы
+  def page_title
+    @page_title || default_title
+  end
+
   # Отображение иконки для типа ссылки
   def booking_link_icon(url)
     if url.include?('workplace') || url.include?('yclients')
@@ -131,7 +136,22 @@ helpers do
     end
   end
 
-  
+  # Время последнего изменения контента страницы (для кеширования 304)
+  def last_modified_for_page(path)
+    t = case path
+        when '/' then
+          [Doctor, ServiceCategory, Service, Document].map { |m| m.maximum(:updated_at) }.compact.max
+        when '/doctors' then Doctor.maximum(:updated_at)
+        when '/prices' then
+          [ServiceCategory, Service].map { |m| m.maximum(:updated_at) }.compact.max
+        when '/docs' then Document.maximum(:updated_at)
+        when '/about', '/contacts', '/privacy' then
+          [Doctor, Document].map { |m| m.maximum(:updated_at) }.compact.max
+        else nil
+        end
+    t = t.to_time if t.respond_to?(:to_time)
+    t || Time.now
+  end
 
   # Методы для работы с content_for (добавьте после других helpers)
   def content_for(key, content = nil, &block)
@@ -161,11 +181,6 @@ helpers do
     result
   end
 
-  # Определение title страницы
-  def page_title
-    @page_title || default_title
-  end
-  
   def default_title
     "Клиника доказательной медицины доктора Медведевой в Барнауле"
   end
@@ -212,6 +227,25 @@ end
 # =============================================
 # МАРШРУТЫ ГЛАВНОГО САЙТА
 # =============================================
+
+# Кеширование: Last-Modified и 304 для публичных страниц
+before do
+  next unless request.get?
+  next if request.path.start_with?('/admin', '/download') || request.path == '/sitemap.xml'
+  next if request.path.include?('.') || request.path.start_with?('/specialties', '/doctors/', '/reviews')
+  next unless ['/', '/about', '/contacts', '/doctors', '/prices', '/docs', '/privacy'].include?(request.path)
+
+  lm = last_modified_for_page(request.path)
+  response['Last-Modified'] = lm.httpdate
+  response['Cache-Control'] = 'public, max-age=0, must-revalidate'
+
+  if env['HTTP_IF_MODIFIED_SINCE']
+    since = Time.httpdate(env['HTTP_IF_MODIFIED_SINCE'].strip)
+    halt 304 if lm.to_i <= since.to_i
+  end
+rescue ArgumentError
+  # невалидная дата в If-Modified-Since — игнорируем
+end
 
 # Главная страница
 get '/' do

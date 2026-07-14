@@ -1,0 +1,368 @@
+/* ==========================================================================
+   Версия для слабовидящих (ГОСТ Р 52872-2019)
+   Классы применяются к html/body из a11y.js
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Размер шрифта (от html, чтобы масштабировались rem/em)
+   -------------------------------------------------------------------------- */
+html.a11y-font-1 {
+    font-size: 110%;
+}
+
+html.a11y-font-2 {
+    font-size: 120%;
+}
+
+html.a11y-font-3 {
+    font-size: 140%;
+}
+
+/* --------------------------------------------------------------------------
+   Скрытие изображений (оставляем в DOM для скринридеров — alt доступен)
+   -------------------------------------------------------------------------- */
+body.a11y-hide-images img {
+    min-height: 1px;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Цветовая схема: чёрный текст по белому (контраст не ниже 4.5:1)
+   -------------------------------------------------------------------------- */
+body.a11y-contrast-bw {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+body.a11y-contrast-bw .header,
+body.a11y-contrast-bw header,
+body.a11y-contrast-bw .navbar,
+body.a11y-contrast-bw nav {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+body.a11y-contrast-bw a {
+    color: #000000 !important;
+    text-decoration: underline !important;
+}
+
+body.a11y-contrast-bw a:hover {
+    color: #333333 !important;
+}
+
+body.a11y-contrast-bw .btn-primary,
+body.a11y-contrast-bw .btn-primary:hover {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.a11y-contrast-bw .btn-outline-primary {
+    background: transparent !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+body.a11y-contrast-bw .btn-outline-primary:hover {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.a11y-contrast-bw .card,
+body.a11y-contrast-bw .bg-light,
+body.a11y-contrast-bw section.bg-light {
+    background: #f5f5f5 !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+}
+
+body.a11y-contrast-bw .text-muted,
+body.a11y-contrast-bw .text-primary {
+    color: #000000 !important;
+}
+
+body.a11y-contrast-bw footer,
+body.a11y-contrast-bw .bg-dark {
+    background: #e0e0e0 !important;
+    color: #000000 !important;
+    border-top: 2px solid #000000 !important;
+}
+
+body.a11y-contrast-bw footer a,
+body.a11y-contrast-bw footer .text-light {
+    color: #000000 !important;
+}
+
+body.a11y-contrast-bw .badge {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Цветовая схема: белый текст по чёрному
+   -------------------------------------------------------------------------- */
+body.a11y-contrast-wb {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.a11y-contrast-wb .header,
+body.a11y-contrast-wb header,
+body.a11y-contrast-wb .navbar,
+body.a11y-contrast-wb nav {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #ffffff !important;
+}
+
+body.a11y-contrast-wb a {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+}
+
+body.a11y-contrast-wb a:hover {
+    color: #cccccc !important;
+}
+
+body.a11y-contrast-wb .btn-primary,
+body.a11y-contrast-wb .btn-primary:hover {
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+body.a11y-contrast-wb .btn-outline-primary {
+    background: transparent !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+body.a11y-contrast-wb .btn-outline-primary:hover {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+body.a11y-contrast-wb .card,
+body.a11y-contrast-wb .bg-light,
+body.a11y-contrast-wb section.bg-light {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #ffffff !important;
+}
+
+body.a11y-contrast-wb .text-muted,
+body.a11y-contrast-wb .text-primary {
+    color: #ffffff !important;
+}
+
+body.a11y-contrast-wb footer,
+body.a11y-contrast-wb .bg-dark {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-top: 2px solid #ffffff !important;
+}
+
+body.a11y-contrast-wb footer a,
+body.a11y-contrast-wb footer .text-light {
+    color: #ffffff !important;
+}
+
+body.a11y-contrast-wb .badge {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   Цветовая схема: чёрный текст по жёлтому
+   -------------------------------------------------------------------------- */
+body.a11y-contrast-by {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+body.a11y-contrast-by .header,
+body.a11y-contrast-by header,
+body.a11y-contrast-by .navbar,
+body.a11y-contrast-by nav {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+body.a11y-contrast-by a {
+    color: #000000 !important;
+    text-decoration: underline !important;
+}
+
+body.a11y-contrast-by a:hover {
+    color: #333333 !important;
+}
+
+body.a11y-contrast-by .btn-primary,
+body.a11y-contrast-by .btn-primary:hover {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffff00 !important;
+}
+
+body.a11y-contrast-by .btn-outline-primary {
+    background: transparent !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+body.a11y-contrast-by .btn-outline-primary:hover {
+    background: #000000 !important;
+    color: #ffff00 !important;
+}
+
+body.a11y-contrast-by .card,
+body.a11y-contrast-by .bg-light,
+body.a11y-contrast-by section.bg-light {
+    background: #ffff99 !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+}
+
+body.a11y-contrast-by .text-muted,
+body.a11y-contrast-by .text-primary {
+    color: #000000 !important;
+}
+
+body.a11y-contrast-by footer,
+body.a11y-contrast-by .bg-dark {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border-top: 2px solid #000000 !important;
+}
+
+body.a11y-contrast-by footer a,
+body.a11y-contrast-by footer .text-light {
+    color: #000000 !important;
+}
+
+body.a11y-contrast-by .badge {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 1px solid #000000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Кнопка в шапке (компактная, в потоке навигации)
+   -------------------------------------------------------------------------- */
+.a11y-header-btn {
+    min-height: 44px;
+    padding: 0.25rem 0.5rem !important;
+    font-weight: 500;
+    text-decoration: none !important;
+    border: none !important;
+    background: transparent !important;
+    color: inherit !important;
+    opacity: 0.85;
+}
+
+.a11y-header-btn:hover {
+    opacity: 1;
+    color: inherit !important;
+    background: transparent !important;
+}
+
+.a11y-header-btn .bi-eyeglasses {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 767.98px) {
+    .a11y-header-btn {
+        padding: 0.35rem 0.5rem !important;
+    }
+    .a11y-header-btn .bi-eyeglasses {
+        font-size: 1.25rem;
+    }
+}
+
+body.a11y-contrast-bw .a11y-header-btn { color: #000000 !important; }
+body.a11y-contrast-wb .a11y-header-btn { color: #ffffff !important; }
+body.a11y-contrast-by .a11y-header-btn { color: #000000 !important; }
+
+/* --------------------------------------------------------------------------
+   Панель настроек (скрыта по умолчанию, показывается по .a11y-panel-open)
+   -------------------------------------------------------------------------- */
+#a11y-panel {
+    display: none;
+    position: fixed;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 320px;
+    width: 90vw;
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+}
+
+#a11y-panel.a11y-panel-open {
+    display: block;
+}
+
+#a11y-panel {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 1051;
+}
+
+#a11y-panel h2 {
+    color: #000000 !important;
+    font-size: 1.1rem !important;
+}
+
+#a11y-panel button:not(#a11y-close-btn),
+#a11y-panel .a11y-option {
+    min-height: 44px;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+}
+
+#a11y-panel button:not(#a11y-close-btn):hover,
+#a11y-panel .a11y-option:hover {
+    background: #e0e0e0 !important;
+    color: #000000 !important;
+}
+
+#a11y-panel .a11y-option.active {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+#a11y-close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    color: #000000 !important;
+    background: transparent !important;
+    border: 1px solid #000000 !important;
+}
+
+#a11y-close-btn:hover {
+    background: #e0e0e0 !important;
+    color: #000000 !important;
+}
+
+#a11y-reset-btn {
+    background: #333333 !important;
+    color: #ffffff !important;
+    border: 2px solid #333333 !important;
+}
+
+#a11y-reset-btn:hover {
+    background: #000000 !important;
+    color: #ffffff !important;
+}

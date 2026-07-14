@@ -109,6 +109,17 @@ body {
     opacity: 1 !important;
 }
 
+/* Телефоны в шапке — компактный шрифт, чтобы не переносились */
+.header-phones a {
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+@media (min-width: 1200px) {
+    .header-phones a {
+        font-size: 0.85rem;
+    }
+}
+
 .section-padding {
     padding: 5rem 0;
 }

@@ -202,7 +202,7 @@
 
 
 
-<!-- Отзывы -->
+<!-- Отзывы (виджет ПроДокторов) -->
 <section class="py-4 py-lg-5 bg-light" id="reviews">
     <div class="container">
         <div class="text-center mb-4 mb-lg-5">
@@ -210,82 +210,29 @@
                 Отзывы пациентов
             </h2>
             <p class="text-muted fade-in-up" style="animation-delay: 0.1s; font-size: clamp(0.9rem, 1.5vw, 1.1rem);">
-                Что говорят пациенты о лечении в нашей клинике
+                Реальные отзывы на ПроДокторов — вы можете оставить свой отзыв по ссылке в виджете
             </p>
         </div>
-        
-        <!-- Контейнер для отзывов с прокруткой -->
-        <div class="reviews-container mb-4 mb-lg-5">
-            <div class="row g-3" id="reviewsList">
-                <!-- Отзывы будут загружены здесь динамически -->
-                <div class="col-12 text-center fade-in-up">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Загрузка отзывов...</span>
+
+        <div class="row justify-content-center fade-in-up" style="animation-delay: 0.15s">
+            <div class="col-12 col-xl-10">
+                <div id="pd_widget_big" data-lpu="112528">
+                    <div class="pd_rate_header">
+                        Отзывы о «Клинике доктора Медведевой»<br>
+                        <a target="_blank" rel="noopener noreferrer" class="pd_rate_new" href="https://prodoctorov.ru/new/rate/lpu/112528/">Оставить отзыв</a>
                     </div>
+                    <div id="pd_widget_big_content"></div>
+                    <a target="_blank" rel="noopener noreferrer" href="https://prodoctorov.ru/barnaul/lpu/112528-klinika-doktora-medvedevoy/#otzivi" class="pd_read_all">Читать все отзывы</a>
+                    <span id="pd_powered_by">
+                        <a target="_blank" rel="noopener noreferrer" href="https://prodoctorov.ru">
+                            <img class="pd_logo" src="https://prodoctorov.ru/static/_v1/pd/logos/logo-pd-widget.png" alt="ПроДокторов" width="120" height="24" loading="lazy">
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>
-        
-        <!-- Форма для нового отзыва -->
-        <div class="card border-0 shadow-sm fade-in-up" style="animation-delay: 0.2s">
-            <div class="card-body p-3 p-lg-4">
-                <h4 class="fw-bold mb-3 fs-5 fs-lg-4">Поделитесь своим опытом</h4>
-                <p class="text-muted mb-3 small">
-                    Ваш отзыв поможет другим пациента сделать правильный выбор
-                </p>
-                <form id="newReviewForm">
-                    <div class="row g-3">
-                        <div class="col-12 col-md-6">
-                            <label for="authorName" class="form-label small">Имя родителя *</label>
-                            <input type="text" class="form-control form-control-lg" id="authorName" name="author_name" required>
-                        </div>
-                        
-                        <div class="col-12 col-md-6">
-                            <label class="form-label small">Оценка *</label>
-                            <div class="rating-input">
-                                <div class="stars d-flex">
-                                    <i class="bi bi-star touch-target" data-rating="1"></i>
-                                    <i class="bi bi-star touch-target" data-rating="2"></i>
-                                    <i class="bi bi-star touch-target" data-rating="3"></i>
-                                    <i class="bi bi-star touch-target" data-rating="4"></i>
-                                    <i class="bi bi-star touch-target" data-rating="5"></i>
-                                </div>
-                                <input type="hidden" id="rating" name="rating" required>
-                                <div class="rating-text mt-1 small text-muted">
-                                    <span id="ratingText">Выберите оценку</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-12">
-                            <label for="content" class="form-label small">Текст отзыва *</label>
-                            <textarea class="form-control form-control-lg" 
-                                      id="content" 
-                                      name="content" 
-                                      rows="3" 
-                                      placeholder="Расскажите о вашем опыте лечения, общении с врачом, атмосфере в клинике..." 
-                                      required></textarea>
-                        </div>
-                        
-                        <div class="col-12">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="privacyReview" required>
-                                <label class="form-check-label small text-muted" for="privacyReview">
-                                    Я соглашаюсь с <a href="/privacy" target="_blank" class="text-decoration-none">политикой конфиденциальности</a> и разрешаю публикацию отзыва *
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary px-4 py-3 w-100 w-md-auto touch-target">
-                                Оставить отзыв
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
+    <script defer src="https://prodoctorov.ru/static/js/widget_big.js?v07"></script>
 </section>
 
 <!-- Наша команда - превью -->
@@ -338,56 +285,15 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Отзывы */
-.reviews-container {
-    max-height: 400px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: #e5a7ff #f8f9fa;
-}
-
-.reviews-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.reviews-container::-webkit-scrollbar-track {
-    background: #f8f9fa;
-    border-radius: 10px;
-}
-
-.reviews-container::-webkit-scrollbar-thumb {
-    background: #e5a7ff;
-    border-radius: 10px;
-}
-
-/* Звезды рейтинга */
-.rating-input .stars i {
-    cursor: pointer;
-    font-size: 1.5rem;
-    margin-right: 5px;
-    transition: color 0.2s;
-}
-
-.rating-input .stars i:hover,
-.rating-input .stars i.bi-star-fill {
-    color: #ffc107 !important;
+/* Виджет ПроДокторов: базовая обвязка (основные стили приходят с виджета) */
+#pd_widget_big {
+    max-width: 100%;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .gallery-thumbnail {
         height: auto;
-    }
-    
-    .reviews-container {
-        max-height: 300px;
-        padding-right: 10px;
-    }
-    
-    .rating-input .stars i {
-        font-size: 1.25rem;
-        margin-right: 3px;
     }
 }
 
@@ -405,10 +311,6 @@
 @media (hover: none) and (pointer: coarse) {
     .gallery-item:hover .gallery-thumbnail {
         transform: none;
-    }
-    
-    .rating-input .stars i:hover {
-        color: inherit;
     }
 }
 </style>
