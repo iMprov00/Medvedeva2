@@ -46,7 +46,7 @@ const PROFILES = {
 };
 
 const RASTER_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);
-const SKIP_NAMES = new Set(['logo.png', 'plus.jpg']);
+const SKIP_NAMES = new Set(['logo.png', 'plus.png']);
 
 function profileForRelativePath(rel) {
   const norm = rel.replace(/\\/g, '/').toLowerCase();
@@ -127,7 +127,7 @@ async function loadCache() {
 }
 
 async function renderVariant(input, width, aspect, format) {
-  let image = sharp(input).rotate();
+  let image = sharp(input).rotate().flatten({ background: { r: 255, g: 255, b: 255 } });
   if (aspect) {
     image = image.resize(width, Math.round(width / aspect), {
       fit: 'cover',

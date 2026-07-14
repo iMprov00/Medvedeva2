@@ -1,4 +1,4 @@
-import type { Doctor, GalleryPhoto, Promotion } from '../types/cms';
+import type { ClinicDocument, Doctor, GalleryPhoto, Promotion } from '../types/cms';
 
 async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers);
@@ -42,6 +42,10 @@ export async function fetchDoctors(specialty?: string): Promise<Doctor[]> {
 
 export async function fetchGalleryPhotos(): Promise<GalleryPhoto[]> {
   return apiFetch<GalleryPhoto[]>('/api/gallery');
+}
+
+export async function fetchDocuments(): Promise<ClinicDocument[]> {
+  return apiFetch<ClinicDocument[]>('/api/documents');
 }
 
 export async function adminLogin(username: string, password: string): Promise<void> {
@@ -135,7 +139,38 @@ export async function adminDeleteGalleryPhoto(id: number): Promise<void> {
   await apiFetch(`/api/admin/gallery/${id}`, { method: 'DELETE' });
 }
 
-export async function adminUpload(file: File, kind: 'doctor' | 'gallery' | 'default' = 'default'): Promise<string> {
+export async function adminFetchDocuments(): Promise<ClinicDocument[]> {
+  return apiFetch<ClinicDocument[]>('/api/admin/documents');
+}
+
+export async function adminSaveDocument(
+  data: Record<string, unknown>,
+  id?: number,
+): Promise<ClinicDocument> {
+  if (id) {
+    return apiFetch<ClinicDocument>(`/api/admin/documents/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+  return apiFetch<ClinicDocument>('/api/admin/documents', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function adminDeleteDocument(id: number): Promise<void> {
+  await apiFetch(`/api/admin/documents/${id}`, { method: 'DELETE' });
+}
+
+export type UploadKind = 'doctor' | 'gallery' | 'promotion' | 'document' | 'default';
+
+export interface UploadResult {
+  url: string;
+  originalFilename?: string;
+}
+
+export async function adminUpload(file: File, kind: UploadKind = 'default'): Promise<UploadResult> {
   const form = new FormData();
   form.append('file', file);
   const response = await fetch(`/api/admin/upload?kind=${encodeURIComponent(kind)}`, {
@@ -147,6 +182,5 @@ export async function adminUpload(file: File, kind: 'doctor' | 'gallery' | 'defa
     const err = await response.json().catch(() => ({ error: 'Не удалось загрузить файл' }));
     throw new Error((err as { error?: string }).error ?? 'Не удалось загрузить файл');
   }
-  const data = (await response.json()) as { url: string };
-  return data.url;
+  return (await response.json()) as UploadResult;
 }

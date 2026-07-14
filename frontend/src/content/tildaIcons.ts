@@ -39,7 +39,7 @@ export const tildaIcons = {
 } as const;
 
 export const DEFAULT_FEATURE_ICON = tildaIcons.consultation;
-export const DEFAULT_FEATURE_DECOR = '/images/plus.jpg';
+export const DEFAULT_FEATURE_DECOR = '/images/plus.png';
 
 export function iconForCardTitle(title: string): string {
   const t = title.toLowerCase();

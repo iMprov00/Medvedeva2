@@ -27,8 +27,8 @@ export function AdminGalleryPage() {
 
     setUploading(true);
     try {
-      const imageUrl = await adminUpload(file, 'gallery');
-      await adminAddGalleryPhoto(imageUrl);
+      const { url } = await adminUpload(file, 'gallery');
+      await adminAddGalleryPhoto(url);
       load();
     } finally {
       setUploading(false);

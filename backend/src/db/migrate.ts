@@ -69,6 +69,77 @@ const hasTable = (table: string) =>
     | { name: string }
     | undefined) !== undefined;
 
+const documentsColumns = hasTable('documents')
+  ? tableInfo('documents').map((c) => c.name)
+  : [];
+const isLegacyDocuments =
+  documentsColumns.includes('file_path') && !documentsColumns.includes('file_url');
+
+if (isLegacyDocuments) {
+  db.exec(`ALTER TABLE documents RENAME TO documents_legacy`);
+  db.exec(`
+    CREATE TABLE documents (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT,
+      file_url TEXT NOT NULL,
+      original_filename TEXT,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      active INTEGER DEFAULT 1,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+  `);
+
+  const now = new Date().toISOString();
+  const legacyDocs = db.prepare('SELECT * FROM documents_legacy').all() as {
+    id: number;
+    title: string;
+    description: string | null;
+    file_path: string;
+    original_filename: string | null;
+    position: number | null;
+    active: number | boolean | null;
+    created_at: string | null;
+    updated_at: string | null;
+  }[];
+
+  const insertDoc = db.prepare(`
+    INSERT INTO documents (id, title, description, file_url, original_filename, sort_order, active, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+
+  for (const doc of legacyDocs) {
+    insertDoc.run(
+      doc.id,
+      doc.title,
+      doc.description,
+      doc.file_path,
+      doc.original_filename,
+      doc.position ?? 0,
+      doc.active ? 1 : 0,
+      doc.created_at ?? now,
+      doc.updated_at ?? now,
+    );
+  }
+
+  db.exec(`DROP TABLE documents_legacy`);
+} else if (!hasTable('documents')) {
+  db.exec(`
+    CREATE TABLE documents (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT,
+      file_url TEXT NOT NULL,
+      original_filename TEXT,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      active INTEGER DEFAULT 1,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+  `);
+}
+
 const doctorsColumns = hasTable('doctors') ? tableInfo('doctors').map((c) => c.name) : [];
 if (doctorsColumns.length > 0 && !doctorsColumns.includes('role')) {
   db.exec(`ALTER TABLE doctors ADD COLUMN role TEXT`);

@@ -104,3 +104,13 @@ export interface GalleryPhoto {
   imageUrl: string;
   sortOrder: number;
 }
+
+export interface ClinicDocument {
+  id: number;
+  title: string;
+  description: string | null;
+  fileUrl: string;
+  originalFilename: string | null;
+  sortOrder: number;
+  active: boolean;
+}

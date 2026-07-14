@@ -121,3 +121,34 @@ export const seedPromotions = [
     sortOrder: 3,
   },
 ];
+
+export const seedDocuments = [
+  {
+    title: 'Лицензия на медицинскую деятельность',
+    description: 'Разрешение на осуществление медицинской деятельности',
+    fileUrl: '/images/docs/lic.pdf',
+    originalFilename: 'Лицензия_клиники_Медведевой.pdf',
+    sortOrder: 0,
+  },
+  {
+    title: 'Свидетельство о регистрации',
+    description: 'Документ о государственной регистрации юридического лица',
+    fileUrl: '/images/docs/reg.webp',
+    originalFilename: 'Свидетельство_о_регистрации.webp',
+    sortOrder: 1,
+  },
+  {
+    title: 'Прайс-лист',
+    description: 'Актуальный перечень услуг и цен',
+    fileUrl: '/images/docs/price.pdf',
+    originalFilename: 'Прайс-лист_клиники_Медведевой.pdf',
+    sortOrder: 2,
+  },
+  {
+    title: 'Доверенность',
+    description: null as string | null,
+    fileUrl: '/images/docs/dover.pdf',
+    originalFilename: 'Доверенность.pdf',
+    sortOrder: 3,
+  },
+];

@@ -267,6 +267,34 @@
   background: #f8f8f8;
 }
 
+.photoPreviewRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.photoPreviewRow .photoPreview {
+  margin-top: 0;
+  width: 200px;
+  height: 125px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.formHint {
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  color: #666;
+}
+
+.formError {
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  color: #c00;
+}
+
 .photoPreviewPlaceholder {
   margin-top: 10px;
   width: 120px;

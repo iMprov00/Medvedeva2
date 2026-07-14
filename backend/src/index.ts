@@ -10,6 +10,7 @@ import { uploadRoutes, uploadsDir } from './routes/upload.js';
 import { promotionsPublicRoutes, promotionsAdminRoutes } from './routes/promotions.js';
 import { doctorsPublicRoutes, doctorsAdminRoutes } from './routes/doctors.js';
 import { galleryPublicRoutes, galleryAdminRoutes } from './routes/gallery.js';
+import { documentsPublicRoutes, documentsAdminRoutes } from './routes/documents.js';
 
 const app = Fastify({ logger: true });
 
@@ -41,6 +42,8 @@ await app.register(doctorsPublicRoutes);
 await app.register(doctorsAdminRoutes);
 await app.register(galleryPublicRoutes);
 await app.register(galleryAdminRoutes);
+await app.register(documentsPublicRoutes);
+await app.register(documentsAdminRoutes);
 
 try {
   await app.listen({ port, host });

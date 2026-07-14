@@ -3,7 +3,9 @@ export function normalizeUploadUrl(url: string): string {
   if (/-(card|full|thumb)\./i.test(url)) return url;
   const match = url.match(/^(\/uploads\/.+?)\.(jpe?g|png|webp)$/i);
   if (!match) return url;
-  return `${match[1]}-card.jpg`;
+  const ext = match[2].toLowerCase() === 'jpeg' ? 'jpg' : match[2].toLowerCase();
+  // Для старых загрузок без суффикса по умолчанию ожидаем JPEG-card (врачи).
+  return `${match[1]}-card.${ext === 'png' || ext === 'webp' ? ext : 'jpg'}`;
 }
 
 export function uploadFullUrl(url: string): string {

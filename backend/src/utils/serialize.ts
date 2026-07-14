@@ -79,3 +79,23 @@ export function serializeGalleryPhoto(row: {
     sortOrder: row.sortOrder,
   };
 }
+
+export function serializeDocument(row: {
+  id: number;
+  title: string;
+  description: string | null;
+  fileUrl: string;
+  originalFilename: string | null;
+  sortOrder: number;
+  active: boolean | null;
+}) {
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description,
+    fileUrl: row.fileUrl,
+    originalFilename: row.originalFilename,
+    sortOrder: row.sortOrder,
+    active: Boolean(row.active),
+  };
+}

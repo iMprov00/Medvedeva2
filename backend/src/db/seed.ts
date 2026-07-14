@@ -1,6 +1,13 @@
 import { db } from './index.js';
-import { siteSettings, promotions, galleryPhotos } from './schema.js';
-import { seedPromotions } from './seed-data.js';
+import { siteSettings, promotions, galleryPhotos, documents } from './schema.js';
+import { seedPromotions, seedDocuments } from './seed-data.js';
+import { eq } from 'drizzle-orm';
+import { readdirSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const publicDocsDir = path.resolve(__dirname, '../../../frontend/public/images/docs');
 
 const now = new Date().toISOString();
 
@@ -64,6 +71,89 @@ if (existingGallery.length === 0) {
       })
       .run();
   });
+}
+
+const existingDocuments = db.select().from(documents).all();
+if (existingDocuments.length === 0) {
+  for (const doc of seedDocuments) {
+    db.insert(documents)
+      .values({
+        title: doc.title,
+        description: doc.description,
+        fileUrl: doc.fileUrl,
+        originalFilename: doc.originalFilename,
+        sortOrder: doc.sortOrder,
+        active: true,
+        createdAt: now,
+        updatedAt: now,
+      })
+      .run();
+  }
+} else {
+  // Старые пути из Ruby (doc_*.pdf) могут отсутствовать в public — подставляем известные файлы.
+  const remaps: { test: RegExp; fileUrl: string; originalFilename: string }[] = [
+    {
+      test: /лицензия/i,
+      fileUrl: '/images/docs/lic.pdf',
+      originalFilename: 'Лицензия_клиники_Медведевой.pdf',
+    },
+    {
+      test: /свидетельств/i,
+      fileUrl: '/images/docs/reg.webp',
+      originalFilename: 'Свидетельство_о_регистрации.webp',
+    },
+    {
+      test: /прейскурант|прайс/i,
+      fileUrl: '/images/docs/price.pdf',
+      originalFilename: 'Прайс-лист_клиники_Медведевой.pdf',
+    },
+    {
+      test: /доверенност/i,
+      fileUrl: '/images/docs/dover.pdf',
+      originalFilename: 'Доверенность.pdf',
+    },
+    {
+      test: /политик.*конфиденц|конфиденциальност/i,
+      fileUrl: '/images/docs/poly.pdf',
+      originalFilename: 'Политика_конфиденциальности.pdf',
+    },
+  ];
+
+  const availableDocs = new Set(
+    (() => {
+      try {
+        return readdirSync(publicDocsDir);
+      } catch {
+        return [] as string[];
+      }
+    })(),
+  );
+
+  for (const row of existingDocuments) {
+    const remap = remaps.find((r) => r.test.test(row.title));
+    if (remap && row.fileUrl.includes('/images/docs/doc_')) {
+      db.update(documents)
+        .set({
+          fileUrl: remap.fileUrl,
+          originalFilename: remap.originalFilename,
+          updatedAt: now,
+        })
+        .where(eq(documents.id, row.id))
+        .run();
+      continue;
+    }
+
+    // Скрыть записи со ссылками на отсутствующие локальные файлы
+    if (row.fileUrl.startsWith('/images/docs/')) {
+      const name = row.fileUrl.split('/').pop() ?? '';
+      if (name && !availableDocs.has(name) && row.active) {
+        db.update(documents)
+          .set({ active: false, updatedAt: now })
+          .where(eq(documents.id, row.id))
+          .run();
+      }
+    }
+  }
 }
 
 console.log('Seed complete.');

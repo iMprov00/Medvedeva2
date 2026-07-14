@@ -18,6 +18,7 @@ import { AdminDoctorEditPage } from './pages/admin/AdminDoctorEditPage';
 import { AdminPromotionsPage } from './pages/admin/AdminPromotionsPage';
 import { AdminPromotionEditPage } from './pages/admin/AdminPromotionEditPage';
 import { AdminGalleryPage } from './pages/admin/AdminGalleryPage';
+import { AdminDocumentsPage } from './pages/admin/AdminDocumentsPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="promotions/new" element={<AdminPromotionEditPage />} />
             <Route path="promotions/:id" element={<AdminPromotionEditPage />} />
             <Route path="gallery" element={<AdminGalleryPage />} />
+            <Route path="documents" element={<AdminDocumentsPage />} />
           </Route>
 
           <Route path="/" element={<Layout />}>

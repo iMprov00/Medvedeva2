@@ -38,6 +38,9 @@ export function AdminLayout() {
           <NavLink to="/admin/gallery" className={({ isActive }) => (isActive ? 'active' : '')}>
             Фото
           </NavLink>
+          <NavLink to="/admin/documents" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Документы
+          </NavLink>
           <a href="/" target="_blank" rel="noreferrer">
             Сайт
           </a>

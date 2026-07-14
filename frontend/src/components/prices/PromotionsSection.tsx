@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react';
 import { fetchPromotions } from '../../api/cms';
 import { resolveStaticImage } from '../../content/imageAssets';
 import type { Promotion } from '../../types/cms';
-import { StaticImage } from '../ui/ResponsiveImage';
+import { StaticImage, UploadImage } from '../ui/ResponsiveImage';
 import styles from './PromotionsSection.module.css';
+
+function PromotionImage({ url, className }: { url: string; className?: string }) {
+  if (url.startsWith('/uploads/')) {
+    return <UploadImage url={url} alt="" className={className} />;
+  }
+  return <StaticImage image={resolveStaticImage(url)} alt="" className={className} />;
+}
 
 export function PromotionsSection() {
   const [promotions, setPromotions] = useState<Promotion[]>([]);
@@ -22,12 +29,8 @@ export function PromotionsSection() {
         <div className={styles.grid}>
           {promotions.map((item) => (
             <article key={item.id} className={styles.card}>
-              <div className={styles.cardHeader} style={{ backgroundColor: item.accentColor }}>
-                <StaticImage
-                  image={resolveStaticImage(item.imageUrl)}
-                  alt=""
-                  className={styles.image}
-                />
+              <div className={styles.cardHeader}>
+                <PromotionImage url={item.imageUrl} className={styles.image} />
                 <span className={styles.discount}>{item.discount}</span>
               </div>
               <div className={styles.cardBody}>

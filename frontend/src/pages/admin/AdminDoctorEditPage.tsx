@@ -136,7 +136,7 @@ export function AdminDoctorEditPage() {
     setUploadError('');
     setUploading(true);
     try {
-      const url = await adminUpload(file, 'doctor');
+      const { url } = await adminUpload(file, 'doctor');
       setPhotoUrl(url);
     } catch (error) {
       setUploadError(error instanceof Error ? error.message : 'Не удалось загрузить фото');
